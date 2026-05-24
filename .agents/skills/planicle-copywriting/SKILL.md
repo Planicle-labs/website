@@ -303,3 +303,5 @@ Planicle's design uses buttery-smooth microinteractions and premium restraint. C
 - Short, confident statements — they let the UI do the heavy lifting
 - One strong claim per section, not five competing ideas
 - Whitespace is intentional in layout; **brevity is the copy equivalent of whitespace**
+- **Typographic Voice Integration**: Copy must match the three-tier type system. Display Serif headings need high-impact, editorial phrasing. Sans-Serif body text must remain precise and clear. Monospaced capsule labels and pills must use ALL CAPS, short 2-5 word rallying phrases or technical descriptors.
+- **Tonal Arc Alignment**: Canvas backgrounds shift dynamically between warm ivory and rich near-black (never pitch #000000, never flat white). Do not refer to static colors or visual canvases in the copy itself; keep the content structurally agnostic to section background colors.
