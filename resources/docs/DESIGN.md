@@ -16,45 +16,54 @@ Planicle is an elite software studio engineering high-end websites, applications
 
 ## 2. Color Palette & System Tokens
 
-The layout shifts dynamically through a high-contrast dark aesthetic designed to feel prestigious, using an intense, energetic accent orange to anchor user focus and interactive states.
+The layout shifts dynamically through a high-contrast dark aesthetic designed to feel prestigious, using an intense, energetic accent orange to anchor user focus and interactive states. Per the tonal arc principle: **never pitch black, never flat white throughout** — the darkest canvas is a rich near-black, and the lightest canvas is a warm ivory.
 
 | Token Name | Hex Code | Visual Role / Usage |
 | :--- | :--- | :--- |
 | **Planicle Orange** | `#EF4A2A` | Primary Brand Mark, Active Interaction Rings, Interactive Focus Highlights |
 | **Gris** | `#F7F7F7` | Technical Feature Sheets, Contrast Text Invasions |
-| **N-700 (Jet Black)** | `#000000` | Core Canvas Background, Hero Panels, High-Impact Content Blocks |
+| **N-700 (Rich Black)** | `#0C0C0E` | Core Canvas Background, Hero Panels, High-Impact Content Blocks (never pitch #000000) |
 | **N-600 (Charcoal)** | `#161618` | Secondary Layer Containers, Deep Card Backdrops, Element Wrapper Fills |
 | **N-500 (Off-Black)** | `#797872` | Technical Component Borders, Unselected Tabs, Grid Lines |
 | **N-400 (Slate Muted)**| `#A09F9A` | Supporting Explanatory Text, Labels, Inactive Micro-copy |
 | **N-300 (Stone Gray)** | `#E4E3DD` | Light Canvas Section Separators, Crisp Accent Borders |
 | **N-200 (Warm Silver)** | `#EEEDE9` | Disabled Element Fills, Subtle Structural Dividers, Secondary Surface Backgrounds |
 | **N-100 (Ivory White)** | `#F4F3EF` | Subtle Canvas Backgrounds, Card Surfaces, Elevated Layer Fills |
-| **N-50 (Pure White)** | `#FFFFFF` | Core Heading Typography (Dark Mode), Sharp Data Overlays |
+| **N-50 (Pure White)** | `#FFFFFF` | Heading Typography on dark canvases, Sharp Data Overlays (never used as a canvas/section background) |
 
 ---
 
 ## 3. Typography & Heading Composition
 
-Our typographic hierarchy relies on a deliberate structural tension between an elegant, high-contrast display serif and a cold, hyper-precise technical monospace.
+Our typographic hierarchy uses **expressive serif + sans-serif interplay** with an editorial layout sensibility. Three distinct type roles create deliberate structural tension:
+
+1. **Display Serif** — high-contrast, editorial headlines that command attention.
+2. **Sans-Serif Body** — clean, legible prose and UI text.
+3. **Technical Monospace** — cold, hyper-precise labels, pills, and data fields.
 
 ```
        [ READY TO MOVE MOUNTAINS? ]       <-- Monospace Technical Capsule Pill
                     │
    ┌────────────────┴────────────────┐
    ▼                                 ▼
- Think big,                       make it real  <-- Dual-style Display Header
-(Display Serif Bold)            (Monospace / Pixelated Accent Style)
+ Think big,                       make it real.  <-- Display Serif Headline
+(Display Serif Bold)            (Display Serif Italic / Light)
+                    │
+                    ▼
+  We build what others pitch.                     <-- Sans-Serif Body Text
+       (Sans-Serif Regular)
 ```
 
 ### Typeface Rules
-1.  **Display Heading Font:** Luxurious, high-contrast editorial Serif (e.g., *Editorial New*, *Chronicle Display*, or Google Font *Playfair Display / DM Serif Display*). Styled with tight tracking, sharp serifs, and high stroke contrast.
-2.  **Body & System Font:** Highly legible, geometric Sans-Serif or Technical Grotesk (e.g., *Inter*, *SF Pro Display*, or *Plus Jakarta Sans*).
-3.  **Capsule Labels & Data Fields:** Precision Monospace (e.g., *SF Mono*, *JetBrains Mono*) for an uncompromisingly professional engineering look.
+1.  **Display Heading Font (Serif):** A luxurious, high-contrast editorial Serif with sharp serifs and pronounced stroke contrast (e.g., *Editorial New*, *Chronicle Display*, or Google Font *Playfair Display / DM Serif Display*). Styled with tight tracking. This is the primary expressive voice — used for hero headlines, section titles, and any text that needs to feel authoritative and editorial. **Not** pixelated or lo-fi; the display serif must feel premium and high-fidelity.
+2.  **Body & System Font (Sans-Serif):** Highly legible, geometric Sans-Serif or Technical Grotesk (e.g., *Inter*, *SF Pro Display*, or *Plus Jakarta Sans*). Used for body copy, navigation, buttons, and all functional UI text. Provides a clean, modern counterpoint to the editorial serif.
+3.  **Capsule Labels & Data Fields (Monospace):** Precision Monospace (e.g., *SF Mono*, *JetBrains Mono*) for pills, tags, technical labels, and data readouts. Creates an uncompromisingly professional engineering look alongside the editorial serif.
 
 ### Scale & Hierarchy Metrics
-* `h1` (Hero Headline): `56pt` - `72pt` (Desktop) / `36pt` (Mobile). Line-height: `1.05`.
-* `h2` (Section Headers): `36pt` - `44pt`. Line-height: `1.1`.
-* `Body Text`: `12pt` - `13pt`. Line-height: `1.65`. Styled in muted slate (`#A09F9A`) to let white headers draw the primary optical weight.
+* `h1` (Hero Headline): `56pt` - `72pt` (Desktop) / `36pt` (Mobile). Line-height: `1.05`. **Set in Display Serif.**
+* `h2` (Section Headers): `36pt` - `44pt`. Line-height: `1.1`. **Set in Display Serif.**
+* `Body Text`: `12pt` - `13pt`. Line-height: `1.65`. **Set in Sans-Serif.** Styled in muted slate (`#A09F9A`) to let white serif headers draw the primary optical weight.
+* `Labels / Pills`: `10pt` - `11pt`. Letter-spacing: `0.08em`. Text-transform: uppercase. **Set in Monospace.**
 
 ---
 
