@@ -1,214 +1,94 @@
 'use client';
 
-import { useState, useEffect } from 'react';
 import dynamic from 'next/dynamic';
-import { Menu, X, Clock, ArrowRight } from 'lucide-react';
-import LiveClock from '@/components/LiveClock';
+import Navbar from '@/components/Navbar';
 import TextRollButton from '@/components/TextRollButton';
+import { ArrowRight } from 'lucide-react';
 
 // Dynamically load browser-only Shader overlay to prevent hydration issues
 const HeroShader = dynamic(() => import('@/components/HeroShader'), { ssr: false });
 
 export default function Home() {
-  const [menuOpen, setMenuOpen] = useState(false);
-  const [menuRendered, setMenuRendered] = useState(false);
-
-  // Smooth sliding mobile menu toggle
-  const openMenu = () => {
-    setMenuRendered(true);
-    setTimeout(() => setMenuOpen(true), 30);
-  };
-
-  const closeMenu = () => {
-    setMenuOpen(false);
-    setTimeout(() => setMenuRendered(false), 500); // Wait for transition duration
-  };
-
   return (
-    <main className="w-full flex-col min-h-screen relative overflow-x-hidden selection:bg-[#ff5f03] selection:text-white">
+    <main className="w-full flex-col min-h-screen relative overflow-x-hidden selection:bg-[#EF4A2A] selection:text-white">
       {/* ──────────────────────────────────────────────────────── */}
       {/* SECTION 1: HERO (Full viewport height) */}
       {/* ──────────────────────────────────────────────────────── */}
-      <section className="relative w-full min-h-screen h-screen flex flex-col justify-between bg-[#EFEFEF] overflow-hidden">
+      <section className="relative w-full min-h-screen h-screen flex flex-col justify-between bg-[#F4F3EF] overflow-hidden">
         {/* Animated Shader Overlay */}
         <HeroShader />
 
-        {/* Navigation Layer */}
-        <div className="w-full max-w-[1440px] mx-auto p-2 sm:p-3 z-20 relative">
-          <div className="bg-white rounded-full p-[5px] flex items-center justify-between shadow-sm">
-            {/* Left Side Nav */}
-            <div className="flex items-center">
-              {/* Logo Circle */}
-              <div className="w-9 h-9 sm:w-10 sm:h-10 bg-gray-900 rounded-full flex items-center justify-center transition-transform duration-500 ease-[cubic-bezier(0.25,0.1,0.25,1)] hover:scale-105">
-                <span className="text-[10px] sm:text-[11px] font-bold text-white tracking-tight">AX</span>
-              </div>
-              
-              {/* Navigation Links (Desktop) */}
-              <nav className="hidden md:flex items-center gap-6 ml-6">
-                {['Projects', 'Studio', 'Journal', 'Connect'].map((link) => (
-                  <a
-                    key={link}
-                    href={`#${link.toLowerCase()}`}
-                    className="text-[14px] font-medium text-gray-900 hover:text-gray-500 transition-colors duration-300"
-                  >
-                    {link}
-                  </a>
-                ))}
-              </nav>
-            </div>
-
-            {/* Right Side Nav (Desktop) */}
-            <div className="hidden md:flex items-center gap-4 lg:gap-6">
-              {/* Capacity Status */}
-              <span className="text-[13px] text-gray-600 font-medium hidden lg:inline">
-                Taking on projects for Q1 2026
-              </span>
-              
-              {/* London Live Clock */}
-              <LiveClock 
-                showIcon={true} 
-                timeZone="Europe/London" 
-                label="in London" 
-                className="text-[13px] text-gray-600 font-medium"
-              />
-
-              {/* Book Strategy Call Button */}
-              <TextRollButton
-                text="Book a strategy call"
-                className="bg-gray-900 text-white rounded-full pl-5 pr-2 py-2 cursor-pointer shadow-sm hover:shadow"
-                textClassName="text-[13px] font-medium tracking-tight text-white"
-                circleClassName="w-6 h-6 bg-white rounded-full flex items-center justify-center"
-                arrowClassName="text-gray-900"
-                iconSize={13}
-              />
-            </div>
-
-            {/* Mobile Nav Toggle */}
-            <button
-              onClick={openMenu}
-              className="md:hidden bg-gray-900 text-white hover:bg-gray-800 rounded-full w-9 h-9 sm:w-10 sm:h-10 flex items-center justify-center cursor-pointer transition-colors shadow-sm"
-              aria-label="Toggle navigation menu"
-            >
-              <Menu size={16} />
-            </button>
-          </div>
-        </div>
-
-        {/* Mobile Menu Overlay Sheet */}
-        {menuRendered && (
-          <div 
-            className={`fixed inset-0 z-50 flex items-end justify-center transition-opacity duration-500 ease-[cubic-bezier(0.25,0.1,0.25,1)] ${
-              menuOpen ? 'opacity-100' : 'opacity-0 pointer-events-none'
-            }`}
-          >
-            {/* Backdrop filter */}
-            <div 
-              className="absolute inset-0 bg-black/60 backdrop-blur-[4px]" 
-              onClick={closeMenu} 
-            />
-
-            {/* Bottom Sheet */}
-            <div
-              className={`relative w-full max-w-[1440px] bg-white rounded-2xl mx-3 mb-3 p-6 sm:p-8 flex flex-col justify-between shadow-2xl transition-transform duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] z-10 ${
-                menuOpen ? 'translate-y-0' : 'translate-y-full'
-              }`}
-            >
-              {/* Header inside Bottom Sheet */}
-              <div className="flex items-center justify-between mb-8">
-                {/* Indian Live Clock / IST Time Badge */}
-                <div className="bg-gray-100 rounded-full px-3 py-1.5 flex items-center">
-                  <LiveClock
-                    showIcon={true}
-                    timeZone="Asia/Kolkata"
-                    label="IST"
-                    className="text-[12px] text-gray-800 font-semibold"
-                  />
-                </div>
-
-                {/* Close Button */}
-                <button
-                  onClick={closeMenu}
-                  className="bg-gray-900 text-white rounded-full w-9 h-9 flex items-center justify-center hover:bg-gray-800 transition-colors cursor-pointer"
-                  aria-label="Close navigation menu"
-                >
-                  <X size={16} />
-                </button>
-              </div>
-
-              {/* Navigation Links inside Mobile Menu */}
-              <nav className="flex flex-col gap-4 sm:gap-6 mb-10">
-                {['Projects', 'Studio', 'Journal', 'Connect'].map((link) => (
-                  <a
-                    key={link}
-                    href={`#${link.toLowerCase()}`}
-                    onClick={closeMenu}
-                    className="text-[28px] sm:text-[32px] font-medium tracking-tight text-gray-900 hover:text-gray-500 transition-colors"
-                  >
-                    {link}
-                  </a>
-                ))}
-              </nav>
-
-              {/* Start a Project (Mobile) Button */}
-              <TextRollButton
-                text="Start a project"
-                onClick={closeMenu}
-                className="bg-[#F26522] hover:bg-[#e05a1a] text-white rounded-full pl-5 pr-2 py-3 cursor-pointer shadow-md w-full justify-between"
-                textClassName="text-[15px] font-medium tracking-tight text-white"
-                circleClassName="w-8 h-8 bg-white rounded-full flex items-center justify-center"
-                arrowClassName="text-[#F26522]"
-                iconSize={15}
-              />
-            </div>
-          </div>
-        )}
+        {/* Floating Custom Navigation Header */}
+        <Navbar />
 
         {/* Hero Content (z-20) */}
-        <div className="flex-1 flex flex-col justify-end w-full max-w-[1440px] mx-auto px-5 sm:px-8 lg:px-12 pb-14 sm:pb-16 lg:pb-20 z-20 relative pointer-events-auto">
+        <div className="flex-1 flex flex-col justify-end w-full max-w-[1280px] mx-auto px-6 sm:px-8 lg:px-12 pb-14 sm:pb-16 lg:pb-20 z-20 relative pointer-events-auto">
           {/* Label tag */}
-          <span className="text-[13px] sm:text-[14px] text-gray-900 font-semibold tracking-wider uppercase mb-5 sm:mb-8 block">
-            Axion Studio
-          </span>
+          <div className="inline-flex mb-6 sm:mb-8">
+            <span className="font-mono text-[10px] sm:text-[11px] font-bold tracking-widest text-[#EF4A2A] border border-[#EF4A2A]/20 px-3.5 py-1.5 rounded-full uppercase select-none">
+              BUILT FOR FOUNDERS
+            </span>
+          </div>
 
           {/* Headline H1 */}
-          <h1 className="text-[clamp(1.75rem,7vw,4.2rem)] sm:text-[clamp(2.5rem,5vw,4.2rem)] font-medium leading-[1.08] tracking-[-0.03em] text-gray-900 max-w-6xl">
-            We craft digital experiences <br className="hidden sm:block" />
-            <span className="sm:hidden"> </span>
-            for brands ready to dominate <br className="hidden sm:block" />
-            <span className="sm:hidden"> </span>
-            their category online.
+          <h1 className="font-serif text-[clamp(2.25rem,6.5vw,5rem)] font-normal leading-[1.05] tracking-tight text-[#0C0C0E] max-w-5xl">
+            Accelerate your time <br className="hidden sm:block" />
+            <span className="italic font-light text-[#EF4A2A]">to market.</span>
           </h1>
 
-          {/* CTA Row */}
-          <div className="mt-8 sm:mt-12 flex flex-col sm:flex-row gap-4 sm:gap-5 items-start sm:items-center">
-            {/* Start a project Orange Button */}
-            <TextRollButton
-              text="Start a project"
-              className="bg-[#F26522] hover:bg-[#e05a1a] text-white rounded-full pl-5 sm:pl-6 pr-2 py-2 cursor-pointer shadow-sm hover:shadow"
-              textClassName="text-[13px] sm:text-[14px] font-semibold tracking-tight text-white"
-              circleClassName="w-7 h-7 sm:w-8 sm:h-8 bg-white rounded-full flex items-center justify-center"
-              arrowClassName="text-[#F26522]"
-              iconSize={15}
-            />
+          {/* Body Copy */}
+          <p className="font-sans text-[15px] sm:text-[17px] text-[#797872] max-w-[65ch] leading-[1.65] mt-6 sm:mt-8">
+            We build premium websites, apps, and advanced digital systems for startups who value absolute execution. No hand-holding, no templates. Just clean code and rapid market dominance.
+          </p>
 
-            {/* Certified Partner badge */}
-            <div className="group bg-white rounded-[4px] px-4 py-2 sm:py-2.5 flex items-center gap-2.5 sm:gap-3 cursor-pointer shadow-[0_2px_8px_rgba(0,0,0,0.08)] hover:shadow-[0_4px_16px_rgba(0,0,0,0.12)] transition-all duration-500 ease-[cubic-bezier(0.25,0.1,0.25,1)]">
-              {/* Starburst Compass SVG Icon */}
-              <svg 
-                xmlns="http://www.w3.org/2000/svg" 
-                viewBox="0 0 100 100" 
-                className="w-5 h-5 sm:w-6 sm:h-6 fill-current text-[#E8704E] transition-transform duration-700 ease-[cubic-bezier(0.25,0.1,0.25,1)] group-hover:rotate-[180deg]"
-              >
-                <path d="m19.6 66.5 19.7-11 .3-1-.3-.5h-1l-3.3-.2-11.2-.3L14 53l-9.5-.5-2.4-.5L0 49l.2-1.5 2-1.3 2.9.2 6.3.5 9.5.6 6.9.4L38 49.1h1.6l.2-.7-.5-.4-.4-.4L29 41l-10.6-7-5.6-4.1-3-2-1.5-2-.6-4.2 2.7-3 3.7.3.9.2 3.7 2.9 8 6.1L37 36l1.5 1.2.6-.4.1-.3-.7-1.1L33 25l-6-10.4-2.7-4.3-.7-2.6c-.3-1-.4-2-.4-3l3-4.2L28 0l4.2.6L33.8 2l2.6 6 4.1 9.3L47 29.9l2 3.8 1 3.4.3 1h.7v-.5l.5-7.2 1-8.7 1-11.2.3-3.2 1.6-3.8 3-2L61 2.6l2 2.9-.3 1.8-1.1 7.7L59 27.1l-1.5 8.2h.9l1-1.1 4.1-5.4 6.9-8.6 3-3.5L77 13l2.3-1.8h4.3l3.1 4.7-1.4 4.9-4.4 5.6-3.7 4.7-5.3 7.1-3.2 5.7.3.4h.7l12-2.6 6.4-1.1 7.6-1.3 3.5 1.6.4 1.6-1.4 3.4-8.2 2-9.6 2-14.3 3.3-.2.1.2.3 6.4.6 2.8.2h6.8l12.6 1 3.3 2 1.9 2.7-.3 2-5.1 2.6-6.8-1.6-16-3.8-5.4-1.3h-.8v.4l4.6 4.5 8.3 7.5L89 80.1l.5 2.4-1.3 2-1.4-.2-9.2-7-3.6-3-8-6.8h-.5v.7l1.8 2.7 9.8 14.7.5 4.5-.7 1.4-2.6 1-2.7-.6-5.8-8-6-9-4.7-8.2-.5.4-2.9 30.2-1.3 1.5-3 1.2-2.5-2-1.4-3 1.4-6.2 1.6-8 1.3-6.4 1.2-7.9.7-2.6v-.2H49L43 72l-9 12.3-7.2 7.6-1.7.7-3-1.5.3-2.8L24 86l10-12.8 6-7.9 4-4.6-.1-.5h-.3L17.2 77.4l-4.7.6-2-2 .2-3 1-1 8-5.5Z"/>
-              </svg>
-              {/* Partner Text */}
-              <span className="text-[13px] sm:text-[14px] font-semibold text-gray-900 tracking-tight">
-                Certified Partner
+          {/* CTA Row */}
+          <div className="mt-8 sm:mt-10 flex flex-wrap gap-4 items-center">
+            {/* Primary CTA (BOOK A CALL ») */}
+            <a
+              href="#connect"
+              className="group inline-flex items-center bg-[#EF4A2A] hover:bg-[#d63b1c] text-white rounded-full pl-6 pr-2 py-2.5 transition-all duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] active:scale-[0.97] shadow-lg shadow-[#EF4A2A]/10"
+            >
+              <span className="font-mono text-[11px] sm:text-[12px] font-bold tracking-widest mr-4 relative overflow-hidden h-[18px]">
+                <span className="flex flex-col transition-transform duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] group-hover:-translate-y-1/2">
+                  <span className="h-[18px] flex items-center">BOOK A CALL</span>
+                  <span className="h-[18px] flex items-center">BOOK A CALL</span>
+                </span>
               </span>
-              {/* Featured Badge */}
-              <span className="text-[10px] sm:text-[11px] bg-gray-900 text-white px-1.5 sm:px-2 py-0.5 rounded font-bold uppercase tracking-wider">
-                Featured
+              <span className="w-8 h-8 sm:w-9 sm:h-9 bg-white text-[#EF4A2A] rounded-full flex items-center justify-center text-[12px] font-bold transition-transform duration-500 ease-[cubic-bezier(0.23,1,0.32,1)] group-hover:rotate-45">
+                »
               </span>
+            </a>
+
+            {/* Secondary CTA (SEE THE WORK) */}
+            <a
+              href="#projects"
+              className="group inline-flex items-center border border-[#797872]/30 hover:border-[#0C0C0E] text-[#0C0C0E] rounded-full pl-6 pr-2 py-2.5 transition-all duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] active:scale-[0.97]"
+            >
+              <span className="font-mono text-[11px] sm:text-[12px] font-bold tracking-widest mr-4 relative overflow-hidden h-[18px]">
+                <span className="flex flex-col transition-transform duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] group-hover:-translate-y-1/2">
+                  <span className="h-[18px] flex items-center">SEE THE WORK</span>
+                  <span className="h-[18px] flex items-center">SEE THE WORK</span>
+                </span>
+              </span>
+              <span className="w-8 h-8 sm:w-9 sm:h-9 bg-[#0C0C0E] text-white rounded-full flex items-center justify-center text-[12px] font-bold transition-transform duration-500 ease-[cubic-bezier(0.23,1,0.32,1)] group-hover:rotate-45">
+                ›
+              </span>
+            </a>
+          </div>
+
+          {/* Minimalist Metrics Bar */}
+          <div className="mt-12 sm:mt-16 pt-8 border-t border-[#797872]/15 w-full flex flex-wrap gap-x-12 gap-y-6">
+            <div className="flex flex-col select-none">
+              <span className="font-mono text-[10px] text-[#A09F9A] tracking-widest uppercase">ENGINEERED YTD</span>
+              <span className="font-serif text-[17px] sm:text-[18px] font-bold text-[#0C0C0E] mt-1">14 elite products</span>
+            </div>
+            <div className="flex flex-col select-none">
+              <span className="font-mono text-[10px] text-[#A09F9A] tracking-widest uppercase">VELOCITY STATE</span>
+              <span className="font-serif text-[17px] sm:text-[18px] font-bold text-[#0C0C0E] mt-1">6 weeks average ship</span>
+            </div>
+            <div className="flex flex-col select-none">
+              <span className="font-mono text-[10px] text-[#A09F9A] tracking-widest uppercase">FOUNDER RANGE</span>
+              <span className="font-serif text-[17px] sm:text-[18px] font-bold text-[#0C0C0E] mt-1">Seed to Series B</span>
             </div>
           </div>
         </div>
@@ -227,7 +107,7 @@ export default function Home() {
             </div>
             {/* Pill label */}
             <div className="text-[12px] sm:text-[13px] font-medium border border-gray-200 rounded-full px-3 sm:px-4 py-1 sm:py-1.5 text-gray-900">
-              Introducing Axion
+              Introducing Planicle
             </div>
           </div>
 
@@ -260,7 +140,7 @@ export default function Home() {
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
                   src="https://images.higgs.ai/?default=1&output=webp&url=https%3A%2F%2Fd8j0ntlcm91z4.cloudfront.net%2Fuser_38xzZboKViGWJOttwIXH07lWA1P%2Fhf_20260516_090123_74be96d4-9c1b-40cf-932a-96f4f4babed3.png&w=1280&q=85"
-                  alt="Axion studio detail"
+                  alt="Planicle studio detail"
                   className="w-full h-full object-cover transition-transform duration-700 ease-[cubic-bezier(0.25,0.1,0.25,1)] hover:scale-105"
                   loading="lazy"
                 />
@@ -269,7 +149,7 @@ export default function Home() {
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
                   src="https://images.higgs.ai/?default=1&output=webp&url=https%3A%2F%2Fd8j0ntlcm91z4.cloudfront.net%2Fuser_38xzZboKViGWJOttwIXH07lWA1P%2Fhf_20260516_090133_c157d30b-a99a-4477-bec1-a446149ec3f2.png&w=1280&q=85"
-                  alt="Axion design workshop showcase"
+                  alt="Planicle design workshop showcase"
                   className="w-full h-full object-cover transition-transform duration-700 ease-[cubic-bezier(0.25,0.1,0.25,1)] hover:scale-105"
                   loading="lazy"
                 />
@@ -284,7 +164,7 @@ export default function Home() {
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
                 src="https://images.higgs.ai/?default=1&output=webp&url=https%3A%2F%2Fd8j0ntlcm91z4.cloudfront.net%2Fuser_38xzZboKViGWJOttwIXH07lWA1P%2Fhf_20260516_090123_74be96d4-9c1b-40cf-932a-96f4f4babed3.png&w=1280&q=85"
-                alt="Axion studio detail"
+                alt="Planicle studio detail"
                 className="w-full h-full object-cover transition-transform duration-700 ease-[cubic-bezier(0.25,0.1,0.25,1)] hover:scale-105"
                 loading="lazy"
               />
