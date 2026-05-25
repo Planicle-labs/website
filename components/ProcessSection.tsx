@@ -99,12 +99,6 @@ export default function ProcessSection() {
     };
   }, []);
 
-  // Trigger layer highlight and text morph animations when active index changes
-  useEffect(() => {
-    animateActiveLayer(activeIdx);
-    animateTextTransition();
-  }, [activeIdx]);
-
   // AnimeJS function to animate vertical spacing transitions on the 3D isometric stack
   const animateActiveLayer = (idx: number) => {
     layersRef.current.forEach((layerEl, i) => {
@@ -147,6 +141,12 @@ export default function ProcessSection() {
       }
     });
   };
+
+  // Trigger layer highlight and text morph animations when active index changes
+  useEffect(() => {
+    animateActiveLayer(activeIdx);
+    animateTextTransition();
+  }, [activeIdx]);
 
   const activePhase = PHASES[activeIdx];
 
