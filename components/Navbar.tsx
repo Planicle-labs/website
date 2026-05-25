@@ -107,12 +107,12 @@ export default function Navbar() {
       <motion.header
         initial={prefersReduced ? false : { opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
+        transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
         className="fixed top-4 inset-x-0 flex justify-center z-50"
       >
         <motion.div
           style={{ maxWidth: navMaxWidth, paddingBlock: navPaddingV }}
-          className="w-[calc(100%-2rem)] rounded-full px-5 flex items-center justify-between border border-[oklch(0.98_0.004_60/0.08)] bg-[oklch(0.145_0.008_30)] shadow-[0_8px_32px_rgba(0,0,0,0.24)] backdrop-blur-xl backdrop-saturate-150 overflow-hidden"
+          className="w-[calc(100%-2rem)] rounded-full px-5 flex items-center justify-between border border-n-100/10 bg-n-700 shadow-[0_8px_32px_rgba(0,0,0,0.24)] backdrop-blur-xl backdrop-saturate-150 overflow-hidden"
         >
           <nav className="hidden md:flex items-center gap-10 pl-2 flex-1">
             {navLinks.map((link) => (
@@ -122,10 +122,10 @@ export default function Navbar() {
                 onClick={(e) => handleScroll(e, link.href)}
                 whileHover={{ y: -1 }}
                 whileTap={{ scale: 0.95 }}
-                className="relative font-mono text-[11px] font-bold tracking-[0.15em] text-[oklch(0.62_0.012_60)] hover:text-[oklch(0.58_0.22_35)] transition-colors duration-300 select-none group"
+                className="relative font-mono text-[11px] font-bold tracking-[0.15em] text-n-500 hover:text-brand-orange transition-colors duration-300 select-none group"
               >
                 {link.label}
-                <span className="absolute -bottom-1.5 left-1/2 -translate-x-1/2 w-0 h-px bg-[oklch(0.58_0.22_35)] rounded-full transition-all duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:w-3/5" />
+                <span className="absolute -bottom-1.5 left-1/2 -translate-x-1/2 w-0 h-px bg-brand-orange rounded-full transition-all duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:w-3/5" />
               </motion.a>
             ))}
           </nav>
@@ -138,7 +138,7 @@ export default function Navbar() {
           >
             <motion.div
               whileHover={{ rotate: 12 }}
-              transition={{ duration: 0.5, ease: [0.23, 1, 0.32, 1] }}
+              transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
               className="relative w-9 h-9 shrink-0"
             >
               <Image
@@ -152,7 +152,7 @@ export default function Navbar() {
             </motion.div>
             <motion.span
               style={{ opacity: textOpacity, width: textWidth }}
-              className="overflow-hidden whitespace-nowrap font-sans font-extrabold text-[16px] tracking-tight text-[oklch(0.98_0.004_60)] leading-none"
+              className="overflow-hidden whitespace-nowrap font-sans font-extrabold text-[16px] tracking-tight text-n-100 leading-none"
             >
               Planicle
             </motion.span>
@@ -164,7 +164,7 @@ export default function Navbar() {
                 showIcon={true}
                 timeZone="Asia/Kolkata"
                 label="IST"
-                className="text-[11px] font-mono text-[oklch(0.5_0.012_60)] select-none"
+                className="text-[11px] font-mono text-n-500 select-none"
               />
             </motion.div>
 
@@ -173,12 +173,12 @@ export default function Navbar() {
               onClick={(e) => handleScroll(e, "#connect")}
               whileHover={{ scale: 1.03 }}
               whileTap={{ scale: 0.97 }}
-              className="group inline-flex items-center bg-[oklch(0.98_0.004_60)] hover:bg-[oklch(0.95_0.004_60)] text-[oklch(0.145_0.008_30)] rounded-full pl-4 pr-2 py-1.5 transition-colors duration-300 cursor-pointer"
+              className="group inline-flex items-center bg-n-100 hover:bg-n-200 text-n-700 rounded-full pl-4 pr-2 py-1.5 transition-colors duration-300 cursor-pointer"
             >
               <span className="font-mono text-[10px] font-bold tracking-widest mr-3 select-none">
                 LET&apos;S BUILD
               </span>
-              <span className="w-5 h-5 bg-[oklch(0.145_0.008_30)] text-[oklch(0.98_0.004_60)] rounded-full flex items-center justify-center text-[9px] font-bold transition-transform duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] group-hover:rotate-45">
+              <span className="w-5 h-5 bg-n-700 text-n-100 rounded-full flex items-center justify-center text-[9px] font-bold transition-transform duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:rotate-45">
                 »
               </span>
             </motion.a>
@@ -186,7 +186,7 @@ export default function Navbar() {
             <motion.button
               onClick={toggleMenu}
               whileTap={{ scale: 0.95 }}
-              className="md:hidden bg-[oklch(0.98_0.004_60)] text-[oklch(0.145_0.008_30)] hover:bg-[oklch(0.95_0.004_60)] rounded-full w-8 h-8 flex items-center justify-center cursor-pointer transition-colors"
+              className="md:hidden bg-n-100 text-n-700 hover:bg-n-200 rounded-full w-11 h-11 flex items-center justify-center cursor-pointer transition-colors"
               aria-label="Toggle navigation menu"
             >
               {isOpen ? <X size={15} /> : <Menu size={15} />}
@@ -201,8 +201,8 @@ export default function Navbar() {
             initial={{ opacity: 0, y: -8 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -8 }}
-            transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
-            className="fixed inset-0 z-40 bg-[oklch(0.075_0.004_30)/0.96] backdrop-blur-md flex flex-col justify-between p-8 pt-28 md:hidden"
+            transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
+            className="fixed inset-0 z-40 bg-n-700/96 backdrop-blur-md flex flex-col justify-between p-8 pt-28 md:hidden"
           >
             <nav className="flex flex-col gap-8">
               {navLinks.map((link, idx) => (
@@ -215,34 +215,34 @@ export default function Navbar() {
                   transition={{
                     duration: 0.35,
                     delay: idx * 0.06,
-                    ease: [0.22, 1, 0.36, 1],
+                    ease: [0.16, 1, 0.3, 1],
                   }}
-                  className="text-[44px] font-serif italic tracking-tight text-[oklch(0.98_0.004_60)] hover:text-[oklch(0.58_0.22_35)] transition-colors duration-300"
+                  className="text-[44px] font-serif italic tracking-tight text-n-100 hover:text-brand-orange transition-colors duration-300"
                 >
                   {link.label.toLowerCase()}
                 </motion.a>
               ))}
             </nav>
 
-            <div className="flex flex-col gap-6 border-t border-[oklch(0.98_0.004_60/0.08)] pt-6">
+            <div className="flex flex-col gap-6 border-t border-n-100/10 pt-6">
               <div className="flex items-center justify-between">
                 <LiveClock
                   showIcon={true}
                   timeZone="Asia/Kolkata"
                   label="IST"
-                  className="text-[12px] font-mono text-[oklch(0.62_0.012_60)]"
+                  className="text-[12px] font-mono text-n-400"
                 />
                 <motion.a
                   href="#connect"
                   onClick={(e) => handleScroll(e, "#connect")}
                   whileHover={{ scale: 1.03 }}
                   whileTap={{ scale: 0.97 }}
-                  className="group inline-flex items-center bg-[oklch(0.98_0.004_60)] hover:bg-[oklch(0.95_0.004_60)] text-[oklch(0.145_0.008_30)] rounded-full pl-5 pr-2.5 py-2.5 transition-colors duration-200"
+                  className="group inline-flex items-center bg-n-100 hover:bg-n-200 text-n-700 rounded-full pl-5 pr-2.5 py-2.5 transition-colors duration-200"
                 >
                   <span className="font-mono text-[11px] font-bold tracking-widest mr-4 select-none">
                     LET&apos;S BUILD
                   </span>
-                  <span className="w-6 h-6 bg-[oklch(0.145_0.008_30)] text-[oklch(0.98_0.004_60)] rounded-full flex items-center justify-center text-[10px] font-bold transition-transform duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] group-hover:rotate-45">
+                  <span className="w-6 h-6 bg-n-700 text-n-100 rounded-full flex items-center justify-center text-[10px] font-bold transition-transform duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:rotate-45">
                     »
                   </span>
                 </motion.a>

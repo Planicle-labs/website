@@ -16,7 +16,7 @@ export default function Home() {
       {/* ──────────────────────────────────────────────────────── */}
       {/* SECTION 1: HERO (Full viewport height) */}
       {/* ──────────────────────────────────────────────────────── */}
-      <section className="relative w-full min-h-screen h-screen flex flex-col justify-between bg-[#F4F3EF] overflow-hidden">
+      <section className="relative w-full min-h-screen h-screen flex flex-col justify-between bg-n-100 overflow-hidden">
         {/* Animated Shader Overlay */}
         <HeroShader />
 
@@ -26,13 +26,13 @@ export default function Home() {
         {/* Hero Content (z-20) */}
         <div className="flex-1 flex flex-col justify-center w-full max-w-[1280px] mx-auto px-6 sm:px-8 lg:px-12 z-20 relative pointer-events-auto">
           {/* Headline H1 */}
-          <h1 className="font-serif text-[clamp(2.25rem,6.5vw,5rem)] font-normal leading-[1.05] tracking-tight text-[#0C0C0E] max-w-5xl">
+          <h1 className="font-serif text-[clamp(2.25rem,6.5vw,5rem)] font-normal leading-[1.05] tracking-[-0.03em] text-n-700 max-w-5xl">
             Accelerate your time <br className="hidden sm:block" />
-            <span className="italic font-light text-[#EF4A2A]">to market.</span>
+            <span className="italic font-light text-brand-orange">to market.</span>
           </h1>
 
           {/* Body Copy */}
-          <p className="font-sans text-[15px] sm:text-[17px] text-[#797872] max-w-[65ch] leading-[1.65] mt-6 sm:mt-8">
+          <p className="font-sans text-[15px] sm:text-[17px] text-n-500 max-w-[65ch] leading-[1.65] mt-6 sm:mt-8">
             We build premium websites, apps, and advanced digital systems for
             startups who value absolute execution. No hand-holding, no
             templates. Just clean code and rapid market dominance.
@@ -43,10 +43,10 @@ export default function Home() {
             {/* Primary CTA (BOOK A CALL ») */}
             <a
               href="#connect"
-              className="group inline-flex items-center bg-[#EF4A2A] hover:bg-[#d63b1c] text-white rounded-full pl-6 pr-2 py-2.5 transition-all duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] active:scale-[0.97] shadow-lg shadow-[#EF4A2A]/10"
+              className="group inline-flex items-center bg-brand-orange hover:bg-brand-orange/95 hover:scale-[1.02] text-white rounded-full pl-6 pr-2 py-2.5 transition-all duration-200 ease-[cubic-bezier(0.16,1,0.3,1)] active:scale-[0.98] shadow-lg shadow-brand-orange/10 hover:shadow-brand-orange/20"
             >
               <span className="font-mono text-[11px] sm:text-[12px] font-bold tracking-widest mr-4 relative overflow-hidden h-[18px]">
-                <span className="flex flex-col transition-transform duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] group-hover:-translate-y-1/2">
+                <span className="flex flex-col transition-transform duration-200 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:-translate-y-1/2">
                   <span className="h-[18px] flex items-center">
                     BOOK A CALL
                   </span>
@@ -55,7 +55,7 @@ export default function Home() {
                   </span>
                 </span>
               </span>
-              <span className="w-8 h-8 sm:w-9 sm:h-9 bg-white text-[#EF4A2A] rounded-full flex items-center justify-center text-[12px] font-bold transition-transform duration-500 ease-[cubic-bezier(0.23,1,0.32,1)] group-hover:rotate-45">
+              <span className="w-8 h-8 sm:w-9 sm:h-9 bg-white text-brand-orange rounded-full flex items-center justify-center text-[12px] font-bold transition-transform duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:rotate-45">
                 »
               </span>
             </a>
@@ -63,10 +63,10 @@ export default function Home() {
             {/* Secondary CTA (SEE THE WORK) */}
             <a
               href="#projects"
-              className="group inline-flex items-center border border-[#797872]/30 hover:border-[#0C0C0E] text-[#0C0C0E] rounded-full pl-6 pr-2 py-2.5 transition-all duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] active:scale-[0.97]"
+              className="group inline-flex items-center border border-n-500/30 hover:border-n-700 hover:scale-[1.02] text-n-700 rounded-full pl-6 pr-2 py-2.5 transition-all duration-200 ease-[cubic-bezier(0.16,1,0.3,1)] active:scale-[0.98]"
             >
               <span className="font-mono text-[11px] sm:text-[12px] font-bold tracking-widest mr-4 relative overflow-hidden h-[18px]">
-                <span className="flex flex-col transition-transform duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] group-hover:-translate-y-1/2">
+                <span className="flex flex-col transition-transform duration-200 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:-translate-y-1/2">
                   <span className="h-[18px] flex items-center">
                     SEE THE WORK
                   </span>
@@ -75,7 +75,7 @@ export default function Home() {
                   </span>
                 </span>
               </span>
-              <span className="w-8 h-8 sm:w-9 sm:h-9 bg-[#0C0C0E] text-white rounded-full flex items-center justify-center text-[12px] font-bold transition-transform duration-500 ease-[cubic-bezier(0.23,1,0.32,1)] group-hover:rotate-45">
+              <span className="w-8 h-8 sm:w-9 sm:h-9 bg-n-700 text-white rounded-full flex items-center justify-center text-[12px] font-bold transition-transform duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:rotate-45">
                 ›
               </span>
             </a>
