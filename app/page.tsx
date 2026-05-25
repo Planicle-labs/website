@@ -1,12 +1,14 @@
-'use client';
+"use client";
 
-import dynamic from 'next/dynamic';
-import Navbar from '@/components/Navbar';
-import TextRollButton from '@/components/TextRollButton';
-import { ArrowRight } from 'lucide-react';
+import dynamic from "next/dynamic";
+import Navbar from "@/components/Navbar";
+import TextRollButton from "@/components/TextRollButton";
+import { ArrowRight } from "lucide-react";
 
 // Dynamically load browser-only Shader overlay to prevent hydration issues
-const HeroShader = dynamic(() => import('@/components/HeroShader'), { ssr: false });
+const HeroShader = dynamic(() => import("@/components/HeroShader"), {
+  ssr: false,
+});
 
 export default function Home() {
   return (
@@ -22,14 +24,7 @@ export default function Home() {
         <Navbar />
 
         {/* Hero Content (z-20) */}
-        <div className="flex-1 flex flex-col justify-end w-full max-w-[1280px] mx-auto px-6 sm:px-8 lg:px-12 pb-14 sm:pb-16 lg:pb-20 z-20 relative pointer-events-auto">
-          {/* Label tag */}
-          <div className="inline-flex mb-6 sm:mb-8">
-            <span className="font-mono text-[10px] sm:text-[11px] font-bold tracking-widest text-[#EF4A2A] border border-[#EF4A2A]/20 px-3.5 py-1.5 rounded-full uppercase select-none">
-              BUILT FOR FOUNDERS
-            </span>
-          </div>
-
+        <div className="flex-1 flex flex-col justify-center w-full max-w-[1280px] mx-auto px-6 sm:px-8 lg:px-12 z-20 relative pointer-events-auto">
           {/* Headline H1 */}
           <h1 className="font-serif text-[clamp(2.25rem,6.5vw,5rem)] font-normal leading-[1.05] tracking-tight text-[#0C0C0E] max-w-5xl">
             Accelerate your time <br className="hidden sm:block" />
@@ -38,7 +33,9 @@ export default function Home() {
 
           {/* Body Copy */}
           <p className="font-sans text-[15px] sm:text-[17px] text-[#797872] max-w-[65ch] leading-[1.65] mt-6 sm:mt-8">
-            We build premium websites, apps, and advanced digital systems for startups who value absolute execution. No hand-holding, no templates. Just clean code and rapid market dominance.
+            We build premium websites, apps, and advanced digital systems for
+            startups who value absolute execution. No hand-holding, no
+            templates. Just clean code and rapid market dominance.
           </p>
 
           {/* CTA Row */}
@@ -50,8 +47,12 @@ export default function Home() {
             >
               <span className="font-mono text-[11px] sm:text-[12px] font-bold tracking-widest mr-4 relative overflow-hidden h-[18px]">
                 <span className="flex flex-col transition-transform duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] group-hover:-translate-y-1/2">
-                  <span className="h-[18px] flex items-center">BOOK A CALL</span>
-                  <span className="h-[18px] flex items-center">BOOK A CALL</span>
+                  <span className="h-[18px] flex items-center">
+                    BOOK A CALL
+                  </span>
+                  <span className="h-[18px] flex items-center">
+                    BOOK A CALL
+                  </span>
                 </span>
               </span>
               <span className="w-8 h-8 sm:w-9 sm:h-9 bg-white text-[#EF4A2A] rounded-full flex items-center justify-center text-[12px] font-bold transition-transform duration-500 ease-[cubic-bezier(0.23,1,0.32,1)] group-hover:rotate-45">
@@ -66,8 +67,12 @@ export default function Home() {
             >
               <span className="font-mono text-[11px] sm:text-[12px] font-bold tracking-widest mr-4 relative overflow-hidden h-[18px]">
                 <span className="flex flex-col transition-transform duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] group-hover:-translate-y-1/2">
-                  <span className="h-[18px] flex items-center">SEE THE WORK</span>
-                  <span className="h-[18px] flex items-center">SEE THE WORK</span>
+                  <span className="h-[18px] flex items-center">
+                    SEE THE WORK
+                  </span>
+                  <span className="h-[18px] flex items-center">
+                    SEE THE WORK
+                  </span>
                 </span>
               </span>
               <span className="w-8 h-8 sm:w-9 sm:h-9 bg-[#0C0C0E] text-white rounded-full flex items-center justify-center text-[12px] font-bold transition-transform duration-500 ease-[cubic-bezier(0.23,1,0.32,1)] group-hover:rotate-45">
@@ -76,28 +81,16 @@ export default function Home() {
             </a>
           </div>
 
-          {/* Minimalist Metrics Bar */}
-          <div className="mt-12 sm:mt-16 pt-8 border-t border-[#797872]/15 w-full flex flex-wrap gap-x-12 gap-y-6">
-            <div className="flex flex-col select-none">
-              <span className="font-mono text-[10px] text-[#A09F9A] tracking-widest uppercase">ENGINEERED YTD</span>
-              <span className="font-serif text-[17px] sm:text-[18px] font-bold text-[#0C0C0E] mt-1">14 elite products</span>
-            </div>
-            <div className="flex flex-col select-none">
-              <span className="font-mono text-[10px] text-[#A09F9A] tracking-widest uppercase">VELOCITY STATE</span>
-              <span className="font-serif text-[17px] sm:text-[18px] font-bold text-[#0C0C0E] mt-1">6 weeks average ship</span>
-            </div>
-            <div className="flex flex-col select-none">
-              <span className="font-mono text-[10px] text-[#A09F9A] tracking-widest uppercase">FOUNDER RANGE</span>
-              <span className="font-serif text-[17px] sm:text-[18px] font-bold text-[#0C0C0E] mt-1">Seed to Series B</span>
-            </div>
-          </div>
         </div>
       </section>
 
       {/* ──────────────────────────────────────────────────────── */}
       {/* SECTION 2: ABOUT (White background) */}
       {/* ──────────────────────────────────────────────────────── */}
-      <section id="studio" className="bg-white pt-16 sm:pt-20 lg:pt-32 pb-12 sm:pb-16 lg:pb-24 overflow-hidden relative">
+      <section
+        id="studio"
+        className="bg-white pt-16 sm:pt-20 lg:pt-32 pb-12 sm:pb-16 lg:pb-24 overflow-hidden relative"
+      >
         <div className="w-full max-w-[1440px] mx-auto relative">
           {/* Badge row */}
           <div className="px-5 sm:px-8 lg:px-12 flex items-center gap-3 mb-6 sm:mb-8">
@@ -113,7 +106,8 @@ export default function Home() {
 
           {/* Heading h2 */}
           <h2 className="text-[clamp(1.5rem,4vw,3.2rem)] font-medium leading-[1.12] tracking-[-0.02em] text-gray-900 mb-12 sm:mb-16 lg:mb-28 px-5 sm:px-8 lg:px-12 max-w-5xl">
-            Strategy-led creatives, delivering <br className="hidden sm:block" />
+            Strategy-led creatives, delivering{" "}
+            <br className="hidden sm:block" />
             <span className="sm:hidden"> </span>
             results in digital and beyond.
           </h2>
@@ -122,7 +116,8 @@ export default function Home() {
           <div className="lg:hidden px-5 sm:px-8 flex flex-col gap-8">
             <div className="max-w-xl">
               <p className="text-[15px] sm:text-[17px] leading-[1.6] font-medium text-gray-900 mb-6">
-                Through research, creative thinking and iteration we help growing brands realize their digital full potential.
+                Through research, creative thinking and iteration we help
+                growing brands realize their digital full potential.
               </p>
               <TextRollButton
                 text="About our studio"
@@ -173,8 +168,10 @@ export default function Home() {
             {/* Center column: Paragraph + Button aligned right */}
             <div className="self-start flex flex-col justify-end items-end text-right h-full pb-2">
               <p className="text-[16px] xl:text-[18px] leading-[1.65] text-gray-900 font-medium whitespace-nowrap mb-6">
-                Through research, creative thinking<br />
-                and iteration we help growing brands<br />
+                Through research, creative thinking
+                <br />
+                and iteration we help growing brands
+                <br />
                 realize their digital full potential.
               </p>
               <TextRollButton
@@ -204,7 +201,10 @@ export default function Home() {
       {/* ──────────────────────────────────────────────────────── */}
       {/* SECTION 3: CASE STUDIES (Light gray background) */}
       {/* ──────────────────────────────────────────────────────── */}
-      <section id="projects" className="bg-[#F5F5F5] pt-16 sm:pt-20 lg:pt-28 pb-16 sm:pb-20 lg:pb-28 overflow-hidden relative">
+      <section
+        id="projects"
+        className="bg-[#F5F5F5] pt-16 sm:pt-20 lg:pt-28 pb-16 sm:pb-20 lg:pb-28 overflow-hidden relative"
+      >
         <div className="w-full max-w-[1440px] mx-auto">
           {/* Badge row */}
           <div className="px-5 sm:px-8 lg:px-12 flex items-center gap-3 mb-6 sm:mb-8">
@@ -225,7 +225,6 @@ export default function Home() {
 
           {/* Cards Grid */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-5 sm:gap-6 lg:gap-7 px-5 sm:px-8 lg:px-12">
-            
             {/* Card 1 (Narrativ) */}
             <div className="flex flex-col">
               {/* Video container */}
@@ -238,29 +237,27 @@ export default function Home() {
                   playsInline
                   className="w-full h-full object-cover transition-transform duration-700 ease-[cubic-bezier(0.25,0.1,0.25,1)] group-hover:scale-[1.03]"
                 />
-                
+
                 {/* Absolute Button bottom-4 left-4 */}
-                <div 
-                  className="absolute bottom-4 left-4 h-9 bg-white text-gray-900 rounded-full flex items-center shadow-lg transition-all duration-[400ms] ease-[cubic-bezier(0.25,0.1,0.25,1)] w-9 group-hover:w-[148px] overflow-hidden"
-                >
+                <div className="absolute bottom-4 left-4 h-9 bg-white text-gray-900 rounded-full flex items-center shadow-lg transition-all duration-[400ms] ease-[cubic-bezier(0.25,0.1,0.25,1)] w-9 group-hover:w-[148px] overflow-hidden">
                   <div className="flex items-center justify-between w-full">
                     {/* Learn more text (rolled out inside expanding pill) */}
                     <span className="text-[13px] font-semibold text-gray-900 whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity duration-300 delay-100 pl-3">
                       Learn more
                     </span>
-                    
+
                     {/* Link Icon (Rotates on hover) */}
                     <div className="w-9 h-9 flex items-center justify-center shrink-0">
-                      <svg 
-                        xmlns="http://www.w3.org/2000/svg" 
-                        width="14" 
-                        height="14" 
-                        viewBox="0 0 24 24" 
-                        fill="none" 
-                        stroke="currentColor" 
-                        strokeWidth="2.5" 
-                        strokeLinecap="round" 
-                        strokeLinejoin="round" 
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="14"
+                        height="14"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="2.5"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
                         className="-rotate-45 group-hover:rotate-0 transition-transform duration-500 ease-[cubic-bezier(0.25,0.1,0.25,1)] text-gray-900"
                       >
                         <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71" />
@@ -277,7 +274,8 @@ export default function Home() {
                   Narrativ
                 </span>
                 <p className="text-[13px] sm:text-[14px] text-gray-600 leading-relaxed mt-1">
-                  Winner of Site of the Month 2025 - an interactive 3D showcase driving record engagement
+                  Winner of Site of the Month 2025 - an interactive 3D showcase
+                  driving record engagement
                 </p>
               </div>
             </div>
@@ -296,9 +294,7 @@ export default function Home() {
                 />
 
                 {/* Absolute Button bottom-4 left-4 */}
-                <div 
-                  className="absolute bottom-4 left-4 h-9 bg-gray-900 text-white rounded-full flex items-center shadow-lg transition-all duration-[400ms] ease-[cubic-bezier(0.25,0.1,0.25,1)] w-9 group-hover:w-[168px] overflow-hidden"
-                >
+                <div className="absolute bottom-4 left-4 h-9 bg-gray-900 text-white rounded-full flex items-center shadow-lg transition-all duration-[400ms] ease-[cubic-bezier(0.25,0.1,0.25,1)] w-9 group-hover:w-[168px] overflow-hidden">
                   <div className="flex items-center justify-between w-full">
                     {/* View case study text */}
                     <span className="text-[13px] font-semibold text-white whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity duration-300 delay-100 pl-3">
@@ -307,8 +303,8 @@ export default function Home() {
 
                     {/* Arrow Right icon */}
                     <div className="w-9 h-9 flex items-center justify-center shrink-0">
-                      <ArrowRight 
-                        size={14} 
+                      <ArrowRight
+                        size={14}
                         className="-rotate-45 group-hover:rotate-0 transition-transform duration-500 ease-[cubic-bezier(0.25,0.1,0.25,1)] text-white"
                       />
                     </div>
@@ -322,11 +318,11 @@ export default function Home() {
                   Luminar
                 </span>
                 <p className="text-[13px] sm:text-[14px] text-gray-600 leading-relaxed mt-1">
-                  Transforming a dated platform into a conversion-focused brand experience
+                  Transforming a dated platform into a conversion-focused brand
+                  experience
                 </p>
               </div>
             </div>
-
           </div>
         </div>
       </section>
