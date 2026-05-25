@@ -9,6 +9,7 @@
     "lint": "eslint"
   },
   "dependencies": {
+    "animejs": "^4.4.1",
     "lucide-react": "^1.16.0",
     "next": "16.2.6",
     "react": "19.2.4",
@@ -17,6 +18,7 @@
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",
+    "@types/animejs": "^3.1.13",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
@@ -26,4 +28,3 @@
     "typescript": "^5"
   }
 }
-
