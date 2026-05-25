@@ -182,6 +182,12 @@ export default function ProcessSection() {
     });
   };
 
+  // Trigger layer highlight and text morph animations when active index changes
+  useEffect(() => {
+    animateActiveLayer(activeIdx);
+    animateTextTransition();
+  }, [activeIdx]);
+
   const activePhase = PHASES[activeIdx];
 
   return (
