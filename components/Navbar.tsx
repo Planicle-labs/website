@@ -20,7 +20,6 @@ const EXPAND_ZONE = 600;
 
 const navLinks = [
   { href: "#services", label: "SERVICES" },
-  { href: "#projects", label: "WORK" },
   { href: "#connect", label: "CONNECT" },
 ];
 
