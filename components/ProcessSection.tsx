@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useEffect, useRef } from 'react';
-import { animate } from 'animejs';
+import { animate, cubicBezier, eases } from 'animejs';
 import { useBooking } from './BookingProvider';
 
 interface Phase {
@@ -57,6 +57,58 @@ export default function ProcessSection() {
   const layersRef = useRef<(HTMLDivElement | null)[]>([]);
   const textRef = useRef<HTMLDivElement>(null);
   const activeIdxRef = useRef(0);
+
+  // Trigger layer highlight and text morph animations when active index changes
+  const animateActiveLayer = (idx: number) => {
+    layersRef.current.forEach((layerEl, i) => {
+      if (!layerEl) return;
+
+      // Reversed stack: i = 0 (PLAN) is at top (baseZ = 80), i = 4 (DEPLOY) is at bottom (baseZ = -80)
+      const baseZ = 80 - i * 40;
+      const isActive = i === idx;
+      const isPast = i < idx;
+
+      // Progressive reveal for reversed stack:
+      // active is fully visible (opacity 1)
+      // past layers are above active (so they must fade to 0 to prevent occlusion of active layers below them)
+      // future layers sit below active (so they stay visible at 0.35 opacity forming the foundation beneath the active card)
+      let targetOpacity = 0.35;
+      if (isActive) targetOpacity = 1;
+      if (isPast) targetOpacity = 0;
+
+      animate(layerEl, {
+        translateZ: isActive ? baseZ + 24 : baseZ,
+        translateY: isActive ? -12 : 0,
+        translateX: isActive ? -8 : 0,
+        opacity: targetOpacity,
+        filter: isActive ? 'blur(0px)' : 'blur(0.3px)',
+        duration: 350,
+        ease: cubicBezier(0.23, 1, 0.32, 1)
+      });
+    });
+  };
+
+  const animateTextTransition = () => {
+    const el = textRef.current;
+    if (!el) return;
+
+    animate(el, {
+      opacity: 0,
+      filter: 'blur(2px)',
+      translateY: 8,
+      duration: 150,
+      ease: eases.inQuad,
+      onComplete: () => {
+        animate(el, {
+          opacity: 1,
+          filter: 'blur(0px)',
+          translateY: 0,
+          duration: 300,
+          ease: cubicBezier(0.23, 1, 0.32, 1)
+        });
+      }
+    });
+  };
 
   // Sync state with ref for scroll event listener
   useEffect(() => {
@@ -129,66 +181,6 @@ export default function ProcessSection() {
       behavior: 'smooth'
     });
   };
-
-  // AnimeJS function to animate vertical spacing transitions on the 3D isometric stack
-  const animateActiveLayer = (idx: number) => {
-    layersRef.current.forEach((layerEl, i) => {
-      if (!layerEl) return;
-
-      // Reversed stack: i = 0 (PLAN) is at top (baseZ = 80), i = 4 (DEPLOY) is at bottom (baseZ = -80)
-      const baseZ = 80 - i * 40;
-      const isActive = i === idx;
-      const isPast = i < idx;
-      const isFuture = i > idx;
-
-      // Progressive reveal for reversed stack:
-      // active is fully visible (opacity 1)
-      // past layers are above active (so they must fade to 0 to prevent occlusion of active layers below them)
-      // future layers sit below active (so they stay visible at 0.35 opacity forming the foundation beneath the active card)
-      let targetOpacity = 0.35;
-      if (isActive) targetOpacity = 1;
-      if (isPast) targetOpacity = 0;
-
-      animate(layerEl, {
-        translateZ: isActive ? baseZ + 24 : baseZ,
-        translateY: isActive ? -12 : 0,
-        translateX: isActive ? -8 : 0,
-        opacity: targetOpacity,
-        filter: isActive ? 'blur(0px)' : 'blur(0.3px)',
-        duration: 350,
-        ease: cubicBezier(0.23, 1, 0.32, 1)
-      });
-    });
-  };
-
-  // AnimeJS function to morph right-side copywriting card
-  const animateTextTransition = () => {
-    const el = textRef.current;
-    if (!el) return;
-
-    animate(el, {
-      opacity: 0,
-      filter: 'blur(2px)',
-      translateY: 8,
-      duration: 150,
-      ease: eases.inQuad,
-      onComplete: () => {
-        animate(el, {
-          opacity: 1,
-          filter: 'blur(0px)',
-          translateY: 0,
-          duration: 300,
-          ease: cubicBezier(0.23, 1, 0.32, 1)
-        });
-      }
-    });
-  };
-
-  // Trigger layer highlight and text morph animations when active index changes
-  useEffect(() => {
-    animateActiveLayer(activeIdx);
-    animateTextTransition();
-  }, [activeIdx]);
 
   const activePhase = PHASES[activeIdx];
 
