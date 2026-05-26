@@ -18,8 +18,8 @@ const COMPACT_RANGE = 250;
 const EXPAND_ZONE = 600;
 
 const navLinks = [
-  { href: "#work", label: "WORK" },
-  { href: "#studio", label: "STUDIO" },
+  { href: "#services", label: "SERVICES" },
+  { href: "#projects", label: "WORK" },
   { href: "#connect", label: "CONNECT" },
 ];
 
@@ -131,19 +131,19 @@ export default function Navbar() {
           <motion.a
             href="#"
             onClick={(e) => handleScroll(e, "#")}
-            className="flex items-center gap-3 select-none group md:absolute md:left-1/2 md:-translate-x-1/2"
+            className="flex items-center gap-1.5 select-none group md:absolute md:left-1/2 md:-translate-x-1/2"
             whileTap={{ scale: 0.95 }}
           >
-            <div className="relative w-9 h-9 shrink-0">
-              <Image
-                src="/logo.png"
-                alt="Planicle"
-                fill
-                priority
-                sizes="36px"
-                className="object-contain"
-              />
-            </div>
+<div className="relative w-11 h-11 shrink-0">
+  <Image
+    src="/logo.webp"
+    alt="Planicle"
+    fill
+    priority
+    sizes="44px"
+    className="object-contain"
+  />
+</div>
             <motion.span
               style={{ opacity: textOpacity, width: textWidth }}
               className="overflow-hidden whitespace-nowrap font-sans font-extrabold text-[16px] tracking-tight text-n-100 leading-none"
