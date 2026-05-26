@@ -9,8 +9,16 @@ export default function Footer() {
   return (
     <footer
       id="connect"
-      className="w-full relative overflow-hidden select-none grainy-gradient-bg py-16 sm:py-20 lg:py-24 border-t border-[#161618]"
+      className="w-full relative overflow-hidden select-none grainy-gradient-bg pt-24 sm:pt-28 lg:pt-32 pb-16 sm:pb-20 lg:pb-24"
     >
+      {/* Seamless dissolve transition from solid black Manifesto Section above */}
+      <div 
+        className="absolute top-0 left-0 right-0 h-[100px] sm:h-[140px] pointer-events-none z-0"
+        style={{
+          background: 'linear-gradient(to bottom, #0C0C0E 0%, transparent 100%)'
+        }}
+      />
+
       <div className="w-full max-w-[1280px] mx-auto px-6 sm:px-8 lg:px-12 relative z-10">
 
         {/* ──────────────────────────────────────────────────────── */}
@@ -24,7 +32,7 @@ export default function Footer() {
             <h2 className="font-serif text-[clamp(2.15rem,4.8vw,3.5rem)] font-normal leading-[1.08] tracking-tight text-white">
               Think your team&apos;s good?
               <br />
-              <span className="italic font-light text-[#EF4A2A]">We&apos;ll make it legendary.</span>
+              <span className="italic font-light text-brand-orange">We&apos;ll make it legendary.</span>
             </h2>
 
             {/* Confidence-Building Body Copy (Active verbs, zero-fluff) */}
@@ -38,7 +46,7 @@ export default function Footer() {
             {/* Primary Call-to-Action (LET'S BUILD TOGETHER ») */}
             <button
               onClick={openBooking}
-              className="group inline-flex items-center bg-[#EF4A2A] hover:bg-[#EF4A2A]/95 hover:scale-[1.02] text-white rounded-full pl-6 pr-2 py-2.5 transition-all duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] active:scale-[0.98] shadow-lg shadow-[#EF4A2A]/10 hover:shadow-[#EF4A2A]/20 cursor-pointer border-none outline-none"
+              className="group inline-flex items-center bg-brand-orange hover:bg-brand-orange/95 hover:scale-[1.02] text-white rounded-full pl-6 pr-2 py-2.5 transition-all duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] active:scale-[0.98] shadow-lg shadow-brand-orange/10 hover:shadow-brand-orange/20 cursor-pointer border-none outline-none"
             >
               <span className="font-mono text-[11px] sm:text-[12px] font-bold tracking-widest mr-4 relative overflow-hidden h-[18px]">
                 <span className="flex flex-col transition-transform duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] group-hover:-translate-y-1/2">
@@ -46,7 +54,7 @@ export default function Footer() {
                   <span className="h-[18px] flex items-center">LET&apos;S BUILD TOGETHER</span>
                 </span>
               </span>
-              <span className="w-8 h-8 sm:w-9 sm:h-9 bg-white text-[#EF4A2A] rounded-full flex items-center justify-center text-[12px] font-bold transition-transform duration-500 ease-[cubic-bezier(0.23,1,0.32,1)] group-hover:rotate-45">
+              <span className="w-8 h-8 sm:w-9 sm:h-9 bg-white text-brand-orange rounded-full flex items-center justify-center text-[12px] font-bold transition-transform duration-500 ease-[cubic-bezier(0.23,1,0.32,1)] group-hover:rotate-45">
                 »
               </span>
             </button>
