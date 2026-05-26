@@ -20,7 +20,7 @@ export default function Home() {
       {/* ──────────────────────────────────────────────────────── */}
       {/* SECTION 1: HERO (Full viewport height) */}
       {/* ──────────────────────────────────────────────────────── */}
-      <section className="relative w-full min-h-screen h-screen flex flex-col justify-between bg-n-100 overflow-hidden">
+      <section className="relative w-full min-h-dvh md:min-h-screen h-dvh md:h-screen flex flex-col justify-between bg-n-100 overflow-hidden">
         {/* Animated Shader Overlay */}
         <HeroShader />
 
@@ -28,26 +28,26 @@ export default function Home() {
         <Navbar />
 
         {/* Hero Content (z-20) */}
-        <div className="flex-1 flex flex-col justify-center w-full max-w-[1280px] mx-auto px-6 sm:px-8 lg:px-12 z-20 relative pointer-events-auto">
+        <div className="flex-1 flex flex-col justify-center items-center md:items-start text-center md:text-left w-full max-w-[1280px] mx-auto px-5 sm:px-8 lg:px-12 pb-12 md:pb-0 z-20 relative pointer-events-auto">
           {/* Headline H1 */}
-          <h1 className="font-serif text-[clamp(2.25rem,6.5vw,5rem)] font-normal leading-[1.05] tracking-[-0.03em] text-n-700 max-w-5xl">
-            Accelerate your time <br className="hidden sm:block" />
+          <h1 className="font-serif text-[clamp(2.5rem,10vw,5rem)] md:text-[clamp(2.25rem,6.5vw,5rem)] font-normal leading-[1.08] md:leading-[1.05] tracking-[-0.03em] text-n-700 max-w-5xl">
+            Accelerate your time <br />
             <span className="italic font-light text-brand-orange">to market.</span>
           </h1>
 
           {/* Body Copy */}
-          <p className="font-sans text-[15px] sm:text-[17px] text-n-500 max-w-[65ch] leading-[1.65] mt-6 sm:mt-8">
+          <p className="font-sans text-[14px] sm:text-[15px] md:text-[17px] text-n-500 max-w-[52ch] md:max-w-[65ch] leading-[1.7] md:leading-[1.65] mt-5 sm:mt-6 md:mt-8">
             We build premium websites, apps, and advanced digital systems for
             startups who value absolute execution. No hand-holding, no
             templates. Just clean code and rapid market dominance.
           </p>
 
           {/* CTA Row */}
-          <div className="mt-8 sm:mt-10 flex flex-wrap gap-4 items-center">
+          <div className="mt-7 sm:mt-8 md:mt-10 flex flex-col md:flex-row flex-wrap gap-3 md:gap-4 items-stretch md:items-center w-full md:w-auto">
             {/* Primary CTA (BOOK A CALL ») */}
             <button
               onClick={openBooking}
-              className="group inline-flex items-center bg-brand-orange hover:bg-brand-orange/95 hover:scale-[1.02] text-white rounded-full pl-6 pr-2 py-3 sm:py-2.5 transition-all duration-200 ease-[cubic-bezier(0.16,1,0.3,1)] active:scale-[0.98] shadow-lg shadow-brand-orange/10 hover:shadow-brand-orange/20 cursor-pointer border-none outline-none"
+              className="group inline-flex items-center justify-center md:justify-start bg-brand-orange hover:bg-brand-orange/95 hover:scale-[1.02] text-white rounded-full pl-6 pr-2 py-3 sm:py-2.5 transition-all duration-200 ease-[cubic-bezier(0.16,1,0.3,1)] active:scale-[0.98] shadow-lg shadow-brand-orange/10 hover:shadow-brand-orange/20 cursor-pointer border-none outline-none"
             >
               <span className="font-mono text-[11px] sm:text-[12px] font-bold tracking-widest mr-4 relative overflow-hidden h-[18px]">
                 <span className="flex flex-col transition-transform duration-200 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:-translate-y-1/2">
@@ -67,7 +67,7 @@ export default function Home() {
             {/* Secondary CTA (OUR SERVICES) */}
             <a
               href="#services"
-              className="group inline-flex items-center border border-n-500/30 hover:border-n-700 hover:scale-[1.02] text-n-700 rounded-full pl-6 pr-2 py-3 sm:py-2.5 transition-all duration-200 ease-[cubic-bezier(0.16,1,0.3,1)] active:scale-[0.98]"
+              className="group inline-flex items-center justify-center md:justify-start border border-n-500/30 hover:border-n-700 hover:scale-[1.02] text-n-700 rounded-full pl-6 pr-2 py-3 sm:py-2.5 transition-all duration-200 ease-[cubic-bezier(0.16,1,0.3,1)] active:scale-[0.98]"
             >
               <span className="font-mono text-[11px] sm:text-[12px] font-bold tracking-widest mr-4 relative overflow-hidden h-[18px]">
                 <span className="flex flex-col transition-transform duration-200 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:-translate-y-1/2">

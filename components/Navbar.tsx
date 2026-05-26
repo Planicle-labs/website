@@ -15,6 +15,19 @@ import { Menu, X } from "lucide-react";
 import LiveClock from "./LiveClock";
 import { useBooking } from "./BookingProvider";
 
+/** Returns true when viewport is ≥ 768px (md breakpoint) */
+function useIsDesktop() {
+  const [isDesktop, setIsDesktop] = useState(true);
+  useEffect(() => {
+    const mql = window.matchMedia("(min-width: 768px)");
+    setIsDesktop(mql.matches);
+    const handler = (e: MediaQueryListEvent) => setIsDesktop(e.matches);
+    mql.addEventListener("change", handler);
+    return () => mql.removeEventListener("change", handler);
+  }, []);
+  return isDesktop;
+}
+
 const COMPACT_RANGE = 250;
 const EXPAND_ZONE = 600;
 
@@ -28,6 +41,7 @@ export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const prefersReduced = useReducedMotion();
   const { openBooking } = useBooking();
+  const isDesktop = useIsDesktop();
 
   const handleScroll = (
     e: React.MouseEvent<HTMLAnchorElement> | null,
@@ -112,8 +126,10 @@ export default function Navbar() {
     }
   });
 
-  const navMaxWidth = useTransform(displayScrollY, [0, 100], [1280, 720]);
-  const navPaddingV = useTransform(displayScrollY, [0, 100], [14, 8]);
+  // Desktop: scroll-based shrinking. Mobile: fixed full-width bar.
+  const navMaxWidth = useTransform(displayScrollY, [0, 100], isDesktop ? [1280, 720] : [9999, 9999]);
+  const navPaddingV = useTransform(displayScrollY, [0, 100], isDesktop ? [14, 8] : [10, 10]);
+  // Desktop: brand text fades on scroll. Mobile: always hidden (handled via className).
   const textOpacity = useTransform(displayScrollY, [0, 60], [1, 0]);
   const textWidth = useTransform(displayScrollY, [0, 60], [90, 0]);
   const clockOpacity = useTransform(displayScrollY, [0, 70], [1, 0]);
@@ -162,8 +178,9 @@ export default function Navbar() {
                 className="object-contain"
               />
             </div>
+            {/* Brand text: always visible on mobile, fades on scroll on desktop */}
             <motion.span
-              style={{ opacity: textOpacity, width: textWidth }}
+              style={isDesktop ? { opacity: textOpacity, width: textWidth } : { opacity: 1, width: "auto" }}
               className="overflow-hidden whitespace-nowrap font-antonio text-[19px] uppercase tracking-[0.08em] font-bold text-n-100 leading-none"
             >
               PLANICLE
@@ -173,7 +190,7 @@ export default function Navbar() {
           <div className="flex items-center gap-2 sm:gap-6 flex-1 justify-end">
             <motion.div
               style={{ opacity: clockOpacity }}
-              className="hidden sm:inline-flex"
+              className="hidden md:inline-flex"
             >
               <LiveClock
                 showIcon={true}
@@ -183,11 +200,12 @@ export default function Navbar() {
               />
             </motion.div>
 
+            {/* CTA button: hidden on mobile, visible on md+ */}
             <motion.button
               onClick={openBooking}
               whileHover={{ scale: 1.03 }}
               whileTap={{ scale: 0.97 }}
-              className="group inline-flex items-center bg-n-100 hover:bg-n-200 text-n-700 rounded-full pl-2.5 sm:pl-4 pr-1.5 sm:pr-2 py-1 sm:py-1.5 transition-colors duration-300 cursor-pointer border-none outline-none"
+              className="hidden md:inline-flex group items-center bg-n-100 hover:bg-n-200 text-n-700 rounded-full pl-4 pr-2 py-1.5 transition-colors duration-300 cursor-pointer border-none outline-none"
             >
               <span className="font-mono text-[10px] font-bold tracking-widest mr-3 select-none">
                 LET&apos;S BUILD
@@ -197,6 +215,7 @@ export default function Navbar() {
               </span>
             </motion.button>
 
+            {/* Hamburger toggle: visible on mobile only */}
             <motion.button
               onClick={toggleMenu}
               whileTap={{ scale: 0.95 }}
@@ -236,7 +255,7 @@ export default function Navbar() {
                     }}
                     className="block text-[16vw] font-serif italic tracking-tight text-n-100 hover:text-brand-orange transition-colors duration-400 leading-none"
                   >
-                    {link.label.toLowerCase()}
+                    {link.label.charAt(0) + link.label.slice(1).toLowerCase()}
                   </motion.a>
                 </div>
               ))}
@@ -253,6 +272,23 @@ export default function Navbar() {
               }}
               className="relative z-10 flex flex-col gap-6 border-t border-n-100/10 pt-6 pb-2"
             >
+              {/* LET'S BUILD CTA — mobile only (moved from navbar bar) */}
+              <motion.button
+                onClick={() => {
+                  setIsOpen(false);
+                  openBooking();
+                }}
+                whileTap={{ scale: 0.97 }}
+                className="group inline-flex items-center justify-center self-center bg-brand-orange hover:bg-brand-orange/90 text-white rounded-full pl-6 pr-2 py-3 transition-colors duration-300 cursor-pointer border-none outline-none"
+              >
+                <span className="font-mono text-[11px] font-bold tracking-widest mr-4 select-none">
+                  LET&apos;S BUILD
+                </span>
+                <span className="w-8 h-8 bg-white text-brand-orange rounded-full flex items-center justify-center text-[11px] font-bold transition-transform duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:rotate-45">
+                  »
+                </span>
+              </motion.button>
+
               <div className="flex items-center justify-center">
                 <LiveClock
                   showIcon={true}

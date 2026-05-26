@@ -50,7 +50,7 @@ export default function Footer() {
             {/* Primary Call-to-Action (LET'S BUILD TOGETHER ») */}
             <button
               onClick={openBooking}
-              className="group inline-flex items-center bg-brand-orange hover:bg-brand-orange/95 hover:scale-[1.02] text-white rounded-full pl-6 pr-2 py-3 sm:py-2.5 transition-all duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] active:scale-[0.98] shadow-lg shadow-brand-orange/10 hover:shadow-brand-orange/20 cursor-pointer border-none outline-none"
+              className="group flex md:inline-flex w-full md:w-auto items-center justify-between md:justify-start bg-brand-orange hover:bg-brand-orange/95 hover:scale-[1.02] text-white rounded-full pl-6 pr-2 py-3 sm:py-2.5 transition-all duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] active:scale-[0.98] shadow-lg shadow-brand-orange/10 hover:shadow-brand-orange/20 cursor-pointer border-none outline-none"
             >
               <span className="font-mono text-[11px] sm:text-[12px] font-bold tracking-widest mr-4 relative overflow-hidden h-[18px]">
                 <span className="flex flex-col transition-transform duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] group-hover:-translate-y-1/2">
@@ -73,7 +73,7 @@ export default function Footer() {
         {/* PREMIUM TERMINAL BRAND TAGLINE STATEMENT                 */}
         {/* ──────────────────────────────────────────────────────── */}
         <div className="w-full border-t border-white/10 mt-12 sm:mt-16 pt-10 text-center overflow-hidden">
-          <span className="font-sans font-black text-[clamp(1.2rem,5.2vw,4.2rem)] tracking-[0.06em] sm:tracking-[0.09em] md:tracking-[0.12em] lg:tracking-[0.15em] text-white/[0.05] uppercase select-none block w-full leading-none pl-[0.06em] sm:pl-[0.09em] md:pl-[0.12em] lg:pl-[0.15em] whitespace-nowrap">
+          <span className="font-sans font-black text-[clamp(1.2rem,7vw,3.6rem)] tracking-[0.04em] sm:tracking-[0.09em] md:tracking-[0.12em] lg:tracking-[0.15em] text-white/[0.05] uppercase select-none block w-full leading-none pl-[0.04em] sm:pl-[0.09em] md:pl-[0.12em] lg:pl-[0.15em] whitespace-nowrap">
             GOOD ISN&apos;T ENOUGH
           </span>
         </div>
