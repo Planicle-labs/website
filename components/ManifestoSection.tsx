@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useRef } from 'react';
+import Image from 'next/image';
 import { motion, useInView } from 'framer-motion';
 
 // Axioms data
@@ -198,10 +199,12 @@ export default function ManifestoSection() {
               <div className="absolute bottom-1.5 right-1.5 text-white/30 pointer-events-none select-none font-bold text-[8px]">+</div>
 
               {/* The Concrete Image */}
-              <img
+              <Image
                 src="/brutalist_concrete.png"
                 alt="Brutalist concrete architectural fragment with sharp angles and shadows"
-                className="w-full h-full object-cover grayscale opacity-50 group-hover:opacity-75 group-hover:scale-105 transition-all duration-[500ms] ease-[cubic-bezier(0.23,1,0.32,1)]"
+                fill
+                sizes="(max-width: 1024px) 100vw, 180px"
+                className="object-cover grayscale opacity-50 group-hover:opacity-75 group-hover:scale-105 transition-all duration-[500ms] ease-[cubic-bezier(0.23,1,0.32,1)]"
               />
 
               {/* Technical label overlay */}
