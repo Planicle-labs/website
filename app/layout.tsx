@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { DM_Serif_Display, Plus_Jakarta_Sans, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
+import BookingProvider from "@/components/BookingProvider";
 
 const dmSerifDisplay = DM_Serif_Display({
   subsets: ["latin"],
@@ -35,7 +36,9 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${dmSerifDisplay.variable} ${plusJakartaSans.variable} ${jetbrainsMono.variable} h-full antialiased scroll-smooth`}>
       <body className="min-h-full flex flex-col font-sans text-[#0C0C0E] bg-[#F4F3EF]">
-        {children}
+        <BookingProvider>
+          {children}
+        </BookingProvider>
       </body>
     </html>
   );

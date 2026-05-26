@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect, useRef } from 'react';
 import { animate } from 'animejs';
+import { useBooking } from './BookingProvider';
 
 interface Phase {
   id: string;
@@ -50,6 +51,7 @@ const PHASES: Phase[] = [
 ];
 
 export default function ProcessSection() {
+  const { openBooking } = useBooking();
   const [activeIdx, setActiveIdx] = useState(0);
   const containerRef = useRef<HTMLDivElement>(null);
   const layersRef = useRef<(HTMLDivElement | null)[]>([]);
@@ -631,15 +633,15 @@ export default function ProcessSection() {
 
                 {/* Dynamic arrow link */}
                 <div className="mt-5 sm:mt-6 flex items-center justify-center lg:justify-start">
-                  <a
-                    href="#connect"
-                    className="group inline-flex items-center gap-1.5 text-[10px] font-mono font-bold tracking-[0.16em] text-[#161618] hover:text-[#EF4A2A] transition-colors duration-200 uppercase"
+                  <button
+                    onClick={openBooking}
+                    className="group inline-flex items-center gap-1.5 text-[10px] font-mono font-bold tracking-[0.16em] text-[#161618] hover:text-[#EF4A2A] transition-colors duration-200 uppercase cursor-pointer border-none bg-transparent outline-none p-0"
                   >
                     LET&apos;S BUILD TOGETHER
                     <span className="inline-block transform transition-transform duration-300 group-hover:translate-x-1">
                       »
                     </span>
-                  </a>
+                  </button>
                 </div>
               </div>
             </div>

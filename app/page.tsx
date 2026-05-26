@@ -5,6 +5,7 @@ import Navbar from '@/components/Navbar';
 import ProcessSection from '@/components/ProcessSection';
 import TextRollButton from "@/components/TextRollButton";
 import { ArrowRight } from "lucide-react";
+import { useBooking } from '@/components/BookingProvider';
 
 // Dynamically load browser-only Shader overlay to prevent hydration issues
 const HeroShader = dynamic(() => import("@/components/HeroShader"), {
@@ -12,6 +13,8 @@ const HeroShader = dynamic(() => import("@/components/HeroShader"), {
 });
 
 export default function Home() {
+  const { openBooking } = useBooking();
+
   return (
     <main className="w-full flex-col min-h-screen relative overflow-x-clip selection:bg-[#EF4A2A] selection:text-white">
       {/* ──────────────────────────────────────────────────────── */}
@@ -42,9 +45,9 @@ export default function Home() {
           {/* CTA Row */}
           <div className="mt-8 sm:mt-10 flex flex-wrap gap-4 items-center">
             {/* Primary CTA (BOOK A CALL ») */}
-            <a
-              href="#connect"
-              className="group inline-flex items-center bg-brand-orange hover:bg-brand-orange/95 hover:scale-[1.02] text-white rounded-full pl-6 pr-2 py-2.5 transition-all duration-200 ease-[cubic-bezier(0.16,1,0.3,1)] active:scale-[0.98] shadow-lg shadow-brand-orange/10 hover:shadow-brand-orange/20"
+            <button
+              onClick={openBooking}
+              className="group inline-flex items-center bg-brand-orange hover:bg-brand-orange/95 hover:scale-[1.02] text-white rounded-full pl-6 pr-2 py-2.5 transition-all duration-200 ease-[cubic-bezier(0.16,1,0.3,1)] active:scale-[0.98] shadow-lg shadow-brand-orange/10 hover:shadow-brand-orange/20 cursor-pointer border-none outline-none"
             >
               <span className="font-mono text-[11px] sm:text-[12px] font-bold tracking-widest mr-4 relative overflow-hidden h-[18px]">
                 <span className="flex flex-col transition-transform duration-200 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:-translate-y-1/2">
@@ -59,7 +62,7 @@ export default function Home() {
               <span className="w-8 h-8 sm:w-9 sm:h-9 bg-white text-brand-orange rounded-full flex items-center justify-center text-[12px] font-bold transition-transform duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:rotate-45">
                 »
               </span>
-            </a>
+            </button>
 
             {/* Secondary CTA (SEE THE WORK) */}
             <a
