@@ -3,6 +3,9 @@ lockfileVersion: '9.0'
 settings:
   autoInstallPeers: true
   excludeLinksFromLockfile: false
+  onlyBuiltDependencies:
+    - sharp
+    - unrs-resolver
 
 patchedDependencies:
   shaders: 47e67c98ab3d3ab2662687c23a0fddfdd37dedb6ac76c4b801acd95ff230622d
