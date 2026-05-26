@@ -1,25 +1,49 @@
 'use client';
 
-import { useState, useEffect } from 'react';
-import Image from 'next/image';
-import { Menu, X, ArrowRight } from 'lucide-react';
-import LiveClock from './LiveClock';
+import Image from "next/image";
+import { useState, useEffect } from "react";
+import { Menu, X } from "lucide-react";
+import LiveClock from "./LiveClock";
+import { useBooking } from "./BookingProvider";
+import { useReducedMotion } from "framer-motion";
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const prefersReduced = useReducedMotion();
+  const { openBooking } = useBooking();
 
-  // Monitor scroll to dynamically adjust navbar visual weight
+  const handleLinkClick = (e: React.MouseEvent<HTMLAnchorElement> | null, href: string) => {
+    if (e) e.preventDefault();
+    setIsOpen(false);
+
+    if (href === "#connect") {
+      openBooking();
+      return;
+    }
+
+    const targetId = href.replace("#", "");
+    if (targetId === "" || targetId === "/") {
+      window.scrollTo({ top: 0, behavior: prefersReduced ? "auto" : "smooth" });
+      return;
+    }
+
+    const elem = document.getElementById(targetId);
+    if (elem) {
+      elem.scrollIntoView({ behavior: prefersReduced ? "auto" : "smooth", block: "start" });
+    }
+  };
+
   useEffect(() => {
-    const handleScroll = () => {
+    const onScroll = () => {
       if (window.scrollY > 30) {
         setScrolled(true);
       } else {
         setScrolled(false);
       }
     };
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    return () => window.removeEventListener('scroll', handleScroll);
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => window.removeEventListener('scroll', onScroll);
   }, []);
 
   // Prevent scroll when mobile menu is open
@@ -53,6 +77,7 @@ export default function Navbar() {
               <a
                 key={link}
                 href={`#${link.toLowerCase()}`}
+                onClick={(e) => handleLinkClick(e, `#${link.toLowerCase()}`)}
                 className="font-mono text-[11px] font-bold tracking-widest text-[#A09F9A] hover:text-[#EF4A2A] transition-colors duration-200 ease-out select-none active:scale-95"
               >
                 {link}
@@ -63,6 +88,7 @@ export default function Navbar() {
           {/* CENTER: Planicle Symmetrical Logo Mark */}
           <a
             href="#"
+            onClick={(e) => handleLinkClick(e, "/")}
             className="flex items-center gap-2 select-none group md:absolute md:left-1/2 md:-translate-x-1/2 md:top-1/2 md:-translate-y-1/2 active:scale-95 transition-transform duration-200"
           >
             <div className="relative w-6 h-6 shrink-0 transition-transform duration-500 ease-[cubic-bezier(0.23,1,0.32,1)] group-hover:rotate-[15deg]">
@@ -96,12 +122,13 @@ export default function Navbar() {
             {/* Premium CTA Button */}
             <a
               href="#connect"
+              onClick={(e) => handleLinkClick(e, "#connect")}
               className="group inline-flex items-center bg-white hover:bg-[#F7F7F7] text-[#161618] rounded-full pl-4 pr-1.5 py-1.5 transition-all duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] active:scale-[0.97]"
             >
               <span className="font-mono text-[10px] font-bold tracking-widest mr-3 relative overflow-hidden h-[15px] select-none">
                 <span className="flex flex-col transition-transform duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] group-hover:-translate-y-1/2">
-                  <span className="h-[15px] flex items-center">LET'S BUILD</span>
-                  <span className="h-[15px] flex items-center">LET'S BUILD</span>
+                  <span className="h-[15px] flex items-center">{"LET'S BUILD"}</span>
+                  <span className="h-[15px] flex items-center">{"LET'S BUILD"}</span>
                 </span>
               </span>
               <span className="w-6 h-6 bg-[#161618] text-white rounded-full flex items-center justify-center text-[9px] font-bold transition-transform duration-500 ease-[cubic-bezier(0.23,1,0.32,1)] group-hover:rotate-45">
@@ -135,7 +162,7 @@ export default function Navbar() {
             <a
               key={link}
               href={`#${link.toLowerCase()}`}
-              onClick={() => setIsOpen(false)}
+              onClick={(e) => handleLinkClick(e, `#${link.toLowerCase()}`)}
               style={{ transitionDelay: `${idx * 50}ms` }}
               className={`text-[44px] font-serif italic tracking-tight text-white hover:text-[#EF4A2A] transition-all duration-300 ${
                 isOpen ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-4'
@@ -167,11 +194,11 @@ export default function Navbar() {
             
             <a
               href="#connect"
-              onClick={() => setIsOpen(false)}
+              onClick={(e) => handleLinkClick(e, "#connect")}
               className="group inline-flex items-center bg-[#EF4A2A] hover:bg-[#d63b1c] text-white rounded-full pl-5 pr-2 py-2.5 transition-all duration-200 active:scale-[0.97]"
             >
               <span className="font-mono text-[11px] font-bold tracking-widest mr-4 select-none">
-                LET'S BUILD
+                {"LET'S BUILD"}
               </span>
               <span className="w-7 h-7 bg-white text-[#EF4A2A] rounded-full flex items-center justify-center text-[11px] font-bold transition-transform duration-300 group-hover:rotate-45">
                 »
