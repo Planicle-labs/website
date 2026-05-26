@@ -19,8 +19,8 @@ const COMPACT_RANGE = 250;
 const EXPAND_ZONE = 600;
 
 const navLinks = [
-  { href: "#work", label: "WORK" },
-  { href: "#studio", label: "STUDIO" },
+  { href: "#services", label: "SERVICES" },
+  { href: "#projects", label: "WORK" },
   { href: "#connect", label: "CONNECT" },
 ];
 
@@ -104,7 +104,7 @@ export default function Navbar() {
   });
 
   const navMaxWidth = useTransform(displayScrollY, [0, 100], [1280, 720]);
-  const navPaddingV = useTransform(displayScrollY, [0, 100], [8, 5]);
+  const navPaddingV = useTransform(displayScrollY, [0, 100], [14, 8]);
   const textOpacity = useTransform(displayScrollY, [0, 60], [1, 0]);
   const textWidth = useTransform(displayScrollY, [0, 60], [70, 0]);
   const clockOpacity = useTransform(displayScrollY, [0, 70], [1, 0]);
@@ -132,13 +132,11 @@ export default function Navbar() {
               <motion.a
                 key={link.href}
                 href={link.href}
-                onClick={(e) => handleLinkClick(e, link.href)}
-                whileHover={{ y: -1 }}
+                onClick={(e) => handleScroll(e, link.href)}
                 whileTap={{ scale: 0.95 }}
-                className="relative font-mono text-[11px] font-bold tracking-[0.15em] text-n-400 hover:text-brand-orange transition-colors duration-300 select-none group"
+                className="font-mono text-[11px] font-bold tracking-[0.15em] text-n-500 hover:text-brand-orange transition-colors duration-300 select-none"
               >
                 {link.label}
-                <span className="absolute -bottom-1.5 left-1/2 -translate-x-1/2 w-0 h-px bg-brand-orange rounded-full transition-all duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:w-3/5" />
               </motion.a>
             ))}
           </nav>
@@ -146,24 +144,20 @@ export default function Navbar() {
           {/* CENTER: Planicle Symmetrical Logo Mark */}
           <motion.a
             href="#"
-            onClick={(e) => handleLinkClick(e, "/")}
-            className="flex items-center gap-3 select-none group md:absolute md:left-1/2 md:-translate-x-1/2"
+            onClick={(e) => handleScroll(e, "#")}
+            className="flex items-center gap-1.5 select-none group md:absolute md:left-1/2 md:-translate-x-1/2"
             whileTap={{ scale: 0.95 }}
           >
-            <motion.div
-              whileHover={{ rotate: 12 }}
-              transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
-              className="relative w-9 h-9 shrink-0"
-            >
-              <Image
-                src="/logo.png"
-                alt="Planicle"
-                fill
-                priority
-                sizes="36px"
-                className="object-contain"
-              />
-            </motion.div>
+<div className="relative w-11 h-11 shrink-0">
+  <Image
+    src="/logo.webp"
+    alt="Planicle"
+    fill
+    priority
+    sizes="44px"
+    className="object-contain"
+  />
+</div>
             <motion.span
               style={{ opacity: textOpacity, width: textWidth }}
               className="overflow-hidden whitespace-nowrap font-sans font-extrabold text-[16px] tracking-tight text-n-100 leading-none lowercase"
