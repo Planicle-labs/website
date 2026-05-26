@@ -98,7 +98,7 @@ export default function Navbar() {
   const navMaxWidth = useTransform(displayScrollY, [0, 100], [1280, 720]);
   const navPaddingV = useTransform(displayScrollY, [0, 100], [14, 8]);
   const textOpacity = useTransform(displayScrollY, [0, 60], [1, 0]);
-  const textWidth = useTransform(displayScrollY, [0, 60], [70, 0]);
+  const textWidth = useTransform(displayScrollY, [0, 60], [90, 0]);
   const clockOpacity = useTransform(displayScrollY, [0, 70], [1, 0]);
 
   const toggleMenu = () => setIsOpen(!isOpen);
@@ -132,24 +132,24 @@ export default function Navbar() {
           <motion.a
             href="#"
             onClick={(e) => handleScroll(e, "#")}
-            className="flex items-center gap-1.5 select-none group md:absolute md:left-1/2 md:-translate-x-1/2"
+            className="flex items-center gap-2 select-none group md:absolute md:left-1/2 md:-translate-x-1/2"
             whileTap={{ scale: 0.95 }}
           >
-<div className="relative w-11 h-11 shrink-0">
-  <Image
-    src="/logo.webp"
-    alt="Planicle"
-    fill
-    priority
-    sizes="44px"
-    className="object-contain"
-  />
-</div>
+            <div className="relative w-9 h-9 shrink-0">
+              <Image
+                src="/logo.svg"
+                alt="Planicle"
+                fill
+                priority
+                sizes="36px"
+                className="object-contain"
+              />
+            </div>
             <motion.span
               style={{ opacity: textOpacity, width: textWidth }}
-              className="overflow-hidden whitespace-nowrap font-sans font-extrabold text-[16px] tracking-tight text-n-100 leading-none"
+              className="overflow-hidden whitespace-nowrap font-antonio text-[19px] uppercase tracking-[0.08em] font-bold text-n-100 leading-none"
             >
-              Planicle
+              PLANICLE
             </motion.span>
           </motion.a>
 
