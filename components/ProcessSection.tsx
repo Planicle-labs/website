@@ -269,7 +269,7 @@ export default function ProcessSection() {
                   <button
                     key={phase.id}
                     onClick={() => scrollToPhase(idx)}
-                    className={`px-3 py-1.5 rounded-full border text-[9px] font-bold font-mono tracking-wider cursor-pointer outline-none transition-all duration-300 ${isActive
+                    className={`px-3 py-2 rounded-full border text-[10px] font-bold font-mono tracking-wider cursor-pointer outline-none transition-all duration-300 ${isActive
                       ? 'bg-[#161618] border-[#161618] text-white font-bold'
                       : 'bg-transparent border-[#E4E3DD] text-[#A09F9A] hover:border-[#161618] hover:text-[#161618]'
                       }`}
@@ -281,7 +281,7 @@ export default function ProcessSection() {
             </div>
 
             {/* ─── COLUMN 2: 3D ISOMETRIC CARD STACK (Center) ─── */}
-            <div className="flex items-center justify-center py-2 lg:py-4 relative w-full h-[260px] sm:h-[300px] lg:h-full max-w-[370px] sm:max-w-[410px] lg:max-w-[420px] lg:-translate-x-8 lg:-translate-y-4 mx-auto overflow-visible shrink-0">
+            <div className="flex items-center justify-center py-2 lg:py-4 relative w-full h-[260px] sm:h-[300px] lg:h-full max-w-[370px] sm:max-w-[410px] lg:max-w-[420px] lg:-translate-x-8 lg:-translate-y-4 mx-auto overflow-visible shrink-0 max-sm:max-w-[85vw]">
               <div
                 className="w-full aspect-[4/3] relative overflow-visible"
                 style={{ perspective: '1200px' }}
@@ -619,7 +619,7 @@ export default function ProcessSection() {
                   {activePhase.title}
                 </h3>
 
-                <p className="font-sans text-[13px] sm:text-[14px] text-[#797872] leading-[1.7] mt-3">
+                <p className="font-sans text-[14px] sm:text-[14px] text-[#797872] leading-[1.7] mt-3">
                   {activePhase.copy}
                 </p>
 
@@ -627,7 +627,7 @@ export default function ProcessSection() {
                 <div className="mt-5 sm:mt-6 flex items-center justify-center lg:justify-start">
                   <button
                     onClick={openBooking}
-                    className="group inline-flex items-center gap-1.5 text-[10px] font-mono font-bold tracking-[0.16em] text-[#161618] hover:text-[#EF4A2A] transition-colors duration-200 uppercase cursor-pointer border-none bg-transparent outline-none p-0"
+                    className="group inline-flex items-center gap-1.5 text-[11px] sm:text-[10px] font-mono font-bold tracking-[0.16em] text-[#161618] hover:text-[#EF4A2A] transition-colors duration-200 uppercase cursor-pointer border-none bg-transparent outline-none p-0"
                   >
                     LET&apos;S BUILD TOGETHER
                     <span className="inline-block transform transition-transform duration-300 group-hover:translate-x-1">
