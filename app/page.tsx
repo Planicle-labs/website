@@ -3,6 +3,7 @@
 import dynamic from 'next/dynamic';
 import Navbar from '@/components/Navbar';
 import ProcessSection from '@/components/ProcessSection';
+import Footer from '@/components/Footer';
 import TextRollButton from "@/components/TextRollButton";
 import { ArrowRight } from "lucide-react";
 import { useBooking } from '@/components/BookingProvider';
@@ -102,6 +103,11 @@ export default function Home() {
       {/* SECTION 2: INTERACTIVE PROCESS (Light grey background) */}
       {/* ──────────────────────────────────────────────────────── */}
       <ProcessSection />
+
+      {/* ──────────────────────────────────────────────────────── */}
+      {/* SECTION 3: PREMIUM CLOSING CTA / FOOTER                 */}
+      {/* ──────────────────────────────────────────────────────── */}
+      <Footer />
     </main>
   );
 }
