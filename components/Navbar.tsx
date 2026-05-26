@@ -1,26 +1,38 @@
-'use client';
+"use client";
 
+import {
+  motion,
+  useScroll,
+  useTransform,
+  useMotionValue,
+  useMotionValueEvent,
+  AnimatePresence,
+  useReducedMotion,
+} from "framer-motion";
 import Image from "next/image";
-import { useState, useEffect } from "react";
+import { useState, useRef, useEffect } from "react";
 import { Menu, X } from "lucide-react";
 import LiveClock from "./LiveClock";
 import { useBooking } from "./BookingProvider";
-import { useReducedMotion } from "framer-motion";
+
+const COMPACT_RANGE = 250;
+const EXPAND_ZONE = 600;
+
+const navLinks = [
+  { href: "#services", label: "SERVICES" },
+  { href: "#projects", label: "WORK" },
+  { href: "#connect", label: "CONNECT" },
+];
 
 export default function Navbar() {
+  const { scrollY } = useScroll();
   const [isOpen, setIsOpen] = useState(false);
-  const [scrolled, setScrolled] = useState(false);
   const prefersReduced = useReducedMotion();
   const { openBooking } = useBooking();
 
-  const handleLinkClick = (e: React.MouseEvent<HTMLAnchorElement> | null, href: string) => {
+  const handleScroll = (e: React.MouseEvent<HTMLAnchorElement> | null, href: string) => {
     if (e) e.preventDefault();
     setIsOpen(false);
-
-    if (href === "#connect") {
-      openBooking();
-      return;
-    }
 
     const targetId = href.replace("#", "");
     if (targetId === "" || targetId === "/") {
@@ -35,178 +47,204 @@ export default function Navbar() {
   };
 
   useEffect(() => {
-    const onScroll = () => {
-      if (window.scrollY > 30) {
-        setScrolled(true);
-      } else {
-        setScrolled(false);
+    if (prefersReduced) return;
+
+    const handleAnchorClick = (e: MouseEvent) => {
+      const target = (e.target as HTMLElement).closest("a");
+      if (!target) return;
+
+      const href = target.getAttribute("href");
+      if (href && href.startsWith("#")) {
+        if (target.closest("header")) return;
+        e.preventDefault();
+        handleScroll(null, href);
       }
     };
-    window.addEventListener('scroll', onScroll, { passive: true });
-    return () => window.removeEventListener('scroll', onScroll);
-  }, []);
 
-  // Prevent scroll when mobile menu is open
+    window.addEventListener("click", handleAnchorClick);
+    return () => window.removeEventListener("click", handleAnchorClick);
+  }, [prefersReduced]); // eslint-disable-line react-hooks/exhaustive-deps
+
   useEffect(() => {
     if (isOpen) {
-      document.body.style.overflow = 'hidden';
+      document.body.style.overflow = "hidden";
     } else {
-      document.body.style.overflow = '';
+      document.body.style.overflow = "";
     }
-    return () => {
-      document.body.style.overflow = '';
-    };
+    return () => { document.body.style.overflow = ""; };
   }, [isOpen]);
+
+  const displayScrollY = useMotionValue(0);
+  const lastScrollYRef = useRef(0);
+
+  useEffect(() => {
+    const y = window.scrollY;
+    lastScrollYRef.current = y;
+    displayScrollY.set(Math.min((y / COMPACT_RANGE) * 100, 100));
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+
+  useMotionValueEvent(scrollY, "change", (latest) => {
+    const delta = latest - lastScrollYRef.current;
+    lastScrollYRef.current = latest;
+
+    if (latest <= 10) {
+      displayScrollY.set(0);
+    } else if (delta > 0) {
+      displayScrollY.set(Math.min(displayScrollY.get() + (delta / COMPACT_RANGE) * 100, 100));
+    } else if (latest <= EXPAND_ZONE) {
+      displayScrollY.set(Math.max(displayScrollY.get() + (delta / COMPACT_RANGE) * 100, 0));
+    }
+  });
+
+  const navMaxWidth = useTransform(displayScrollY, [0, 100], [1280, 720]);
+  const navPaddingV = useTransform(displayScrollY, [0, 100], [14, 8]);
+  const textOpacity = useTransform(displayScrollY, [0, 60], [1, 0]);
+  const textWidth = useTransform(displayScrollY, [0, 60], [70, 0]);
+  const clockOpacity = useTransform(displayScrollY, [0, 70], [1, 0]);
 
   const toggleMenu = () => setIsOpen(!isOpen);
 
   return (
     <>
-      {/* ──────────────────────────────────────────────────────── */}
-      {/* DESKTOP & MOBILE NAVIGATION HEADER */}
-      {/* ──────────────────────────────────────────────────────── */}
-      <header
-        className={`fixed top-4 left-1/2 -translate-x-1/2 w-[calc(100%-2rem)] max-w-[1280px] z-50 transition-all duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] ${
-          scrolled ? 'top-3 scale-[0.98]' : 'top-4 scale-100'
-        }`}
+      <motion.header
+        initial={prefersReduced ? false : { opacity: 0, y: -20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
+        className="fixed top-4 inset-x-0 flex justify-center z-50"
       >
-        <div className="bg-[#161618] rounded-full p-[6px] pl-3 pr-2 flex items-center justify-between border border-white/10 shadow-[0_8px_32px_rgba(0,0,0,0.24)]">
-          {/* LEFT: Symmetrical Navigation Links (Desktop) */}
-          <nav className="hidden md:flex items-center gap-8 pl-3 flex-1">
-            {['WORK', 'STUDIO', 'CONNECT'].map((link) => (
-              <a
-                key={link}
-                href={`#${link.toLowerCase()}`}
-                onClick={(e) => handleLinkClick(e, `#${link.toLowerCase()}`)}
-                className="font-mono text-[11px] font-bold tracking-widest text-[#A09F9A] hover:text-[#EF4A2A] transition-colors duration-200 ease-out select-none active:scale-95"
+        <motion.div
+          style={{ maxWidth: navMaxWidth, paddingBlock: navPaddingV }}
+          className="w-[calc(100%-2rem)] rounded-full px-5 flex items-center justify-between border border-n-100/10 bg-n-700 shadow-[0_8px_32px_rgba(0,0,0,0.24)] backdrop-blur-xl backdrop-saturate-150 overflow-hidden"
+        >
+          <nav className="hidden md:flex items-center gap-10 pl-2 flex-1">
+            {navLinks.map((link) => (
+              <motion.a
+                key={link.href}
+                href={link.href}
+                onClick={(e) => handleScroll(e, link.href)}
+                whileTap={{ scale: 0.95 }}
+                className="font-mono text-[11px] font-bold tracking-[0.15em] text-n-500 hover:text-brand-orange transition-colors duration-300 select-none"
               >
-                {link}
-              </a>
+                {link.label}
+              </motion.a>
             ))}
           </nav>
 
-          {/* CENTER: Planicle Symmetrical Logo Mark */}
-          <a
+          <motion.a
             href="#"
-            onClick={(e) => handleLinkClick(e, "/")}
-            className="flex items-center gap-2 select-none group md:absolute md:left-1/2 md:-translate-x-1/2 md:top-1/2 md:-translate-y-1/2 active:scale-95 transition-transform duration-200"
+            onClick={(e) => handleScroll(e, "#")}
+            className="flex items-center gap-1.5 select-none group md:absolute md:left-1/2 md:-translate-x-1/2"
+            whileTap={{ scale: 0.95 }}
           >
-            <div className="relative w-6 h-6 shrink-0 transition-transform duration-500 ease-[cubic-bezier(0.23,1,0.32,1)] group-hover:rotate-[15deg]">
-              <Image
-                src="/logo.png"
-                alt="Planicle Logo"
-                fill
-                priority
-                sizes="24px"
-                className="object-contain"
-              />
-            </div>
-            <span className="font-sans font-extrabold text-[17px] tracking-tight text-white lowercase">
-              planicle
-            </span>
-          </a>
-
-          {/* RIGHT: Status, Time & Premium CTA Button (Desktop) */}
-          <div className="flex items-center gap-4 lg:gap-6 flex-1 justify-end">
-            <span className="text-[11px] font-mono text-[#797872] tracking-wider uppercase hidden lg:inline select-none">
-              TAKING PROJECTS FOR Q3 2026
-            </span>
-
-            <LiveClock
-              showIcon={true}
-              timeZone="Asia/Kolkata"
-              label="IST"
-              className="text-[11px] font-mono text-[#797872] hidden sm:inline-flex select-none"
-            />
-
-            {/* Premium CTA Button */}
-            <a
-              href="#connect"
-              onClick={(e) => handleLinkClick(e, "#connect")}
-              className="group inline-flex items-center bg-white hover:bg-[#F7F7F7] text-[#161618] rounded-full pl-4 pr-1.5 py-1.5 transition-all duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] active:scale-[0.97]"
+<div className="relative w-11 h-11 shrink-0">
+  <Image
+    src="/logo.webp"
+    alt="Planicle"
+    fill
+    priority
+    sizes="44px"
+    className="object-contain"
+  />
+</div>
+            <motion.span
+              style={{ opacity: textOpacity, width: textWidth }}
+              className="overflow-hidden whitespace-nowrap font-sans font-extrabold text-[16px] tracking-tight text-n-100 leading-none"
             >
-              <span className="font-mono text-[10px] font-bold tracking-widest mr-3 relative overflow-hidden h-[15px] select-none">
-                <span className="flex flex-col transition-transform duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] group-hover:-translate-y-1/2">
-                  <span className="h-[15px] flex items-center">{"LET'S BUILD"}</span>
-                  <span className="h-[15px] flex items-center">{"LET'S BUILD"}</span>
-                </span>
+              Planicle
+            </motion.span>
+          </motion.a>
+
+          <div className="flex items-center gap-6 flex-1 justify-end">
+            <motion.div style={{ opacity: clockOpacity }} className="hidden sm:inline-flex">
+              <LiveClock
+                showIcon={true}
+                timeZone="Asia/Kolkata"
+                label="IST"
+                className="text-[11px] font-mono text-n-500 select-none"
+              />
+            </motion.div>
+
+            <motion.button
+              onClick={openBooking}
+              whileHover={{ scale: 1.03 }}
+              whileTap={{ scale: 0.97 }}
+              className="group inline-flex items-center bg-n-100 hover:bg-n-200 text-n-700 rounded-full pl-4 pr-2 py-1.5 transition-colors duration-300 cursor-pointer border-none outline-none"
+            >
+              <span className="font-mono text-[10px] font-bold tracking-widest mr-3 select-none">
+                LET&apos;S BUILD
               </span>
-              <span className="w-6 h-6 bg-[#161618] text-white rounded-full flex items-center justify-center text-[9px] font-bold transition-transform duration-500 ease-[cubic-bezier(0.23,1,0.32,1)] group-hover:rotate-45">
+              <span className="w-5 h-5 bg-n-700 text-n-100 rounded-full flex items-center justify-center text-[9px] font-bold transition-transform duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:rotate-45">
                 »
               </span>
-            </a>
+            </motion.button>
 
-            {/* Mobile Nav Toggle */}
-            <button
+            <motion.button
               onClick={toggleMenu}
-              className="md:hidden bg-white text-[#161618] hover:bg-[#F7F7F7] rounded-full w-8 h-8 flex items-center justify-center cursor-pointer transition-colors active:scale-95"
+              whileTap={{ scale: 0.95 }}
+              className="md:hidden bg-n-100 text-n-700 hover:bg-n-200 rounded-full w-11 h-11 flex items-center justify-center cursor-pointer transition-colors"
               aria-label="Toggle navigation menu"
             >
               {isOpen ? <X size={15} /> : <Menu size={15} />}
-            </button>
+            </motion.button>
           </div>
-        </div>
-      </header>
+        </motion.div>
+      </motion.header>
 
-      {/* ──────────────────────────────────────────────────────── */}
-      {/* MOBILE FULLSCREEN OVERLAY DRAWER */}
-      {/* ──────────────────────────────────────────────────────── */}
-      <div
-        className={`fixed inset-0 z-40 bg-[#0C0C0E]/95 backdrop-blur-md flex flex-col justify-between p-6 pt-24 transition-all duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] md:hidden ${
-          isOpen ? 'opacity-100 pointer-events-auto translate-y-0' : 'opacity-0 pointer-events-none -translate-y-4'
-        }`}
-      >
-        {/* Navigation links inside drawer */}
-        <nav className="flex flex-col gap-6 pt-8">
-          {['WORK', 'STUDIO', 'CONNECT'].map((link, idx) => (
-            <a
-              key={link}
-              href={`#${link.toLowerCase()}`}
-              onClick={(e) => handleLinkClick(e, `#${link.toLowerCase()}`)}
-              style={{ transitionDelay: `${idx * 50}ms` }}
-              className={`text-[44px] font-serif italic tracking-tight text-white hover:text-[#EF4A2A] transition-all duration-300 ${
-                isOpen ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-4'
-              }`}
-            >
-              {link.toLowerCase()}
-            </a>
-          ))}
-        </nav>
+      <AnimatePresence>
+        {isOpen && (
+          <motion.div
+            initial={{ opacity: 0, y: -8 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -8 }}
+            transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
+            className="fixed inset-0 z-40 bg-n-700/96 backdrop-blur-md flex flex-col justify-between p-8 pt-28 md:hidden"
+          >
+            <nav className="flex flex-col gap-8">
+              {navLinks.map((link, idx) => (
+                <motion.a
+                  key={link.href}
+                  href={link.href}
+                  onClick={(e) => handleScroll(e, link.href)}
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{
+                    duration: 0.35,
+                    delay: idx * 0.06,
+                    ease: [0.16, 1, 0.3, 1],
+                  }}
+                  className="text-[44px] font-serif italic tracking-tight text-n-100 hover:text-brand-orange transition-colors duration-300"
+                >
+                  {link.label.toLowerCase()}
+                </motion.a>
+              ))}
+            </nav>
 
-        {/* Footer info inside drawer */}
-        <div className="flex flex-col gap-6 border-t border-white/10 pt-6">
-          <div className="flex flex-col gap-1.5">
-            <span className="text-[10px] font-mono text-[#797872] tracking-widest uppercase">
-              STUDIO CAPACITY
-            </span>
-            <span className="text-[13px] font-medium text-white">
-              Taking on select projects for Q3 2026
-            </span>
-          </div>
-
-          <div className="flex items-center justify-between">
-            <LiveClock
-              showIcon={true}
-              timeZone="Asia/Kolkata"
-              label="IST"
-              className="text-[12px] font-mono text-[#A09F9A]"
-            />
-            
-            <a
-              href="#connect"
-              onClick={(e) => handleLinkClick(e, "#connect")}
-              className="group inline-flex items-center bg-[#EF4A2A] hover:bg-[#d63b1c] text-white rounded-full pl-5 pr-2 py-2.5 transition-all duration-200 active:scale-[0.97]"
-            >
-              <span className="font-mono text-[11px] font-bold tracking-widest mr-4 select-none">
-                {"LET'S BUILD"}
-              </span>
-              <span className="w-7 h-7 bg-white text-[#EF4A2A] rounded-full flex items-center justify-center text-[11px] font-bold transition-transform duration-300 group-hover:rotate-45">
-                »
-              </span>
-            </a>
-          </div>
-        </div>
-      </div>
+            <div className="flex flex-col gap-6 border-t border-n-100/10 pt-6">
+              <div className="flex items-center justify-between">
+                <LiveClock
+                  showIcon={true}
+                  timeZone="Asia/Kolkata"
+                  label="IST"
+                  className="text-[12px] font-mono text-n-400"
+                />
+                <motion.button
+                  onClick={() => { setIsOpen(false); openBooking(); }}
+                  whileHover={{ scale: 1.03 }}
+                  whileTap={{ scale: 0.97 }}
+                  className="group inline-flex items-center bg-n-100 hover:bg-n-200 text-n-700 rounded-full pl-5 pr-2.5 py-2.5 transition-colors duration-200 border-none outline-none"
+                >
+                  <span className="font-mono text-[11px] font-bold tracking-widest mr-4 select-none">
+                    LET&apos;S BUILD
+                  </span>
+                  <span className="w-6 h-6 bg-n-700 text-n-100 rounded-full flex items-center justify-center text-[10px] font-bold transition-transform duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:rotate-45">
+                    »
+                  </span>
+                </motion.button>
+              </div>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </>
   );
 }

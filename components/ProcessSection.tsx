@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useEffect, useRef } from 'react';
-import { animate } from 'animejs';
+import { animate, cubicBezier, eases } from 'animejs';
 import { useBooking } from './BookingProvider';
 
 interface Phase {
@@ -58,6 +58,58 @@ export default function ProcessSection() {
   const textRef = useRef<HTMLDivElement>(null);
   const activeIdxRef = useRef(0);
 
+  // Trigger layer highlight and text morph animations when active index changes
+  const animateActiveLayer = (idx: number) => {
+    layersRef.current.forEach((layerEl, i) => {
+      if (!layerEl) return;
+
+      // Reversed stack: i = 0 (PLAN) is at top (baseZ = 80), i = 4 (DEPLOY) is at bottom (baseZ = -80)
+      const baseZ = 80 - i * 40;
+      const isActive = i === idx;
+      const isPast = i < idx;
+
+      // Progressive reveal for reversed stack:
+      // active is fully visible (opacity 1)
+      // past layers are above active (so they must fade to 0 to prevent occlusion of active layers below them)
+      // future layers sit below active (so they stay visible at 0.35 opacity forming the foundation beneath the active card)
+      let targetOpacity = 0.35;
+      if (isActive) targetOpacity = 1;
+      if (isPast) targetOpacity = 0;
+
+      animate(layerEl, {
+        translateZ: isActive ? baseZ + 24 : baseZ,
+        translateY: isActive ? -12 : 0,
+        translateX: isActive ? -8 : 0,
+        opacity: targetOpacity,
+        filter: isActive ? 'blur(0px)' : 'blur(0.3px)',
+        duration: 350,
+        ease: cubicBezier(0.23, 1, 0.32, 1)
+      });
+    });
+  };
+
+  const animateTextTransition = () => {
+    const el = textRef.current;
+    if (!el) return;
+
+    animate(el, {
+      opacity: 0,
+      filter: 'blur(2px)',
+      translateY: 8,
+      duration: 150,
+      ease: eases.inQuad,
+      onComplete: () => {
+        animate(el, {
+          opacity: 1,
+          filter: 'blur(0px)',
+          translateY: 0,
+          duration: 300,
+          ease: cubicBezier(0.23, 1, 0.32, 1)
+        });
+      }
+    });
+  };
+
   // Sync state with ref for scroll event listener
   useEffect(() => {
     activeIdxRef.current = activeIdx;
@@ -107,46 +159,26 @@ export default function ProcessSection() {
     animateTextTransition();
   }, [activeIdx]);
 
-  // AnimeJS function to animate vertical spacing transitions on the 3D isometric stack
-  const animateActiveLayer = (idx: number) => {
-    layersRef.current.forEach((layerEl, i) => {
-      if (!layerEl) return;
+  // Smooth scroll logic to navigate to specific phases on click
+  const scrollToPhase = (idx: number) => {
+    if (!containerRef.current) return;
+    const rect = containerRef.current.getBoundingClientRect();
+    const scrollTop = window.scrollY || document.documentElement.scrollTop;
 
-      const baseZ = 64 - i * 32;
-      const isActive = i === idx;
+    const containerTop = rect.top + scrollTop;
+    const totalHeight = rect.height;
+    const viewHeight = window.innerHeight;
+    const scrollableRange = totalHeight - viewHeight;
 
-      animate(layerEl, {
-        translateZ: isActive ? baseZ + 16 : baseZ,
-        translateY: isActive ? -10 : 0,
-        translateX: isActive ? -6 : 0,
-        opacity: isActive ? 1 : 0.25,
-        filter: isActive ? 'blur(0px)' : 'blur(0.8px)',
-        duration: 350,
-        ease: 'cubicBezier(0.23, 1, 0.32, 1)'
-      });
-    });
-  };
+    if (scrollableRange <= 0) return;
 
-  // AnimeJS function to morph right-side copywriting card
-  const animateTextTransition = () => {
-    const el = textRef.current;
-    if (!el) return;
+    // Place the scroll position at the mid-point of the phase's scroll range
+    const targetProgress = (idx + 0.5) / PHASES.length;
+    const targetScrollY = containerTop + (targetProgress * scrollableRange);
 
-    animate(el, {
-      opacity: 0,
-      filter: 'blur(2px)',
-      translateY: 8,
-      duration: 150,
-      ease: 'inQuad',
-      onComplete: () => {
-        animate(el, {
-          opacity: 1,
-          filter: 'blur(0px)',
-          translateY: 0,
-          duration: 300,
-          ease: 'cubicBezier(0.23, 1, 0.32, 1)'
-        });
-      }
+    window.scrollTo({
+      top: targetScrollY,
+      behavior: 'smooth'
     });
   };
 
@@ -209,11 +241,12 @@ export default function ProcessSection() {
               {PHASES.map((phase, idx) => {
                 const isActive = idx === activeIdx;
                 return (
-                  <div
+                  <button
                     key={phase.id}
-                    className={`relative inline-flex items-center justify-center w-[110px] py-2 rounded-full border transition-all duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] font-mono text-[10px] font-bold tracking-[0.16em] ${isActive
-                      ? 'bg-[#161618] border-[#161618] text-white shadow-sm translate-x-1'
-                      : 'bg-transparent border-[#E4E3DD] text-[#A09F9A]'
+                    onClick={() => scrollToPhase(idx)}
+                    className={`relative inline-flex items-center justify-center w-[110px] py-2 rounded-full border transition-all duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] font-mono text-[10px] font-bold tracking-[0.16em] cursor-pointer outline-none ${isActive
+                      ? 'bg-[#161618] border-[#161618] text-white shadow-sm translate-x-1 font-bold'
+                      : 'bg-transparent border-[#E4E3DD] text-[#A09F9A] hover:border-[#161618] hover:text-[#161618]'
                       }`}
                   >
                     {/* Connector line from active label to card stack */}
@@ -223,7 +256,7 @@ export default function ProcessSection() {
                       </div>
                     )}
                     {phase.label}
-                  </div>
+                  </button>
                 );
               })}
             </div>
@@ -233,15 +266,16 @@ export default function ProcessSection() {
               {PHASES.map((phase, idx) => {
                 const isActive = idx === activeIdx;
                 return (
-                  <div
+                  <button
                     key={phase.id}
-                    className={`px-3 py-1.5 rounded-full border text-[9px] font-bold font-mono tracking-wider transition-all duration-300 ${isActive
-                      ? 'bg-[#161618] border-[#161618] text-white'
-                      : 'bg-transparent border-[#E4E3DD] text-[#A09F9A]'
+                    onClick={() => scrollToPhase(idx)}
+                    className={`px-3 py-1.5 rounded-full border text-[9px] font-bold font-mono tracking-wider cursor-pointer outline-none transition-all duration-300 ${isActive
+                      ? 'bg-[#161618] border-[#161618] text-white font-bold'
+                      : 'bg-transparent border-[#E4E3DD] text-[#A09F9A] hover:border-[#161618] hover:text-[#161618]'
                       }`}
                   >
                     {phase.label}
-                  </div>
+                  </button>
                 );
               })}
             </div>
@@ -269,80 +303,304 @@ export default function ProcessSection() {
                           layersRef.current[idx] = el;
                         }}
                         style={{
-                          zIndex: 10 - idx
+                          zIndex: 5 - idx
                         }}
-                        className={`absolute inset-0 rounded-xl border bg-white shadow-[0_4px_16px_rgba(0,0,0,0.03)] p-4 flex flex-col justify-between select-none transition-colors duration-300 ${isActive
-                          ? 'border-[#EF4A2A] shadow-[0_12px_32px_rgba(239,74,42,0.12)]'
-                          : 'border-[#E4E3DD]'
-                          }`}
+                        className={`absolute inset-0 rounded-xl border shadow-[0_4px_16px_rgba(0,0,0,0.03)] flex flex-col justify-between select-none transition-all duration-300 ${
+                          isActive
+                            ? idx === 4
+                              ? 'border-[#EF4A2A] bg-[#FFF5F2] shadow-[0_12px_32px_rgba(239,74,42,0.12)]'
+                              : 'border-[#EF4A2A] bg-white shadow-[0_12px_32px_rgba(239,74,42,0.12)]'
+                            : idx === 0
+                              ? 'border-[#E4E3DD] bg-[#FAF9F5]'
+                              : 'border-[#E4E3DD] bg-white'
+                        }`}
                       >
-                        {/* Browser Shell Top Bar */}
-                        <div className="flex items-center justify-between border-b border-[#EEEDE9] pb-2">
-                          <div className="flex gap-1 items-center shrink-0">
-                            <span className={`w-1.5 h-1.5 rounded-full ${isActive ? 'bg-[#EF4A2A]' : 'bg-[#E4E3DD]'}`} />
-                            <span className={`w-1.5 h-1.5 rounded-full ${isActive ? 'bg-[#EF4A2A]/60' : 'bg-[#E4E3DD]/60'}`} />
-                            <span className={`w-1.5 h-1.5 rounded-full ${isActive ? 'bg-[#EF4A2A]/40' : 'bg-[#E4E3DD]/40'}`} />
-                          </div>
-                          <div className="flex gap-1 items-center">
-                            <div className={`w-6 h-2 rounded-sm ${isActive ? 'bg-[#EF4A2A]/10 border border-[#EF4A2A]/30' : 'bg-[#EEEDE9] border border-[#E4E3DD]'}`} />
-                            <div className="w-4 h-2 rounded-sm bg-[#EEEDE9] border border-[#E4E3DD]/50" />
-                          </div>
-                        </div>
+                        {/* PHASE 01 — PLAN: Thick Baseboard / Hardware Slab */}
+                        {idx === 0 && (
+                          <div className="flex-1 w-full h-full relative p-4 flex flex-col justify-between select-none">
+                            {/* Inner panel bevel border */}
+                            <div className={`absolute inset-1.5 rounded-lg border ${isActive ? 'border-[#EF4A2A]/40' : 'border-[#EEEDE9]'} pointer-events-none`} />
 
-                        {/* Dashboard Content — minimalist wireframe style */}
-                        <div className="flex-1 py-3 flex gap-3 items-center justify-between overflow-hidden">
-                          {/* Left sidebar mock */}
-                          <div className="flex flex-col gap-1.5 w-1/3 shrink-0">
-                            <div className={`h-3 w-[85%] rounded-full border ${isActive
-                              ? 'bg-[#EF4A2A]/10 border-[#EF4A2A]/35'
-                              : 'bg-[#EEEDE9] border-[#E4E3DD]'
-                              }`} />
-                            <div className="flex gap-1 mt-1 pl-1">
-                              {[1, 2, 3, 4].map((dot) => (
-                                <span
-                                  key={dot}
-                                  className={`w-1.5 h-1.5 rounded-full ${isActive ? 'bg-[#EF4A2A]' : 'bg-[#E4E3DD]'
-                                    }`}
-                                />
-                              ))}
+                            {/* Corner mechanical screw holes */}
+                            <div className="absolute top-3 left-3 w-3 h-3 rounded-full border border-[#D0CFC9] bg-[#EBEAE4] flex items-center justify-center shadow-[inset_0_1px_2px_rgba(0,0,0,0.1)]">
+                              <div className="w-1 h-1 rounded-full bg-[#A09F9A]" />
                             </div>
-                            <div className={`h-2.5 w-[65%] rounded-sm ${isActive ? 'bg-[#EF4A2A]/20' : 'bg-[#EEEDE9]'}`} />
-                            <div className={`h-2.5 w-[50%] rounded-sm ${isActive ? 'bg-[#EF4A2A]/10' : 'bg-[#EEEDE9]/60'}`} />
-                          </div>
+                            <div className="absolute top-3 right-3 w-3 h-3 rounded-full border border-[#D0CFC9] bg-[#EBEAE4] flex items-center justify-center shadow-[inset_0_1px_2px_rgba(0,0,0,0.1)]">
+                              <div className="w-1 h-1 rounded-full bg-[#A09F9A]" />
+                            </div>
+                            <div className="absolute bottom-3 left-3 w-3 h-3 rounded-full border border-[#D0CFC9] bg-[#EBEAE4] flex items-center justify-center shadow-[inset_0_1px_2px_rgba(0,0,0,0.1)]">
+                              <div className="w-1 h-1 rounded-full bg-[#A09F9A]" />
+                            </div>
+                            <div className="absolute bottom-3 right-3 w-3 h-3 rounded-full border border-[#D0CFC9] bg-[#EBEAE4] flex items-center justify-center shadow-[inset_0_1px_2px_rgba(0,0,0,0.1)]">
+                              <div className="w-1 h-1 rounded-full bg-[#A09F9A]" />
+                            </div>
 
-                          {/* Right main content panel */}
-                          <div className="flex-1 h-full flex flex-col justify-center pl-1">
-                            <div className={`w-full h-[85%] rounded-lg border flex items-center justify-center p-1.5 ${isActive
-                              ? 'bg-[#EF4A2A]/5 border-[#EF4A2A]/30'
-                              : 'bg-[#F7F7F7] border-[#E4E3DD]/70'
-                              }`}>
-                              {/* Central geometric — clean rectangles matching the inspiration */}
-                              <div className="w-full h-full flex flex-col gap-1 justify-center px-1">
-                                <div className={`h-2.5 w-full rounded-sm ${isActive ? 'bg-[#EF4A2A]/25' : 'bg-[#E4E3DD]/40'}`} />
-                                <div className={`h-2.5 w-3/4 rounded-sm ${isActive ? 'bg-[#EF4A2A]/15' : 'bg-[#E4E3DD]/25'}`} />
-                                <div className="flex gap-1 mt-0.5">
-                                  <div className={`h-4 flex-1 rounded-sm ${isActive ? 'bg-[#EF4A2A]/10 border border-[#EF4A2A]/20' : 'bg-[#EEEDE9]/60'}`} />
-                                  <div className={`h-4 flex-1 rounded-sm ${isActive ? 'bg-[#EF4A2A]/10 border border-[#EF4A2A]/20' : 'bg-[#EEEDE9]/60'}`} />
+                            {/* Header details */}
+                            <div className="w-full flex justify-between items-center px-8 pt-1 shrink-0">
+                              <span className={`font-mono text-[7px] font-bold tracking-[0.2em] ${isActive ? 'text-[#EF4A2A]/60' : 'text-[#A09F9A]'}`}>PLANNING UNIT</span>
+                              <div className="flex gap-1">
+                                <div className={`w-3 h-1 rounded-full ${isActive ? 'bg-[#EF4A2A]/40' : 'bg-[#E4E3DD]'}`} />
+                                <div className={`w-1.5 h-1 rounded-full ${isActive ? 'bg-[#EF4A2A]/20' : 'bg-[#E4E3DD]/50'}`} />
+                              </div>
+                            </div>
+
+                            {/* Circuit nodes & horizontal slot */}
+                            <div className="flex-1 flex flex-col items-center justify-center px-6 gap-3">
+                              <div className={`w-[72%] h-4 rounded-full border ${isActive ? 'border-[#EF4A2A]/30 bg-[#EF4A2A]/5' : 'border-[#E4E3DD] bg-[#F7F7F7]'} flex items-center justify-center shrink-0`}>
+                                <span className={`font-mono text-[8px] tracking-[0.15em] font-medium ${isActive ? 'text-[#EF4A2A]/70' : 'text-[#797872]'}`}>BASEPLATE SYSTEM</span>
+                              </div>
+
+                              <div className="w-full max-w-[180px] flex justify-between items-center relative mt-1 shrink-0">
+                                <div className={`absolute left-0 right-0 h-px ${isActive ? 'bg-[#EF4A2A]/20' : 'bg-[#E4E3DD]'}`} />
+                                <div className={`relative w-4 h-4 rounded-full border bg-white flex items-center justify-center z-10 ${isActive ? 'border-[#EF4A2A]' : 'border-[#E4E3DD]'}`}>
+                                  <div className={`w-1.5 h-1.5 rounded-full ${isActive ? 'bg-[#EF4A2A]' : 'bg-[#E4E3DD]'}`} />
+                                </div>
+                                <div className={`px-2 py-0.5 rounded border text-[7px] font-mono font-bold bg-white z-10 ${isActive ? 'border-[#EF4A2A]/40 text-[#EF4A2A]' : 'border-[#E4E3DD] text-[#797872]'}`}>
+                                  DB_INIT
+                                </div>
+                                <div className={`relative w-4 h-4 rounded-full border bg-white flex items-center justify-center z-10 ${isActive ? 'border-[#EF4A2A]' : 'border-[#E4E3DD]'}`}>
+                                  <div className={`w-1.5 h-1.5 rounded-full ${isActive ? 'bg-[#EF4A2A]' : 'bg-[#E4E3DD]'}`} />
                                 </div>
                               </div>
                             </div>
-                          </div>
-                        </div>
 
-                        {/* Card Bottom status indicators */}
-                        <div className="border-t border-[#EEEDE9] pt-2 flex items-center justify-between">
-                          <div className="flex gap-0.5">
-                            {[1, 2, 3].map((circle) => (
-                              <div
-                                key={circle}
-                                className={`w-2.5 h-2.5 rounded-full ${isActive ? 'bg-[#EF4A2A]/30' : 'bg-[#EEEDE9]'}`}
-                              />
-                            ))}
+                            {/* Footer */}
+                            <div className="border-t border-[#EEEDE9] pt-2 px-2 flex justify-between items-center text-[7px] font-mono text-[#A09F9A] uppercase tracking-widest shrink-0">
+                              <span>SECURE BASE HARDWARE</span>
+                              <span className={isActive ? 'text-[#EF4A2A]' : ''}>PH-01</span>
+                            </div>
                           </div>
-                          <span className={`font-mono text-[8px] font-bold uppercase tracking-wider ${isActive ? 'text-[#EF4A2A]' : 'text-[#797872]'}`}>
-                            PHASE 0{idx + 1}
-                          </span>
-                        </div>
+                        )}
+
+                        {/* PHASE 02 — DESIGN: Blueprints & Grid Guides */}
+                        {idx === 1 && (
+                          <div className="flex-1 w-full h-full p-4 flex flex-col justify-between select-none">
+                            {/* Top browser bar */}
+                            <div className="flex items-center justify-between border-b border-[#EEEDE9] pb-2 shrink-0">
+                              <div className="flex gap-1 items-center shrink-0">
+                                <span className={`w-1.5 h-1.5 rounded-full border ${isActive ? 'border-[#EF4A2A] bg-transparent' : 'border-[#E4E3DD]'}`} />
+                                <span className={`w-1.5 h-1.5 rounded-full border ${isActive ? 'border-[#EF4A2A]/60 bg-transparent' : 'border-[#E4E3DD]/60'}`} />
+                                <span className={`w-1.5 h-1.5 rounded-full border ${isActive ? 'border-[#EF4A2A]/40 bg-transparent' : 'border-[#E4E3DD]/40'}`} />
+                              </div>
+                              <div className={`w-20 h-2 rounded-full border ${isActive ? 'border-[#EF4A2A]/20 bg-transparent' : 'border-[#E4E3DD]/30 bg-transparent'}`} />
+                            </div>
+
+                            {/* Wireframe grids */}
+                            <div className="flex-1 py-3 flex gap-3 items-center justify-between overflow-hidden">
+                              <div className={`w-[30%] h-[85%] border border-dashed rounded-md p-1.5 flex flex-col gap-1.5 shrink-0 ${isActive ? 'border-[#EF4A2A]/30' : 'border-[#E4E3DD]'}`}>
+                                <div className={`h-2 w-full rounded border ${isActive ? 'border-[#EF4A2A]/40' : 'border-[#E4E3DD]'}`} />
+                                <div className={`h-1.5 w-3/4 rounded border border-dashed ${isActive ? 'border-[#EF4A2A]/30' : 'border-[#E4E3DD]/70'}`} />
+                                <div className={`h-1.5 w-1/2 rounded border border-dashed ${isActive ? 'border-[#EF4A2A]/30' : 'border-[#E4E3DD]/70'}`} />
+                              </div>
+
+                              <div className={`flex-1 h-[85%] border border-dashed rounded-md p-2 flex flex-col gap-2 relative justify-center ${isActive ? 'border-[#EF4A2A]/40' : 'border-[#E4E3DD]'}`}>
+                                <div className="flex gap-2 flex-1 items-center">
+                                  <div className={`flex-1 h-[80%] rounded border flex flex-col items-center justify-center border-dashed ${isActive ? 'border-[#EF4A2A]/40' : 'border-[#E4E3DD]/70'}`}>
+                                    <div className={`w-2 h-2 rounded-full border ${isActive ? 'border-[#EF4A2A]' : 'border-[#E4E3DD]'}`} />
+                                  </div>
+                                  <div className={`flex-1 h-[80%] rounded border flex flex-col items-center justify-center border-dashed ${isActive ? 'border-[#EF4A2A]/40' : 'border-[#E4E3DD]/70'}`}>
+                                    <div className={`w-2 h-2 rounded-full border ${isActive ? 'border-[#EF4A2A]' : 'border-[#E4E3DD]'}`} />
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+
+                            {/* Footer */}
+                            <div className="border-t border-[#EEEDE9] pt-2 flex justify-between items-center text-[7px] font-mono text-[#A09F9A] uppercase tracking-widest shrink-0">
+                              <span>BLUEPRINT SYSTEMS</span>
+                              <span className={isActive ? 'text-[#EF4A2A]' : ''}>PH-02</span>
+                            </div>
+                          </div>
+                        )}
+
+                        {/* PHASE 03 — DEVELOP: Modular Grid Blocks */}
+                        {idx === 2 && (
+                          <div className="flex-1 w-full h-full p-4 flex flex-col justify-between select-none">
+                            <div className="flex items-center justify-between border-b border-[#EEEDE9] pb-2 shrink-0">
+                              <div className="flex gap-1 items-center shrink-0">
+                                <span className={`w-1.5 h-1.5 rounded-full ${isActive ? 'bg-[#EF4A2A]/60' : 'bg-[#E4E3DD]'}`} />
+                                <span className={`w-1.5 h-1.5 rounded-full ${isActive ? 'bg-[#EF4A2A]/40' : 'bg-[#E4E3DD]'}`} />
+                                <span className={`w-1.5 h-1.5 rounded-full ${isActive ? 'bg-[#EF4A2A]/20' : 'bg-[#E4E3DD]'}`} />
+                              </div>
+                              <div className="flex gap-1">
+                                <div className={`w-5 h-2 rounded-sm ${isActive ? 'bg-[#EF4A2A]/10 border border-[#EF4A2A]/20' : 'bg-[#EEEDE9] border border-[#E4E3DD]'}`} />
+                                <div className="w-3 h-2 rounded-sm bg-[#EEEDE9]" />
+                              </div>
+                            </div>
+
+                            <div className="flex-1 py-3 flex gap-3 items-center justify-between overflow-hidden">
+                              <div className="flex-1 h-[85%] flex flex-col gap-1.5 justify-center">
+                                <div className={`h-4 rounded border flex items-center px-1.5 justify-between ${isActive ? 'border-[#EF4A2A]/30 bg-[#EF4A2A]/5' : 'border-[#E4E3DD] bg-[#F7F7F7]'}`}>
+                                  <div className={`w-2.5 h-2.5 rounded ${isActive ? 'bg-[#EF4A2A]/30' : 'bg-[#E4E3DD]'}`} />
+                                  <div className={`w-[60%] h-1.5 rounded ${isActive ? 'bg-[#EF4A2A]/20' : 'bg-[#E4E3DD]/60'}`} />
+                                </div>
+                                <div className={`h-4 rounded border flex items-center px-1.5 justify-between ${isActive ? 'border-[#EF4A2A]/30 bg-[#EF4A2A]/5' : 'border-[#E4E3DD] bg-[#F7F7F7]'}`}>
+                                  <div className={`w-2.5 h-2.5 rounded ${isActive ? 'bg-[#EF4A2A]/30' : 'bg-[#E4E3DD]'}`} />
+                                  <div className={`w-[45%] h-1.5 rounded ${isActive ? 'bg-[#EF4A2A]/20' : 'bg-[#E4E3DD]/60'}`} />
+                                </div>
+                              </div>
+
+                              <div className={`w-[52%] h-[85%] rounded-lg border p-2 flex flex-col gap-2 justify-between shrink-0 ${isActive ? 'border-[#EF4A2A]/30 bg-white shadow-sm' : 'border-[#E4E3DD] bg-[#FAF9F6]'}`}>
+                                <div className="flex justify-between items-center">
+                                  <div className={`w-8 h-1.5 rounded ${isActive ? 'bg-[#EF4A2A]/20' : 'bg-[#E4E3DD]'}`} />
+                                  <span className={`w-1.5 h-1.5 rounded-full ${isActive ? 'bg-[#EF4A2A]' : 'bg-[#E4E3DD]'}`} />
+                                </div>
+                                <div className={`flex-1 rounded border p-1 flex gap-1 ${isActive ? 'border-[#EF4A2A]/10 bg-[#EF4A2A]/5' : 'border-[#EEEDE9] bg-[#F2F1ED]'}`}>
+                                  <div className={`flex-1 rounded bg-white border ${isActive ? 'border-[#EF4A2A]/20' : 'border-[#E4E3DD]/40'}`} />
+                                  <div className={`flex-1 rounded bg-white border ${isActive ? 'border-[#EF4A2A]/20' : 'border-[#E4E3DD]/40'}`} />
+                                </div>
+                              </div>
+                            </div>
+
+                            <div className="border-t border-[#EEEDE9] pt-2 flex justify-between items-center text-[7px] font-mono text-[#A09F9A] uppercase tracking-widest shrink-0">
+                              <span>MODULAR SYSTEM</span>
+                              <span className={isActive ? 'text-[#EF4A2A]' : ''}>PH-03</span>
+                            </div>
+                          </div>
+                        )}
+
+                        {/* PHASE 04 — TEST: Checklists & Verification Dials */}
+                        {idx === 3 && (
+                          <div className="flex-1 w-full h-full p-4 flex flex-col justify-between select-none">
+                            <div className="flex items-center justify-between border-b border-[#EEEDE9] pb-2 shrink-0">
+                              <div className="flex gap-1 items-center shrink-0">
+                                <span className={`w-1.5 h-1.5 rounded-full ${isActive ? 'bg-[#EF4A2A]/70' : 'bg-[#E4E3DD]'}`} />
+                                <span className={`w-1.5 h-1.5 rounded-full ${isActive ? 'bg-[#EF4A2A]/50' : 'bg-[#E4E3DD]'}`} />
+                                <span className={`w-1.5 h-1.5 rounded-full ${isActive ? 'bg-[#EF4A2A]/30' : 'bg-[#E4E3DD]'}`} />
+                              </div>
+                              <span className={`font-mono text-[7px] tracking-wider px-1.5 py-0.5 border rounded-sm ${isActive ? 'text-[#EF4A2A] border-[#EF4A2A]/30 bg-[#EF4A2A]/5' : 'text-[#797872] border-[#E4E3DD]'}`}>VERIFY.TEST</span>
+                            </div>
+
+                            <div className="flex-1 py-3 flex gap-3 items-center justify-between overflow-hidden">
+                              <div className={`w-[36%] h-[85%] rounded-lg border flex flex-col items-center justify-center p-1 relative shrink-0 ${isActive ? 'border-[#EF4A2A]/20 bg-white shadow-sm' : 'border-[#E4E3DD] bg-[#FAF9F6]'}`}>
+                                <svg className={`w-10 h-10 transform -rotate-90 ${isActive ? 'text-[#EF4A2A]' : 'text-[#A09F9A]'}`} viewBox="0 0 36 36">
+                                  <path
+                                    className="text-gray-100"
+                                    strokeWidth="3.5"
+                                    stroke="currentColor"
+                                    fill="none"
+                                    d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
+                                  />
+                                  <path
+                                    strokeWidth="3.5"
+                                    strokeDasharray="75, 100"
+                                    strokeLinecap="round"
+                                    stroke="currentColor"
+                                    fill="none"
+                                    d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
+                                    opacity={isActive ? 1 : 0.4}
+                                  />
+                                </svg>
+                                <span className={`font-mono text-[7px] font-bold mt-1 ${isActive ? 'text-[#EF4A2A]' : 'text-[#797872]'}`}>75% AA</span>
+                              </div>
+
+                              <div className="flex-1 h-[85%] flex flex-col gap-1.5 justify-center">
+                                <div className="flex items-center gap-1.5">
+                                  <div className={`w-2.5 h-2.5 rounded-sm border flex items-center justify-center shrink-0 ${isActive ? 'border-[#EF4A2A] bg-[#EF4A2A]/10 text-[#EF4A2A]' : 'border-[#E4E3DD] bg-white'}`}>
+                                    <span className="text-[7px] leading-none font-bold">✓</span>
+                                  </div>
+                                  <div className={`h-1.5 w-[75%] rounded ${isActive ? 'bg-[#EF4A2A]/30' : 'bg-[#E4E3DD]'}`} />
+                                </div>
+                                <div className="flex items-center gap-1.5">
+                                  <div className={`w-2.5 h-2.5 rounded-sm border flex items-center justify-center shrink-0 ${isActive ? 'border-[#EF4A2A] bg-[#EF4A2A]/10 text-[#EF4A2A]' : 'border-[#E4E3DD] bg-white'}`}>
+                                    <span className="text-[7px] leading-none font-bold">✓</span>
+                                  </div>
+                                  <div className={`h-1.5 w-[55%] rounded ${isActive ? 'bg-[#EF4A2A]/20' : 'bg-[#E4E3DD]'}`} />
+                                </div>
+                              </div>
+                            </div>
+
+                            <div className="border-t border-[#EEEDE9] pt-2 flex justify-between items-center text-[7px] font-mono text-[#A09F9A] uppercase tracking-widest shrink-0">
+                              <span>CRAFT CHECKLIST</span>
+                              <span className={isActive ? 'text-[#EF4A2A]' : ''}>PH-04</span>
+                            </div>
+                          </div>
+                        )}
+
+                        {/* PHASE 05 — DEPLOY: Elite Coral UI & Product Preview */}
+                        {idx === 4 && (
+                          <div className={`flex-1 w-full h-full p-4 flex flex-col justify-between select-none rounded-xl transition-colors duration-300 ${isActive ? 'bg-[#FFF5F2]' : 'bg-white'}`}>
+                            {/* Browser Bar */}
+                            <div className="flex items-center justify-between border-b border-[#EEEDE9] pb-2 shrink-0">
+                              <div className="flex gap-1 items-center shrink-0">
+                                <span className={`w-1.5 h-1.5 rounded-full ${isActive ? 'bg-[#EF4A2A]' : 'bg-[#E4E3DD]'}`} />
+                                <span className={`w-1.5 h-1.5 rounded-full ${isActive ? 'bg-[#EF4A2A]/60' : 'bg-[#E4E3DD]/60'}`} />
+                                <span className={`w-1.5 h-1.5 rounded-full ${isActive ? 'bg-[#EF4A2A]/40' : 'bg-[#E4E3DD]/40'}`} />
+                              </div>
+
+                              <div className={`w-28 h-2.5 rounded-full ${isActive ? 'bg-[#EF4A2A]/8 border border-[#EF4A2A]/10' : 'bg-[#F2F1ED]'} flex items-center justify-center`} />
+
+                              <div className="flex gap-1 items-center">
+                                <div className={`w-6 h-2 rounded-sm ${isActive ? 'bg-[#EF4A2A]/10 border border-[#EF4A2A]/30' : 'bg-[#EEEDE9] border border-[#E4E3DD]'}`} />
+                                <div className="w-4 h-2 rounded-sm bg-[#EEEDE9] border border-[#E4E3DD]/50" />
+                              </div>
+                            </div>
+
+                            {/* Content Area */}
+                            <div className="flex-1 py-3 flex gap-4 items-center justify-between overflow-hidden relative">
+
+                              {/* Left Column (UI controls) */}
+                              <div className="flex flex-col gap-2 w-[48%] shrink-0 h-full justify-center">
+                                {/* $179.99 tag */}
+                                <span className={`font-sans text-[18px] sm:text-[20px] font-medium tracking-tight leading-none ${isActive ? 'text-[#EF4A2A]' : 'text-[#797872]'}`}>
+                                  $179.99
+                                </span>
+
+                                {/* 4 dots (first filled) */}
+                                <div className="flex gap-1.5 my-0.5 items-center">
+                                  <span className={`w-1.5 h-1.5 rounded-full ${isActive ? 'bg-[#EF4A2A]' : 'bg-[#797872]'}`} />
+                                  <span className={`w-1.5 h-1.5 rounded-full ${isActive ? 'bg-[#EF4A2A]/30 border border-[#EF4A2A]/60' : 'bg-[#E4E3DD]'}`} />
+                                  <span className={`w-1.5 h-1.5 rounded-full ${isActive ? 'bg-[#EF4A2A]/30 border border-[#EF4A2A]/60' : 'bg-[#E4E3DD]'}`} />
+                                  <span className={`w-1.5 h-1.5 rounded-full ${isActive ? 'bg-[#EF4A2A]/30 border border-[#EF4A2A]/60' : 'bg-[#E4E3DD]'}`} />
+                                </div>
+
+                                {/* Switch toggles & button pills */}
+                                <div className="flex gap-2 items-center">
+                                  <div className={`w-9 h-3.5 rounded-full ${isActive ? 'bg-[#EF4A2A] shadow-sm shadow-[#EF4A2A]/20' : 'bg-[#797872]/40'} shrink-0`} />
+
+                                  <div className={`w-10 h-3.5 rounded-full border shrink-0 flex items-center p-0.5 justify-start relative transition-all ${isActive ? 'border-[#EF4A2A] text-[#EF4A2A]' : 'border-[#E4E3DD] text-[#797872]'}`}>
+                                    <span className={`w-2.5 h-2.5 rounded-full bg-current absolute right-0.5 transition-transform`} />
+                                  </div>
+                                </div>
+
+                                {/* Text lines */}
+                                <div className="flex flex-col gap-1 mt-1">
+                                  <div className={`h-1.5 w-full rounded-sm ${isActive ? 'bg-[#EF4A2A]/20' : 'bg-[#EEEDE9]'}`} />
+                                  <div className={`h-1.5 w-3/4 rounded-sm ${isActive ? 'bg-[#EF4A2A]/15' : 'bg-[#EEEDE9]/60'}`} />
+                                </div>
+                              </div>
+
+                              {/* Right Column: ELEGANT ELEVATED PRODUCT PREVIEW CARD */}
+                              <div className={`absolute bottom-2.5 right-0.5 w-[46%] h-[82%] rounded-lg bg-white border flex flex-col justify-center items-center p-1.5 transition-all duration-300 ${
+                                isActive
+                                  ? 'border-[#EF4A2A]/20 shadow-[0_16px_28px_rgba(239,74,42,0.16)] -translate-y-1'
+                                  : 'border-[#E4E3DD]/80 shadow-[0_4px_12px_rgba(0,0,0,0.03)]'
+                              }`}>
+                                <div className={`w-full h-full rounded-md border transition-colors ${
+                                  isActive
+                                    ? 'bg-[#EF4A2A]/6 border-[#EF4A2A]/20'
+                                    : 'bg-[#FAF9F5] border-[#E4E3DD]'
+                                }`} />
+                              </div>
+
+                              {/* Pointing/annotation line matching the diagram (exactly like the image!) */}
+                              {isActive && (
+                                <div className="absolute left-[-22px] top-[48px] pointer-events-none z-30 flex items-center">
+                                  <svg width="45" height="15" viewBox="0 0 45 15" fill="none">
+                                    <path d="M1 7.5H35" stroke="#161618" strokeWidth="1" />
+                                    <circle cx="35" cy="7.5" r="1.5" fill="#161618" />
+                                  </svg>
+                                </div>
+                              )}
+                            </div>
+
+                            {/* Footer */}
+                            <div className="border-t border-[#EEEDE9] pt-2 flex justify-between items-center text-[7px] font-mono text-[#A09F9A] uppercase tracking-widest shrink-0 font-bold">
+                              <span>PRODUCTION PLATFORM</span>
+                              <span className={isActive ? 'text-[#EF4A2A]' : ''}>PH-05</span>
+                            </div>
+                          </div>
+                        )}
                       </div>
                     );
                   })}

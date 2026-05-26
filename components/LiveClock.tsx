@@ -29,7 +29,7 @@ export default function LiveClock({
           timeZone: timeZone,
         });
         setTimeStr(formatted);
-      } catch (e) {
+      } catch {
         // Fallback if timezone not supported
         const formatted = now.toLocaleTimeString('en-US', {
           hour12: false,
