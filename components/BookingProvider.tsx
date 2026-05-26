@@ -4,25 +4,25 @@ import React, { createContext, useContext, useEffect, useState } from 'react';
 
 interface BookingContextType {
   openBooking: () => void;
-  isLoaded: boolean;
 }
 
 const BookingContext = createContext<BookingContextType>({
   openBooking: () => {},
-  isLoaded: false,
 });
 
 export const useBooking = () => useContext(BookingContext);
 
 export default function BookingProvider({ children }: { children: React.ReactNode }) {
-  const [isLoaded, setIsLoaded] = useState(false);
+  const [, setIsLoaded] = useState(false);
 
   useEffect(() => {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const w = window as any;
 
     // Official Cal.com embed v2 IIFE — sets up queue, namespace handling,
     // and auto-loads the script exactly as Cal's snippet generator produces.
     if (!w.Cal || !w.Cal.loaded) {
+      /* eslint-disable @typescript-eslint/no-explicit-any, prefer-rest-params */
       (function (C: any, A: string, L: string) {
         const p = function (a: any, ar: any) { a.q.push(ar); };
         const d = C.document;
@@ -49,6 +49,7 @@ export default function BookingProvider({ children }: { children: React.ReactNod
           p(cal, ar);
         };
       })(window, "https://app.cal.com/embed/embed.js", "init");
+      /* eslint-enable @typescript-eslint/no-explicit-any, prefer-rest-params */
     }
 
     // Initialize the default namespace with the correct origin
@@ -68,10 +69,12 @@ export default function BookingProvider({ children }: { children: React.ReactNod
       layout: "month_view",
     });
 
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setIsLoaded(true);
   }, []);
 
   const openBooking = () => {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const w = window as any;
     if (w.Cal) {
       w.Cal("modal", {
@@ -88,9 +91,8 @@ export default function BookingProvider({ children }: { children: React.ReactNod
   };
 
   return (
-    <BookingContext.Provider value={{ openBooking, isLoaded }}>
+    <BookingContext.Provider value={{ openBooking }}>
       {children}
     </BookingContext.Provider>
   );
 }
-

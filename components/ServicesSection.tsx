@@ -147,7 +147,7 @@ function ServiceCard({
         <h3 className="font-serif text-[24px] lg:text-[20px] xl:text-[24px] font-normal text-white leading-tight">
           {service.title}
         </h3>
-        <p className="font-sans text-[13px] xl:text-[14px] text-n-400 leading-relaxed mt-2 max-w-xl">
+        <p className="font-sans text-[14px] sm:text-[13px] xl:text-[14px] text-n-400 leading-relaxed mt-2 max-w-xl">
           {service.description}
         </p>
       </div>
@@ -158,7 +158,7 @@ function ServiceCard({
           {service.pills.map((pill) => (
             <span
               key={pill}
-              className="font-mono text-[8px] xl:text-[9px] text-n-400/80 border border-n-500/15 rounded px-2.5 py-1 tracking-wider bg-n-700/35 transition-all duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:border-n-500/25 group-hover:text-white"
+              className="font-mono text-[9px] sm:text-[8px] xl:text-[9px] text-n-400/80 border border-n-500/15 rounded px-2.5 py-1 tracking-wider bg-n-700/35 transition-all duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:border-n-500/25 group-hover:text-white"
             >
               {pill}
             </span>
@@ -374,13 +374,15 @@ export default function ServicesSection() {
       </div>
 
       {/* ─── Bridge to Manifesto ─── */}
-      <div className="relative h-8 sm:h-10 lg:h-12 pointer-events-none z-20"
+      <div className="hidden md:block relative h-8 sm:h-10 lg:h-12 pointer-events-none z-20"
         style={{
           background: 'linear-gradient(to bottom, transparent 0%, rgba(12,12,14,0.42) 48%, #0C0C0E 100%)'
         }}
       />
 
-      <ManifestoSection />
+      <div className="hidden md:block">
+        <ManifestoSection />
+      </div>
     </section>
   );
 }

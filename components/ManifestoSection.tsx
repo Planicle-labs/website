@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useRef } from 'react';
+import Image from 'next/image';
 import { motion, useInView } from 'framer-motion';
 
 // Axioms data
@@ -125,22 +126,22 @@ export default function ManifestoSection() {
               className="text-[#EEEDE9] font-normal leading-[0.84] tracking-tight select-none"
               style={{ fontSize: 'clamp(2.25rem, 5.6vw, 6.25rem)' }}
             >
-              <motion.div variants={itemVariants} className="block whitespace-nowrap">
+              <motion.div variants={itemVariants} className="block sm:whitespace-nowrap">
                 <span className="font-cormorant lowercase italic font-light text-[1.05em] pr-3 tracking-normal">your</span>
                 <span className="font-antonio uppercase font-bold tracking-tighter text-[1.12em]">DIRECTION</span>
               </motion.div>
-              <motion.div variants={itemVariants} className="-mt-[0.02em] ml-[0.35em] block whitespace-nowrap">
+              <motion.div variants={itemVariants} className="-mt-[0.02em] ml-[0.35em] block sm:whitespace-nowrap">
                 <span className="font-antonio uppercase font-bold tracking-tighter text-[1.12em] pr-3">IS</span>
                 <span className="font-cormorant lowercase italic font-light text-[1.05em] tracking-normal">more</span>
               </motion.div>
-              <motion.div variants={itemVariants} className="-mt-[0.04em] block whitespace-nowrap">
+              <motion.div variants={itemVariants} className="-mt-[0.04em] block sm:whitespace-nowrap">
                 <span className="font-antonio uppercase font-bold tracking-tighter text-[1.12em]">IMPORTANT</span>
               </motion.div>
-              <motion.div variants={itemVariants} className="-mt-[0.04em] block whitespace-nowrap">
+              <motion.div variants={itemVariants} className="-mt-[0.04em] block sm:whitespace-nowrap">
                 <span className="font-cormorant lowercase italic font-light text-[1.05em] pr-3 tracking-normal">than</span>
                 <span className="font-antonio uppercase font-bold tracking-tighter text-[1.12em]">YOUR</span>
               </motion.div>
-              <motion.div variants={itemVariants} className="-mt-[0.04em] block whitespace-nowrap">
+              <motion.div variants={itemVariants} className="-mt-[0.04em] block sm:whitespace-nowrap">
                 <span className="font-cormorant lowercase italic font-light text-[1.28em] tracking-normal animate-pulse-slow">
                   speed
                   <span className="inline-block w-[0.1em] h-[0.1em] rounded-full bg-[#FF4500] ml-1.5 align-baseline" />
@@ -188,7 +189,7 @@ export default function ManifestoSection() {
           </aside>
 
           {/* Column 4: Far Right Abstract Graphic Column */}
-          <div className="p-6 lg:p-4 xl:p-6 flex flex-col items-center justify-center relative overflow-hidden group min-h-[300px] lg:min-h-0">
+          <div className="p-6 lg:p-4 xl:p-6 flex flex-col items-center justify-center relative overflow-hidden group min-h-[220px] sm:min-h-[300px] lg:min-h-0">
             {/* Subtle wireframe overlay on the image container */}
             <div className="relative w-full h-full min-h-[250px] border border-white/15 p-1.5 flex items-center justify-center bg-black/40 overflow-hidden">
               {/* Corner crosshairs for technical HUD style */}
@@ -198,14 +199,16 @@ export default function ManifestoSection() {
               <div className="absolute bottom-1.5 right-1.5 text-white/30 pointer-events-none select-none font-bold text-[8px]">+</div>
 
               {/* The Concrete Image */}
-              <img
+              <Image
                 src="/brutalist_concrete.png"
                 alt="Brutalist concrete architectural fragment with sharp angles and shadows"
-                className="w-full h-full object-cover grayscale opacity-50 group-hover:opacity-75 group-hover:scale-105 transition-all duration-[500ms] ease-[cubic-bezier(0.23,1,0.32,1)]"
+                fill
+                sizes="(max-width: 1024px) 100vw, 180px"
+                className="object-cover grayscale opacity-50 group-hover:opacity-75 group-hover:scale-105 transition-all duration-[500ms] ease-[cubic-bezier(0.23,1,0.32,1)]"
               />
 
               {/* Technical label overlay */}
-              <div className="absolute bottom-3 left-3 bg-black/75 backdrop-blur-[2px] border border-white/10 px-2 py-1 font-mono text-[7px] tracking-widest text-[#EEEDE9]/60 select-none">
+              <div className="absolute bottom-3 left-3 bg-black/75 backdrop-blur-[2px] border border-white/10 px-2 py-1 font-mono text-[8px] sm:text-[7px] tracking-widest text-[#EEEDE9]/60 select-none">
                 IMG_REF // BRUTALIST_01
               </div>
             </div>

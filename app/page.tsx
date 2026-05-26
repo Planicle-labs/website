@@ -4,7 +4,6 @@ import dynamic from 'next/dynamic';
 import Navbar from '@/components/Navbar';
 import ProcessSection from '@/components/ProcessSection';
 import Footer from '@/components/Footer';
-import TextRollButton from "@/components/TextRollButton";
 import ServicesSection from '@/components/ServicesSection';
 import { useBooking } from '@/components/BookingProvider';
 
@@ -48,7 +47,7 @@ export default function Home() {
             {/* Primary CTA (BOOK A CALL ») */}
             <button
               onClick={openBooking}
-              className="group inline-flex items-center bg-brand-orange hover:bg-brand-orange/95 hover:scale-[1.02] text-white rounded-full pl-6 pr-2 py-2.5 transition-all duration-200 ease-[cubic-bezier(0.16,1,0.3,1)] active:scale-[0.98] shadow-lg shadow-brand-orange/10 hover:shadow-brand-orange/20 cursor-pointer border-none outline-none"
+              className="group inline-flex items-center bg-brand-orange hover:bg-brand-orange/95 hover:scale-[1.02] text-white rounded-full pl-6 pr-2 py-3 sm:py-2.5 transition-all duration-200 ease-[cubic-bezier(0.16,1,0.3,1)] active:scale-[0.98] shadow-lg shadow-brand-orange/10 hover:shadow-brand-orange/20 cursor-pointer border-none outline-none"
             >
               <span className="font-mono text-[11px] sm:text-[12px] font-bold tracking-widest mr-4 relative overflow-hidden h-[18px]">
                 <span className="flex flex-col transition-transform duration-200 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:-translate-y-1/2">
@@ -60,7 +59,7 @@ export default function Home() {
                   </span>
                 </span>
               </span>
-              <span className="w-8 h-8 sm:w-9 sm:h-9 bg-white text-brand-orange rounded-full flex items-center justify-center text-[12px] font-bold transition-transform duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:rotate-45">
+              <span className="w-9 h-9 sm:w-9 sm:h-9 bg-white text-brand-orange rounded-full flex items-center justify-center text-[13px] sm:text-[12px] font-bold transition-transform duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:rotate-45">
                 »
               </span>
             </button>
@@ -68,7 +67,7 @@ export default function Home() {
             {/* Secondary CTA (OUR SERVICES) */}
             <a
               href="#services"
-              className="group inline-flex items-center border border-n-500/30 hover:border-n-700 hover:scale-[1.02] text-n-700 rounded-full pl-6 pr-2 py-2.5 transition-all duration-200 ease-[cubic-bezier(0.16,1,0.3,1)] active:scale-[0.98]"
+              className="group inline-flex items-center border border-n-500/30 hover:border-n-700 hover:scale-[1.02] text-n-700 rounded-full pl-6 pr-2 py-3 sm:py-2.5 transition-all duration-200 ease-[cubic-bezier(0.16,1,0.3,1)] active:scale-[0.98]"
             >
               <span className="font-mono text-[11px] sm:text-[12px] font-bold tracking-widest mr-4 relative overflow-hidden h-[18px]">
                 <span className="flex flex-col transition-transform duration-200 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:-translate-y-1/2">
@@ -80,7 +79,7 @@ export default function Home() {
                   </span>
                 </span>
               </span>
-              <span className="w-8 h-8 sm:w-9 sm:h-9 bg-n-700 text-white rounded-full flex items-center justify-center text-[12px] font-bold transition-transform duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:rotate-45">
+              <span className="w-9 h-9 sm:w-9 sm:h-9 bg-n-700 text-white rounded-full flex items-center justify-center text-[13px] sm:text-[12px] font-bold transition-transform duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:rotate-45">
                 ›
               </span>
             </a>
