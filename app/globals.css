@@ -29,6 +29,7 @@
   --font-serif: var(--font-serif), Georgia, serif;
   --font-mono: var(--font-mono), monospace;
   --font-antonio: var(--font-antonio), sans-serif;
+  --font-space: var(--font-space), sans-serif;
   --font-cormorant: var(--font-cormorant), serif;
 }
 
