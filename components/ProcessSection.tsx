@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useEffect, useRef } from 'react';
-import { animate } from 'animejs';
+import { animate, cubicBezier, eases } from 'animejs';
 
 interface Phase {
   id: string;
@@ -154,7 +154,7 @@ export default function ProcessSection() {
         opacity: targetOpacity,
         filter: isActive ? 'blur(0px)' : 'blur(0.3px)',
         duration: 350,
-        ease: 'cubicBezier(0.23, 1, 0.32, 1)'
+        ease: cubicBezier(0.23, 1, 0.32, 1)
       });
     });
   };
@@ -169,14 +169,14 @@ export default function ProcessSection() {
       filter: 'blur(2px)',
       translateY: 8,
       duration: 150,
-      ease: 'inQuad',
+      ease: eases.inQuad,
       onComplete: () => {
         animate(el, {
           opacity: 1,
           filter: 'blur(0px)',
           translateY: 0,
           duration: 300,
-          ease: 'cubicBezier(0.23, 1, 0.32, 1)'
+          ease: cubicBezier(0.23, 1, 0.32, 1)
         });
       }
     });
