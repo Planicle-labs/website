@@ -82,7 +82,7 @@ export default function ManifestoSection() {
         className="w-full max-w-[1440px] mx-auto border-y border-white/10 flex flex-col relative overflow-hidden"
       >
         {/* Top Header Row */}
-        <div className="w-full flex items-center justify-between px-4 py-3 border-b border-white/10 font-mono text-[9px] sm:text-[10px] tracking-[0.25em] text-[#EEEDE9]/60 select-none">
+        <div className="w-full flex items-center justify-between px-6 py-5 border-b border-white/10 font-mono text-[9px] sm:text-[10px] tracking-[0.25em] text-[#EEEDE9]/60 select-none">
           <div className="flex items-center gap-2">
             <span className="w-1.5 h-1.5 bg-[#FF4500]" />
             <span className="font-bold">PLANICLE</span>
@@ -94,10 +94,10 @@ export default function ManifestoSection() {
         </div>
 
         {/* Main Grid Area */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 w-full relative">
+        <div className="grid grid-cols-1 lg:grid-cols-[80px_1fr_300px_180px] w-full relative">
           
           {/* Column 1: Left Vertical Philosophy Bar (Rotated on Desktop, Stacked on Mobile) */}
-          <div className="lg:col-span-1 border-b lg:border-b-0 lg:border-r border-white/10 flex lg:flex-col items-center justify-between p-4 lg:py-10 lg:px-0 relative select-none">
+          <div className="border-b lg:border-b-0 border-white/10 flex lg:flex-col items-center justify-between p-4 lg:py-10 lg:px-0 relative select-none">
             {/* Desktop rotated text */}
             <div className="hidden lg:block lg:rotate-90 lg:whitespace-nowrap font-mono text-[9px] tracking-[0.35em] text-[#EEEDE9]/40 uppercase origin-center my-auto">
               PHILOSOPHY
@@ -112,7 +112,7 @@ export default function ManifestoSection() {
           </div>
 
           {/* Column 2: Main Hero Text (Left-Center Column) */}
-          <div className="lg:col-span-6 p-6 sm:p-10 lg:p-12 xl:p-16 border-b lg:border-b-0 lg:border-r border-white/10 flex flex-col justify-center min-w-0">
+          <div className="p-6 sm:p-10 lg:p-12 xl:p-16 border-b lg:border-b-0 lg:border-r border-white/10 flex flex-col justify-center min-w-0">
             {/* HUD Callout marker */}
             <div className="flex items-center gap-2 mb-6 sm:mb-8 text-[#EEEDE9]/30 font-mono text-[8px] tracking-[0.2em] select-none">
               <Crosshair className="w-3 h-3 text-[#FF4500]/70" />
@@ -126,37 +126,36 @@ export default function ManifestoSection() {
               style={{ fontSize: 'clamp(2.25rem, 5.6vw, 6.25rem)' }}
             >
               <motion.div variants={itemVariants} className="block whitespace-nowrap">
-                <span className="font-cormorant lowercase italic font-light text-[0.88em] pr-3 tracking-normal">your</span>
+                <span className="font-cormorant lowercase italic font-light text-[1.05em] pr-3 tracking-normal">your</span>
                 <span className="font-antonio uppercase font-bold tracking-tighter text-[1.12em]">DIRECTION</span>
               </motion.div>
-              <motion.div variants={itemVariants} className="-mt-[0.04em] block whitespace-nowrap">
-                <span className="font-cormorant lowercase italic font-light text-[0.88em] tracking-normal">is more</span>
+              <motion.div variants={itemVariants} className="-mt-[0.02em] ml-[0.35em] block whitespace-nowrap">
+                <span className="font-antonio uppercase font-bold tracking-tighter text-[1.12em] pr-3">IS</span>
+                <span className="font-cormorant lowercase italic font-light text-[1.05em] tracking-normal">more</span>
               </motion.div>
               <motion.div variants={itemVariants} className="-mt-[0.04em] block whitespace-nowrap">
                 <span className="font-antonio uppercase font-bold tracking-tighter text-[1.12em]">IMPORTANT</span>
               </motion.div>
               <motion.div variants={itemVariants} className="-mt-[0.04em] block whitespace-nowrap">
-                <span className="font-cormorant lowercase italic font-light text-[0.88em] pr-3 tracking-normal">than</span>
+                <span className="font-cormorant lowercase italic font-light text-[1.05em] pr-3 tracking-normal">than</span>
                 <span className="font-antonio uppercase font-bold tracking-tighter text-[1.12em]">YOUR</span>
               </motion.div>
               <motion.div variants={itemVariants} className="-mt-[0.04em] block whitespace-nowrap">
-                <span className="font-cormorant lowercase italic font-light text-[1.12em] tracking-normal">
+                <span className="font-cormorant lowercase italic font-light text-[1.28em] tracking-normal animate-pulse-slow">
                   speed
-                  <span className="inline-block w-[0.12em] h-[0.12em] rounded-full bg-[#FF4500] ml-2 align-middle translate-y-[-0.05em]" />
+                  <span className="inline-block w-[0.1em] h-[0.1em] rounded-full bg-[#FF4500] ml-1.5 align-baseline" />
                 </span>
               </motion.div>
             </h2>
 
-            {/* Subtle Crosshair and Accent line */}
-            <div className="mt-8 sm:mt-10 flex items-center gap-4 select-none opacity-40">
+            {/* Technical reference annotation */}
+            <div className="mt-8 sm:mt-10 flex items-center gap-4 select-none opacity-30">
               <span className="font-mono text-[9px] tracking-[0.2em] text-[#EEEDE9]/60">REF: P.01</span>
-              <div className="h-px flex-1 bg-white/10" />
-              <div className="w-1.5 h-1.5 bg-[#FF4500]" />
             </div>
           </div>
 
           {/* Column 3: Right Sidebar Axioms (Center Column on Desktop) */}
-          <aside className="lg:col-span-3 p-6 sm:p-10 lg:p-8 xl:p-10 border-b lg:border-b-0 lg:border-r border-white/10 flex flex-col justify-between gap-8">
+          <aside className="p-6 sm:p-10 lg:p-8 xl:p-10 border-b lg:border-b-0 lg:border-r border-white/10 flex flex-col justify-between gap-8">
             <div className="flex flex-col gap-1 select-none">
               <span className="font-mono text-[9px] tracking-[0.25em] text-[#FF4500] font-bold">SYS / 01</span>
               <span className="font-mono text-[9px] tracking-[0.2em] text-[#EEEDE9] font-bold uppercase">ORIENTATION LAYER</span>
@@ -189,7 +188,7 @@ export default function ManifestoSection() {
           </aside>
 
           {/* Column 4: Far Right Abstract Graphic Column */}
-          <div className="lg:col-span-2 p-6 lg:p-4 xl:p-6 flex flex-col items-center justify-center relative overflow-hidden group min-h-[300px] lg:min-h-0">
+          <div className="p-6 lg:p-4 xl:p-6 flex flex-col items-center justify-center relative overflow-hidden group min-h-[300px] lg:min-h-0">
             {/* Subtle wireframe overlay on the image container */}
             <div className="relative w-full h-full min-h-[250px] border border-white/15 p-1.5 flex items-center justify-center bg-black/40 overflow-hidden">
               {/* Corner crosshairs for technical HUD style */}
