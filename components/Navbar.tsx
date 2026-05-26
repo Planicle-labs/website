@@ -30,14 +30,9 @@ export default function Navbar() {
   const prefersReduced = useReducedMotion();
   const { openBooking } = useBooking();
 
-  const handleLinkClick = (e: React.MouseEvent<HTMLAnchorElement> | null, href: string) => {
+  const handleScroll = (e: React.MouseEvent<HTMLAnchorElement> | null, href: string) => {
     if (e) e.preventDefault();
     setIsOpen(false);
-
-    if (href === "#connect") {
-      openBooking();
-      return;
-    }
 
     const targetId = href.replace("#", "");
     if (targetId === "" || targetId === "/") {
@@ -62,7 +57,7 @@ export default function Navbar() {
       if (href && href.startsWith("#")) {
         if (target.closest("header")) return;
         e.preventDefault();
-        handleLinkClick(null, href);
+        handleScroll(null, href);
       }
     };
 
@@ -76,9 +71,7 @@ export default function Navbar() {
     } else {
       document.body.style.overflow = "";
     }
-    return () => {
-      document.body.style.overflow = "";
-    };
+    return () => { document.body.style.overflow = ""; };
   }, [isOpen]);
 
   const displayScrollY = useMotionValue(0);
@@ -113,9 +106,6 @@ export default function Navbar() {
 
   return (
     <>
-      {/* ──────────────────────────────────────────────────────── */}
-      {/* DESKTOP & MOBILE NAVIGATION HEADER */}
-      {/* ──────────────────────────────────────────────────────── */}
       <motion.header
         initial={prefersReduced ? false : { opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
@@ -124,59 +114,48 @@ export default function Navbar() {
       >
         <motion.div
           style={{ maxWidth: navMaxWidth, paddingBlock: navPaddingV }}
-          className="w-[calc(100%-2rem)] rounded-full px-5 flex items-center justify-between border border-n-100/10 bg-n-600 shadow-[0_8px_32px_rgba(0,0,0,0.24)] backdrop-blur-xl backdrop-saturate-150 overflow-hidden"
+          className="w-[calc(100%-2rem)] rounded-full px-5 flex items-center justify-between border border-n-100/10 bg-n-700 shadow-[0_8px_32px_rgba(0,0,0,0.24)] backdrop-blur-xl backdrop-saturate-150 overflow-hidden"
         >
-          {/* LEFT: Symmetrical Navigation Links (Desktop) */}
           <nav className="hidden md:flex items-center gap-10 pl-2 flex-1">
             {navLinks.map((link) => (
               <motion.a
                 key={link.href}
                 href={link.href}
-                onClick={(e) => handleLinkClick(e, link.href)}
+                onClick={(e) => handleScroll(e, link.href)}
                 whileTap={{ scale: 0.95 }}
-                className="font-mono text-[11px] font-bold tracking-[0.15em] text-n-400 hover:text-brand-orange transition-colors duration-300 select-none group"
+                className="font-mono text-[11px] font-bold tracking-[0.15em] text-n-500 hover:text-brand-orange transition-colors duration-300 select-none"
               >
                 {link.label}
-                <span className="absolute -bottom-1.5 left-1/2 -translate-x-1/2 w-0 h-px bg-brand-orange rounded-full transition-all duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:w-3/5" />
               </motion.a>
             ))}
           </nav>
 
-          {/* CENTER: Planicle Symmetrical Logo Mark */}
           <motion.a
             href="#"
-            onClick={(e) => handleLinkClick(e, "/")}
-            className="flex items-center gap-3 select-none group md:absolute md:left-1/2 md:-translate-x-1/2"
+            onClick={(e) => handleScroll(e, "#")}
+            className="flex items-center gap-1.5 select-none group md:absolute md:left-1/2 md:-translate-x-1/2"
             whileTap={{ scale: 0.95 }}
           >
-            <motion.div
-              whileHover={{ rotate: 12 }}
-              transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
-              className="relative w-9 h-9 shrink-0"
-            >
-              <Image
-                src="/logo.png"
-                alt="Planicle"
-                fill
-                priority
-                sizes="36px"
-                className="object-contain"
-              />
-            </motion.div>
+<div className="relative w-11 h-11 shrink-0">
+  <Image
+    src="/logo.webp"
+    alt="Planicle"
+    fill
+    priority
+    sizes="44px"
+    className="object-contain"
+  />
+</div>
             <motion.span
               style={{ opacity: textOpacity, width: textWidth }}
-              className="overflow-hidden whitespace-nowrap font-sans font-extrabold text-[16px] tracking-tight text-n-100 leading-none lowercase"
+              className="overflow-hidden whitespace-nowrap font-sans font-extrabold text-[16px] tracking-tight text-n-100 leading-none"
             >
-              planicle
+              Planicle
             </motion.span>
           </motion.a>
 
-          {/* RIGHT: Status, Time & Premium CTA Button (Desktop) */}
           <div className="flex items-center gap-6 flex-1 justify-end">
-            <motion.div style={{ opacity: clockOpacity }} className="hidden sm:inline-flex gap-6 items-center">
-              <span className="text-[11px] font-mono text-n-500 tracking-wider uppercase hidden lg:inline select-none">
-                TAKING PROJECTS FOR Q3 2026
-              </span>
+            <motion.div style={{ opacity: clockOpacity }} className="hidden sm:inline-flex">
               <LiveClock
                 showIcon={true}
                 timeZone="Asia/Kolkata"
@@ -185,30 +164,24 @@ export default function Navbar() {
               />
             </motion.div>
 
-            {/* Premium CTA Button */}
-            <motion.a
-              href="#connect"
-              onClick={(e) => handleLinkClick(e, "#connect")}
+            <motion.button
+              onClick={openBooking}
               whileHover={{ scale: 1.03 }}
               whileTap={{ scale: 0.97 }}
-              className="group inline-flex items-center bg-n-100 hover:bg-n-200 text-n-700 rounded-full pl-4 pr-1.5 py-1.5 transition-colors duration-300 cursor-pointer"
+              className="group inline-flex items-center bg-n-100 hover:bg-n-200 text-n-700 rounded-full pl-4 pr-2 py-1.5 transition-colors duration-300 cursor-pointer border-none outline-none"
             >
-              <span className="font-mono text-[10px] font-bold tracking-widest mr-3 relative overflow-hidden h-[15px] select-none">
-                <span className="flex flex-col transition-transform duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] group-hover:-translate-y-1/2">
-                  <span className="h-[15px] flex items-center">{"LET'S BUILD"}</span>
-                  <span className="h-[15px] flex items-center">{"LET'S BUILD"}</span>
-                </span>
+              <span className="font-mono text-[10px] font-bold tracking-widest mr-3 select-none">
+                LET&apos;S BUILD
               </span>
               <span className="w-5 h-5 bg-n-700 text-n-100 rounded-full flex items-center justify-center text-[9px] font-bold transition-transform duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:rotate-45">
                 »
               </span>
-            </motion.a>
+            </motion.button>
 
-            {/* Mobile Nav Toggle */}
             <motion.button
               onClick={toggleMenu}
               whileTap={{ scale: 0.95 }}
-              className="md:hidden bg-n-100 text-n-700 hover:bg-n-200 rounded-full w-10 h-10 flex items-center justify-center cursor-pointer transition-colors"
+              className="md:hidden bg-n-100 text-n-700 hover:bg-n-200 rounded-full w-11 h-11 flex items-center justify-center cursor-pointer transition-colors"
               aria-label="Toggle navigation menu"
             >
               {isOpen ? <X size={15} /> : <Menu size={15} />}
@@ -217,9 +190,6 @@ export default function Navbar() {
         </motion.div>
       </motion.header>
 
-      {/* ──────────────────────────────────────────────────────── */}
-      {/* MOBILE FULLSCREEN OVERLAY DRAWER */}
-      {/* ──────────────────────────────────────────────────────── */}
       <AnimatePresence>
         {isOpen && (
           <motion.div
@@ -227,15 +197,14 @@ export default function Navbar() {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -8 }}
             transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
-            className="fixed inset-0 z-40 bg-[#0C0C0E]/95 backdrop-blur-md flex flex-col justify-between p-8 pt-28 md:hidden"
+            className="fixed inset-0 z-40 bg-n-700/96 backdrop-blur-md flex flex-col justify-between p-8 pt-28 md:hidden"
           >
-            {/* Navigation links inside drawer */}
             <nav className="flex flex-col gap-8">
               {navLinks.map((link, idx) => (
                 <motion.a
                   key={link.href}
                   href={link.href}
-                  onClick={(e) => handleLinkClick(e, link.href)}
+                  onClick={(e) => handleScroll(e, link.href)}
                   initial={{ opacity: 0, x: -20 }}
                   animate={{ opacity: 1, x: 0 }}
                   transition={{
@@ -250,17 +219,7 @@ export default function Navbar() {
               ))}
             </nav>
 
-            {/* Footer info inside drawer */}
             <div className="flex flex-col gap-6 border-t border-n-100/10 pt-6">
-              <div className="flex flex-col gap-1.5">
-                <span className="text-[10px] font-mono text-n-500 tracking-widest uppercase">
-                  STUDIO CAPACITY
-                </span>
-                <span className="text-[13px] font-medium text-n-100">
-                  Taking on select projects for Q3 2026
-                </span>
-              </div>
-
               <div className="flex items-center justify-between">
                 <LiveClock
                   showIcon={true}
@@ -268,21 +227,19 @@ export default function Navbar() {
                   label="IST"
                   className="text-[12px] font-mono text-n-400"
                 />
-                
-                <motion.a
-                  href="#connect"
-                  onClick={(e) => handleLinkClick(e, "#connect")}
+                <motion.button
+                  onClick={() => { setIsOpen(false); openBooking(); }}
                   whileHover={{ scale: 1.03 }}
                   whileTap={{ scale: 0.97 }}
-                  className="group inline-flex items-center bg-brand-orange hover:bg-[#d63b1c] text-n-100 rounded-full pl-5 pr-2.5 py-2.5 transition-colors duration-200"
+                  className="group inline-flex items-center bg-n-100 hover:bg-n-200 text-n-700 rounded-full pl-5 pr-2.5 py-2.5 transition-colors duration-200 border-none outline-none"
                 >
                   <span className="font-mono text-[11px] font-bold tracking-widest mr-4 select-none">
-                    {"LET'S BUILD"}
+                    LET&apos;S BUILD
                   </span>
-                  <span className="w-6 h-6 bg-n-100 text-brand-orange rounded-full flex items-center justify-center text-[11px] font-bold transition-transform duration-300 group-hover:rotate-45">
+                  <span className="w-6 h-6 bg-n-700 text-n-100 rounded-full flex items-center justify-center text-[10px] font-bold transition-transform duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:rotate-45">
                     »
                   </span>
-                </motion.a>
+                </motion.button>
               </div>
             </div>
           </motion.div>
