@@ -20,7 +20,7 @@ const EXPAND_ZONE = 600;
 
 const navLinks = [
   { href: "#services", label: "SERVICES" },
-  { href: "#connect", label: "CONNECT" },
+  { href: "#process", label: "PROCESS" },
 ];
 
 export default function Navbar() {
@@ -35,6 +35,11 @@ export default function Navbar() {
   ) => {
     if (e) e.preventDefault();
     setIsOpen(false);
+
+    if (href === "#connect") {
+      openBooking();
+      return;
+    }
 
     const targetId = href.replace("#", "");
     if (targetId === "" || targetId === "/") {

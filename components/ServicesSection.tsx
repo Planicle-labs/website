@@ -3,6 +3,7 @@
 import React, { useRef } from 'react';
 import { motion, useInView } from 'framer-motion';
 import ManifestoSection from './ManifestoSection';
+import { useBooking } from './BookingProvider';
 
 /* ─── Service Data ─── */
 interface Service {
@@ -92,6 +93,7 @@ function ServiceCard({
   i: number; 
   isInView: boolean;
 }) {
+  const { openBooking } = useBooking();
   return (
     <motion.div
       custom={i}
@@ -168,21 +170,22 @@ function ServiceCard({
 
       {/* Column 4: Arrow Link */}
       <div className="flex items-center justify-end lg:pr-1 relative z-10">
-        <a
-          href="#connect"
+        <button
+          onClick={openBooking}
           aria-label={`Inquire about ${service.title}`}
-          className="w-8 h-8 rounded-full flex items-center justify-center text-n-400/60 group-hover:text-brand-orange group-hover:translate-x-1.5 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-brand-orange transition-all duration-300 ease-[cubic-bezier(0.16,1,0.3,1)]"
+          className="w-8 h-8 rounded-full flex items-center justify-center text-n-400/60 group-hover:text-brand-orange group-hover:translate-x-1.5 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-brand-orange transition-all duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] bg-transparent border-none outline-none cursor-pointer"
         >
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
             <line x1="5" y1="12" x2="19" y2="12" /><polyline points="12 5 19 12 12 19" />
           </svg>
-        </a>
+        </button>
       </div>
     </motion.div>
   );
 }
 
 export default function ServicesSection() {
+  const { openBooking } = useBooking();
   const sectionRef = useRef<HTMLDivElement>(null);
   const isInView = useInView(sectionRef, { once: true, margin: '-80px' });
 
@@ -239,11 +242,6 @@ export default function ServicesSection() {
       {/* ─── 1. Header Wrapper ─── */}
       <div className="w-full pt-20 pb-4 sm:pt-24 sm:pb-6 z-10 shrink-0 bg-transparent">
         <div className="w-full max-w-[1440px] mx-auto px-5 sm:px-8 lg:px-12 flex flex-col">
-          {/* Kicker Tag */}
-          <div className="inline-flex self-start items-center gap-1.5 px-3.5 py-1.5 rounded-full border border-n-700/15 bg-n-700/5 font-mono text-[9px] sm:text-[10px] text-brand-orange tracking-[0.16em] uppercase mb-6 sm:mb-8 select-none">
-            NO HAND-HOLDING REQUIRED
-          </div>
-
           {/* Header Grid */}
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-end">
             <div className="lg:col-span-7">
@@ -259,16 +257,6 @@ export default function ServicesSection() {
               <p className="font-sans text-[14px] sm:text-[15px] text-n-500 leading-[1.6] max-w-md">
                 We don&apos;t build templates. We engineer high-performance systems that eliminate execution drag so you can ship in weeks, not quarters.
               </p>
-              <a
-                href="#work"
-                className="group inline-flex items-center gap-2.5 font-mono text-[10px] sm:text-[11px] font-bold tracking-[0.16em] text-n-700 hover:text-brand-orange focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-brand-orange rounded-sm transition-colors duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] uppercase relative pb-1"
-              >
-                <span>EXPLORE OUR WORK</span>
-                <span className="inline-block transform transition-transform duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:translate-x-1.5 text-brand-orange font-sans">
-                  →
-                </span>
-                <span className="absolute bottom-0 left-0 w-full h-[1px] bg-brand-orange scale-x-0 group-hover:scale-x-100 origin-left transition-transform duration-300 ease-[cubic-bezier(0.16,1,0.3,1)]" />
-              </a>
             </div>
           </div>
         </div>
@@ -335,12 +323,12 @@ export default function ServicesSection() {
 
             {/* Right Button */}
             <div className="flex items-center gap-4 lg:gap-5 shrink-0 w-full md:w-auto justify-end">
-              <a
-                href="#connect"
-                className="inline-flex items-center justify-center bg-brand-orange hover:bg-[#f15e41] active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-orange text-white font-mono text-[9px] sm:text-[10px] font-bold tracking-[0.16em] px-6 py-3 lg:px-6 lg:py-3 xl:px-8 xl:py-4 rounded-sm transition-all duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] w-full md:w-auto shadow-[0_4px_15px_rgba(239,74,42,0.12)] hover:shadow-[0_8px_25px_rgba(239,74,42,0.3)]"
+              <button
+                onClick={openBooking}
+                className="inline-flex items-center justify-center bg-brand-orange hover:bg-[#f15e41] active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-orange text-white font-mono text-[9px] sm:text-[10px] font-bold tracking-[0.16em] px-6 py-3 lg:px-6 lg:py-3 xl:px-8 xl:py-4 rounded-sm transition-all duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] w-full md:w-auto shadow-[0_4px_15px_rgba(239,74,42,0.12)] hover:shadow-[0_8px_25px_rgba(239,74,42,0.3)] border-none outline-none cursor-pointer"
               >
                 BOOK A CALL
-              </a>
+              </button>
               <svg 
                 width="18" 
                 height="18" 
