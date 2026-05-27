@@ -45,8 +45,8 @@ const spaceGrotesk = Space_Grotesk({
 });
 
 export const metadata: Metadata = {
-  title: "Planicle — Elite Software Studio for Startups",
-  description: "We build premium websites, apps, and AI workflows for high-growth Seed to Series B startups. Precision engineering, absolute execution, no hand-holding.",
+  title: "Planicle — Software Studio for Startups",
+  description: "We build websites, apps, and AI workflows for startups. Precision engineering. Absolute execution. Zero hand-holding.",
 };
 
 export default function RootLayout({
