@@ -45,8 +45,48 @@ const spaceGrotesk = Space_Grotesk({
 });
 
 export const metadata: Metadata = {
-  title: "Planicle — Elite Software Studio for Startups",
+  metadataBase: new URL("https://planicle.com"),
+  title: "Planicle — Software Studio for Startups",
   description: "We build premium websites, apps, and AI workflows for high-growth Seed to Series B startups. Precision engineering, absolute execution, no hand-holding.",
+  keywords: [
+    "software studio",
+    "software studio for startups",
+    "startup development",
+    "mvp builders",
+    "web application development",
+    "ai workflows",
+    "delhi developers",
+    "software agency india"
+  ],
+  alternates: {
+    canonical: "/",
+  },
+  openGraph: {
+    title: "Planicle — Software Studio for Startups",
+    description: "We build premium websites, apps, and AI workflows for high-growth Seed to Series B startups. Precision engineering, absolute execution, no hand-holding.",
+    url: "https://planicle.com",
+    siteName: "Planicle",
+    locale: "en_IN",
+    type: "website",
+    images: [
+      {
+        url: "/og-image.png",
+        width: 1200,
+        height: 630,
+        alt: "Planicle — Software Studio for Startups",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Planicle — Software Studio for Startups",
+    description: "We build premium websites, apps, and AI workflows for high-growth Seed to Series B startups. Precision engineering, absolute execution, no hand-holding.",
+    images: ["/og-image.png"],
+  },
+  robots: {
+    index: true,
+    follow: true,
+  },
 };
 
 export default function RootLayout({

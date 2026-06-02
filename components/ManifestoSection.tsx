@@ -89,7 +89,7 @@ export default function ManifestoSection() {
             <span className="font-bold">PLANICLE</span>
           </div>
           <div className="flex items-center gap-4">
-            <span className="hidden sm:inline">32.7157° N, 117.1611° W</span>
+            <span className="hidden sm:inline">28.6139° N, 77.2090° E</span>
             <span className="text-[#FF4500] font-bold text-xs">+</span>
           </div>
         </div>
