@@ -9,10 +9,6 @@ const ServicesSection = dynamic(
   () => import('@/components/ServicesSection'),
   { ssr: true },
 );
-const ManifestoSection = dynamic(
-  () => import('@/components/ManifestoSection'),
-  { ssr: true },
-);
 const Footer = dynamic(() => import('@/components/Footer'), { ssr: true });
 
 export default function Home() {
@@ -24,7 +20,6 @@ export default function Home() {
       <HeroSection />
       <ProcessSection />
       <ServicesSection />
-      <ManifestoSection />
       <Footer />
     </main>
   );
