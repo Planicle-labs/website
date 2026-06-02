@@ -58,7 +58,7 @@ export default function ManifestoSection() {
     <section
       id="manifesto"
       ref={containerRef}
-      className="relative isolate w-full bg-[#0C0C0E] text-[#EEEDE9] py-12 px-4 sm:px-6 md:px-10 lg:px-12 xl:px-16"
+      className="relative isolate w-full bg-[#0C0C0E] text-[#EEEDE9] py-fluid-section-y px-fluid-x"
       aria-labelledby="manifesto-heading"
     >
       {/* Delicate Technical Grid Pattern Overlay */}
@@ -113,7 +113,7 @@ export default function ManifestoSection() {
           </div>
 
           {/* Column 2: Main Hero Text (Left-Center Column) */}
-          <div className="p-6 sm:p-10 lg:p-12 xl:p-16 border-b lg:border-b-0 lg:border-r border-white/10 flex flex-col justify-center min-w-0">
+          <div className="p-fluid-card-p border-b lg:border-b-0 lg:border-r border-white/10 flex flex-col justify-center min-w-0">
             {/* HUD Callout marker */}
             <div className="flex items-center gap-2 mb-6 sm:mb-8 text-[#EEEDE9]/30 font-mono text-[8px] tracking-[0.2em] select-none">
               <Crosshair className="w-3 h-3 text-[#FF4500]/70" />
@@ -150,13 +150,13 @@ export default function ManifestoSection() {
             </h2>
 
             {/* Technical reference annotation */}
-            <div className="mt-8 sm:mt-10 flex items-center gap-4 select-none opacity-30">
+            <div className="mt-fluid-gap-md flex items-center gap-fluid-gap-sm select-none opacity-30">
               <span className="font-mono text-[9px] tracking-[0.2em] text-[#EEEDE9]/60">REF: P.01</span>
             </div>
           </div>
 
           {/* Column 3: Right Sidebar Axioms (Center Column on Desktop) */}
-          <aside className="p-6 sm:p-10 lg:p-8 xl:p-10 border-b lg:border-b-0 lg:border-r border-white/10 flex flex-col justify-between gap-8">
+          <aside className="p-fluid-card-p border-b lg:border-b-0 lg:border-r border-white/10 flex flex-col justify-between gap-fluid-gap-lg">
             <div className="flex flex-col gap-1 select-none">
               <span className="font-mono text-[9px] tracking-[0.25em] text-[#FF4500] font-bold">SYS / 01</span>
               <span className="font-mono text-[9px] tracking-[0.2em] text-[#EEEDE9] font-bold uppercase">ORIENTATION LAYER</span>
@@ -189,7 +189,7 @@ export default function ManifestoSection() {
           </aside>
 
           {/* Column 4: Far Right Abstract Graphic Column */}
-          <div className="p-6 lg:p-4 xl:p-6 flex flex-col items-center justify-center relative overflow-hidden group min-h-[220px] sm:min-h-[300px] lg:min-h-0">
+          <div className="p-fluid-gap-md flex flex-col items-center justify-center relative overflow-hidden group min-h-[220px] sm:min-h-[300px] lg:min-h-0">
             {/* Subtle wireframe overlay on the image container */}
             <div className="relative w-full h-full min-h-[250px] border border-white/15 p-1.5 flex items-center justify-center bg-black/40 overflow-hidden">
               {/* Corner crosshairs for technical HUD style */}
@@ -217,7 +217,7 @@ export default function ManifestoSection() {
         </div>
 
         {/* Bottom Footer Row */}
-        <div className="w-full border-t border-white/10 grid grid-cols-1 md:grid-cols-2 p-4 md:py-6 md:px-8 gap-4 font-mono text-[9px] tracking-[0.2em] text-[#EEEDE9]/50 select-none">
+        <div className="w-full border-t border-white/10 grid grid-cols-1 md:grid-cols-2 p-fluid-gap-md gap-fluid-gap-md font-mono text-[9px] tracking-[0.2em] text-[#EEEDE9]/50 select-none">
           <div className="flex items-center gap-2">
             <span className="w-1.5 h-1.5 bg-[#FF4500] animate-pulse" />
             <span>WE BUILD SYSTEMS THAT CREATE LEVERAGE.</span>

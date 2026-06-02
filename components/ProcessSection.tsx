@@ -209,7 +209,7 @@ export default function ProcessSection() {
         {/* Top border separator */}
         <div className="absolute top-0 left-0 right-0 h-px bg-[#E4E3DD]" />
 
-        <div className="w-full max-w-[1280px] mx-auto px-6 sm:px-8 lg:px-12 flex flex-col gap-y-2 sm:gap-y-6 justify-start lg:justify-between h-full pt-28 pb-3 sm:pt-16 sm:pb-6 lg:pt-16 lg:pb-6 z-10 relative">
+        <div className="w-full max-w-[1280px] mx-auto px-fluid-x flex flex-col gap-y-fluid-gap-md justify-start lg:justify-between h-full pt-28 pb-3 sm:pt-16 sm:pb-6 lg:pt-16 lg:pb-6 z-10 relative">
 
           {/* ═══════════════════════════════════════════════════════ */}
           {/* HEADER BLOCK — Matches Inspiration 2.webp exactly     */}
@@ -948,7 +948,7 @@ export default function ProcessSection() {
             </div>
 
             {/* Mobile Text Descriptions */}
-            <div className="flex flex-col items-center text-center w-full px-2 shrink-0 mt-10">
+            <div className="flex flex-col items-center text-center w-full px-fluid-x shrink-0 mt-fluid-gap-lg">
               <span className="font-mono text-[10px] font-bold tracking-[0.14em] text-[#EF4A2A] uppercase">
                 {activePhase.overline}
               </span>
@@ -978,7 +978,7 @@ export default function ProcessSection() {
           </div>
 
           {/* SCROLL PROGRESS FOOTER */}
-          <div className="flex justify-between items-center border-t border-[#E4E3DD] pt-4 mt-auto sm:mt-8 lg:mt-10 shrink-0 text-[10px] font-mono text-[#A09F9A] tracking-[0.14em] uppercase select-none">
+          <div className="flex justify-between items-center border-t border-[#E4E3DD] pt-fluid-gap-sm mt-auto sm:mt-fluid-gap-md lg:mt-fluid-gap-lg shrink-0 text-[10px] font-mono text-[#A09F9A] tracking-[0.14em] uppercase select-none">
             <span>EXECUTION PIPELINE</span>
             <span>PHASE 0{activeIdx + 1} / 05</span>
           </div>

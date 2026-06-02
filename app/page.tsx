@@ -28,7 +28,7 @@ export default function Home() {
         <Navbar />
 
         {/* Hero Content (z-20) */}
-        <div className="flex-1 flex flex-col justify-center items-center md:items-start text-center md:text-left w-full max-w-[1280px] mx-auto px-5 sm:px-8 lg:px-12 pb-12 md:pb-0 z-20 relative pointer-events-auto">
+        <div className="flex-1 flex flex-col justify-center items-center md:items-start text-center md:text-left w-full max-w-[1280px] mx-auto px-fluid-x pb-12 md:pb-0 z-20 relative pointer-events-auto">
           {/* Headline H1 */}
           <h1 className="font-serif text-[clamp(2.5rem,10vw,5rem)] md:text-[clamp(2.25rem,6.5vw,5rem)] font-normal leading-[1.08] md:leading-[1.05] tracking-[-0.03em] text-n-700 max-w-5xl">
             Accelerate your time <br />
@@ -36,14 +36,14 @@ export default function Home() {
           </h1>
 
           {/* Body Copy */}
-          <p className="font-sans text-[14px] sm:text-[15px] md:text-[17px] text-n-500 max-w-[52ch] md:max-w-[65ch] leading-[1.7] md:leading-[1.65] mt-5 sm:mt-6 md:mt-8">
+          <p className="font-sans text-[14px] sm:text-[15px] md:text-[17px] text-n-500 max-w-[52ch] md:max-w-[65ch] leading-[1.7] md:leading-[1.65] mt-fluid-gap-md">
             We build premium websites, apps, and advanced digital systems for
             startups who value absolute execution. No hand-holding, no
             templates. Just clean code and rapid market dominance.
           </p>
 
           {/* CTA Row */}
-          <div className="mt-7 sm:mt-8 md:mt-10 flex flex-col md:flex-row flex-wrap gap-3 md:gap-4 items-stretch md:items-center w-full md:w-auto">
+          <div className="mt-fluid-gap-lg flex flex-col md:flex-row flex-wrap gap-fluid-gap-sm items-stretch md:items-center w-full md:w-auto">
             {/* Primary CTA (BOOK A CALL ») */}
             <button
               onClick={openBooking}

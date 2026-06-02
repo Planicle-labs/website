@@ -100,7 +100,7 @@ function ServiceCard({
       variants={cardVariants}
       initial="hidden"
       animate={isInView ? 'visible' : 'hidden'}
-      className="service-card group relative rounded-[16px] lg:rounded-[24px] border border-n-500/10 bg-[#161618] p-6 sm:p-8 lg:p-6 xl:p-8 flex flex-col gap-5 lg:grid lg:grid-cols-[140px_1fr_250px_40px] xl:grid-cols-[170px_1fr_290px_50px] lg:items-center transition-all duration-[400ms] ease-[cubic-bezier(0.16,1,0.3,1)] hover:scale-[1.004] hover:shadow-[0_12px_40px_rgba(0,0,0,0.5)] overflow-hidden focus-within:ring-1 focus-within:ring-brand-orange/40"
+      className="service-card group relative rounded-[16px] lg:rounded-[24px] border border-n-500/10 bg-[#161618] p-[clamp(1.5rem,2.5vw,2.25rem)] flex flex-col gap-fluid-gap-md lg:grid lg:grid-cols-[140px_1fr_250px_40px] xl:grid-cols-[170px_1fr_290px_50px] lg:items-center transition-all duration-[400ms] ease-[cubic-bezier(0.16,1,0.3,1)] hover:scale-[1.004] hover:shadow-[0_12px_40px_rgba(0,0,0,0.5)] overflow-hidden focus-within:ring-1 focus-within:ring-brand-orange/40"
     >
       {/* Dynamic Glow Border Layer */}
       <div 
@@ -240,10 +240,10 @@ export default function ServicesSection() {
       }}
     >
       {/* ─── 1. Header Wrapper ─── */}
-      <div className="w-full pt-20 pb-4 sm:pt-24 sm:pb-6 z-10 shrink-0 bg-transparent">
-        <div className="w-full max-w-[1440px] mx-auto px-5 sm:px-8 lg:px-12 flex flex-col">
+      <div className="w-full pt-fluid-section-y pb-fluid-gap-md z-10 shrink-0 bg-transparent">
+        <div className="w-full max-w-[1440px] mx-auto px-fluid-x flex flex-col">
           {/* Header Grid */}
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-end">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-fluid-gap-lg items-end">
             <div className="lg:col-span-7">
               <h2 id="services-heading" className="font-serif text-[clamp(2.25rem,4vw,3.5rem)] font-normal leading-[1.06] tracking-[-0.02em] text-n-700">
                 Built for teams
@@ -253,7 +253,7 @@ export default function ServicesSection() {
                 than their tooling<span className="text-brand-orange">.</span>
               </h2>
             </div>
-            <div className="lg:col-span-5 flex flex-col items-start gap-4 lg:pl-6">
+            <div className="lg:col-span-5 flex flex-col items-start gap-fluid-gap-md lg:pl-fluid-gap-lg">
               <p className="font-sans text-[14px] sm:text-[15px] text-n-500 leading-[1.6] max-w-md">
                 We don&apos;t build templates. We engineer high-performance systems that eliminate execution drag so you can ship in weeks, not quarters.
               </p>
@@ -263,7 +263,7 @@ export default function ServicesSection() {
       </div>
 
       {/* ─── 2. Cards & CTA Wrapper (On Black Bg with Grid Background) ─── */}
-      <div className="w-full bg-transparent pt-4 pb-10 sm:pt-6 sm:pb-14 lg:pb-16 relative overflow-hidden z-10">
+      <div className="w-full bg-transparent pt-fluid-gap-sm pb-fluid-section-y relative overflow-hidden z-10">
         
         {/* Subtle Grid Background Pattern */}
         <div
@@ -279,17 +279,17 @@ export default function ServicesSection() {
           }}
         />
 
-        <div className="w-full max-w-[1440px] mx-auto px-5 sm:px-8 lg:px-12 z-10 relative flex flex-col">
+        <div className="w-full max-w-[1440px] mx-auto px-fluid-x z-10 relative flex flex-col">
           {/* Card Stack Area */}
           <div 
-            className="relative w-full py-4 lg:py-6" 
+            className="relative w-full py-fluid-gap-md" 
             ref={sectionRef}
             onMouseMove={handleMouseMove}
             onMouseEnter={handleMouseEnter}
             onMouseLeave={handleMouseLeave}
           >
             {/* Cards Stack */}
-            <div className="flex flex-col gap-4 sm:gap-6 w-full">
+            <div className="flex flex-col gap-fluid-gap-md w-full">
               {SERVICES.map((service, i) => (
                 <ServiceCard
                   key={service.id}
@@ -302,7 +302,7 @@ export default function ServicesSection() {
           </div>
 
           {/* Bottom CTA Block */}
-          <div className="mt-8 sm:mt-12 lg:mt-16 relative rounded-[16px] lg:rounded-[20px] bg-n-600/40 border border-n-500/10 p-6 sm:p-10 lg:p-8 xl:p-10 flex flex-col md:flex-row items-center justify-between gap-6 overflow-hidden group/cta-section">
+          <div className="mt-fluid-gap-lg relative rounded-[16px] lg:rounded-[20px] bg-n-600/40 border border-n-500/10 p-fluid-card-p flex flex-col md:flex-row items-center justify-between gap-fluid-gap-md overflow-hidden group/cta-section">
             {/* Corner tick marks */}
             <div className="absolute top-2.5 left-2.5 w-2.5 h-2.5 border-t border-l border-brand-orange/60 pointer-events-none" />
             <div className="absolute top-2.5 right-2.5 w-2.5 h-2.5 border-t border-r border-brand-orange/60 pointer-events-none" />
@@ -347,7 +347,7 @@ export default function ServicesSection() {
           </div>
 
           {/* ─── Architectural Divider ─── */}
-          <div className="flex items-center gap-3 mt-10 sm:mt-12 lg:mt-14 mb-0 select-none">
+          <div className="flex items-center gap-fluid-gap-sm mt-fluid-gap-lg mb-0 select-none">
             <span className="font-mono text-[8px] sm:text-[9px] tracking-[0.2em] text-white/10 uppercase whitespace-nowrap">
               SYS / 03
             </span>

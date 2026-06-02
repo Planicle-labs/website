@@ -146,9 +146,9 @@ export default function Navbar() {
       >
         <motion.div
           style={{ maxWidth: navMaxWidth, paddingBlock: navPaddingV }}
-          className="w-[calc(100%-1.5rem)] sm:w-[calc(100%-2rem)] rounded-full px-3 sm:px-5 flex items-center justify-between border border-n-100/10 bg-n-700 shadow-[0_8px_32px_rgba(0,0,0,0.24)] backdrop-blur-xl backdrop-saturate-150 overflow-hidden"
+          className="w-[calc(100%-clamp(1rem,3.5vw,2.5rem))] rounded-full px-[clamp(0.75rem,2.5vw,1.25rem)] flex items-center justify-between border border-n-100/10 bg-n-700 shadow-[0_8px_32px_rgba(0,0,0,0.24)] backdrop-blur-xl backdrop-saturate-150 overflow-hidden"
         >
-          <nav className="hidden md:flex items-center gap-10 pl-2 flex-1">
+          <nav className="hidden md:flex items-center gap-fluid-gap-md pl-2 flex-1">
             {navLinks.map((link) => (
               <motion.a
                 key={link.href}
@@ -187,7 +187,7 @@ export default function Navbar() {
             </motion.span>
           </motion.a>
 
-          <div className="flex items-center gap-2 sm:gap-6 flex-1 justify-end">
+          <div className="flex items-center gap-fluid-gap-md flex-1 justify-end">
             <motion.div
               style={{ opacity: clockOpacity }}
               className="hidden md:inline-flex"

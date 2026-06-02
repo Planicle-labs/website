@@ -9,7 +9,7 @@ export default function Footer() {
   return (
     <footer
       id="connect"
-      className="w-full relative overflow-hidden select-none grainy-gradient-bg pt-24 sm:pt-28 lg:pt-32 pb-16 sm:pb-20 lg:pb-24"
+      className="w-full relative overflow-hidden select-none grainy-gradient-bg pt-fluid-section-y pb-fluid-gap-lg"
     >
       {/* Seamless dissolve transition from solid black Manifesto Section above */}
       <div
@@ -20,11 +20,11 @@ export default function Footer() {
         }}
       />
 
-      <div className="w-full max-w-[1280px] mx-auto px-6 sm:px-8 lg:px-12 relative z-10">
+      <div className="w-full max-w-[1280px] mx-auto px-fluid-x relative z-10">
         {/* ──────────────────────────────────────────────────────── */}
         {/* ASYMMETRICAL 70-30 HIGH-CONVICTION CTA GRID             */}
         {/* ──────────────────────────────────────────────────────── */}
-        <div className="flex flex-col md:grid md:grid-cols-[1fr_auto] lg:grid-cols-[70%_30%] gap-10 items-start md:items-center py-4 text-left">
+        <div className="flex flex-col md:grid md:grid-cols-[1fr_auto] lg:grid-cols-[70%_30%] gap-fluid-gap-lg items-start md:items-center py-4 text-left">
           {/* LEFT SIDE: Headline & Body Copy (70%) */}
           <div className="flex flex-col items-start max-w-3xl">
             {/* Core Provocative Headline (Sentence Case, Display Serif) */}
@@ -72,7 +72,7 @@ export default function Footer() {
         {/* ──────────────────────────────────────────────────────── */}
         {/* PREMIUM TERMINAL BRAND TAGLINE STATEMENT                 */}
         {/* ──────────────────────────────────────────────────────── */}
-        <div className="w-full border-t border-white/10 mt-12 sm:mt-16 pt-10 text-center overflow-hidden">
+        <div className="w-full border-t border-white/10 mt-fluid-gap-lg pt-10 text-center overflow-hidden">
           <span className="font-sans font-black text-[clamp(1.2rem,7vw,3.6rem)] tracking-[0.04em] sm:tracking-[0.09em] md:tracking-[0.12em] lg:tracking-[0.15em] text-white/[0.05] uppercase select-none block w-full leading-none pl-[0.04em] sm:pl-[0.09em] md:pl-[0.12em] lg:pl-[0.15em] whitespace-nowrap">
             GOOD ISN&apos;T ENOUGH
           </span>
