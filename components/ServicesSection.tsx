@@ -254,7 +254,7 @@ export default function ServicesSection() {
               </h2>
             </div>
             <div className="lg:col-span-5 flex flex-col items-start gap-fluid-gap-md lg:pl-fluid-gap-lg">
-              <p className="font-sans text-[14px] sm:text-[15px] text-n-500 leading-[1.6] max-w-md">
+              <p className="font-sans text-[14px] sm:text-[15px] text-n-450 leading-[1.6] max-w-md">
                 We don&apos;t build templates. We engineer high-performance systems that eliminate execution drag so you can ship in weeks, not quarters.
               </p>
             </div>

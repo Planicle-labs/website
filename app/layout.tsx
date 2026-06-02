@@ -89,6 +89,94 @@ export const metadata: Metadata = {
   },
 };
 
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Organization",
+      "@id": "https://planicle.com/#organization",
+      name: "Planicle",
+      url: "https://planicle.com",
+      logo: {
+        "@type": "ImageObject",
+        url: "https://planicle.com/logo.svg",
+        width: 512,
+        height: 512,
+      },
+      description:
+        "We build premium websites, apps, and AI workflows for high-growth Seed to Series B startups. Precision engineering, absolute execution, no hand-holding.",
+      address: {
+        "@type": "PostalAddress",
+        addressLocality: "New Delhi",
+        addressRegion: "DL",
+        addressCountry: "IN",
+      },
+      areaServed: {
+        "@type": "Country",
+        name: "India",
+      },
+      contactPoint: {
+        "@type": "ContactPoint",
+        contactType: "customer support",
+        email: "support@planicle.com",
+        areaServed: "IN",
+        availableLanguage: ["English"],
+      },
+      knowsAbout: [
+        "Next.js",
+        "React",
+        "TypeScript",
+        "PostgreSQL",
+        "AI workflows",
+        "Large language models",
+        "MVP development",
+        "Web application development",
+      ],
+    },
+    {
+      "@type": "WebSite",
+      "@id": "https://planicle.com/#website",
+      url: "https://planicle.com",
+      name: "Planicle",
+      inLanguage: "en-IN",
+      publisher: { "@id": "https://planicle.com/#organization" },
+    },
+    {
+      "@type": "Service",
+      "@id": "https://planicle.com/#service-product-systems",
+      serviceType: "Product Systems",
+      name: "Product Systems",
+      description:
+        "Bespoke web applications, high-performance APIs, and custom database architecture built with zero tech debt.",
+      provider: { "@id": "https://planicle.com/#organization" },
+      areaServed: { "@type": "Country", name: "India" },
+      category: "Software Development",
+    },
+    {
+      "@type": "Service",
+      "@id": "https://planicle.com/#service-ai-workflows",
+      serviceType: "AI Workflow Engineering",
+      name: "AI Workflow Engineering",
+      description:
+        "Custom LLM integrations, semantic search pipelines, and autonomous agent systems that automate operational drag.",
+      provider: { "@id": "https://planicle.com/#organization" },
+      areaServed: { "@type": "Country", name: "India" },
+      category: "AI & Automation",
+    },
+    {
+      "@type": "Service",
+      "@id": "https://planicle.com/#service-growth-infrastructure",
+      serviceType: "Growth Infrastructure",
+      name: "Growth Infrastructure",
+      description:
+        "High-conversion landing pages, custom analytics pipelines, and speed-optimized onboarding flows engineered to convert.",
+      provider: { "@id": "https://planicle.com/#organization" },
+      areaServed: { "@type": "Country", name: "India" },
+      category: "Growth Engineering",
+    },
+  ],
+};
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -97,9 +185,19 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${dmSerifDisplay.variable} ${plusJakartaSans.variable} ${jetbrainsMono.variable} ${antonio.variable} ${cormorantGaramond.variable} ${spaceGrotesk.variable} h-full antialiased scroll-smooth`}>
       <body className="min-h-full flex flex-col font-sans text-[#0C0C0E] bg-[#F4F3EF]">
+        <a
+          href="#main-content"
+          className="sr-only focus:not-sr-only focus:fixed focus:top-2 focus:left-2 focus:z-[100] focus:bg-brand-orange focus:text-white focus:px-4 focus:py-2 focus:rounded-full focus:font-mono focus:text-xs focus:font-bold focus:tracking-widest focus:outline-none focus:shadow-lg focus:shadow-brand-orange/30"
+        >
+          SKIP TO MAIN CONTENT
+        </a>
         <BookingProvider>
           {children}
         </BookingProvider>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        />
       </body>
     </html>
   );

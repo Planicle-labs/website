@@ -201,7 +201,7 @@ export default function ManifestoSection() {
               {/* The Concrete Image */}
               <Image
                 src="/brutalist_concrete.png"
-                alt="Brutalist concrete architectural fragment with sharp angles and shadows"
+                alt=""
                 fill
                 sizes="(max-width: 1024px) 100vw, 180px"
                 className="object-cover grayscale opacity-50 group-hover:opacity-75 group-hover:scale-105 transition-all duration-[500ms] ease-[cubic-bezier(0.23,1,0.32,1)]"
@@ -227,7 +227,7 @@ export default function ManifestoSection() {
             <div>
               <span>PLANICLE SYSTEMS STUDIO</span>
               <span className="mx-2 text-white/20">|</span>
-              <span>© 2024</span>
+              <span>© 2026</span>
             </div>
             
             {/* Bottom Right Status Block */}

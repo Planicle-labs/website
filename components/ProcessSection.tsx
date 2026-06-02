@@ -225,7 +225,7 @@ export default function ProcessSection() {
             </h2>
 
             {/* Body copy — exact match from Inspiration 2.webp */}
-            <p className="font-sans text-[13px] sm:text-[16px] text-[#797872] leading-[1.65] mt-3 sm:mt-5 max-w-xl">
+            <p className="font-sans text-[13px] sm:text-[16px] text-[#5C5B56] leading-[1.65] mt-3 sm:mt-5 max-w-xl">
               Got a vision? Let&apos;s bring it to life together. We don&apos;t just meet goals, we deliver exactly what you need to stand out and lead.
             </p>
           </div>
@@ -599,7 +599,7 @@ export default function ProcessSection() {
                   {activePhase.title}
                 </h3>
 
-                <p className="font-sans text-[13px] sm:text-[14px] text-[#797872] leading-[1.65] mt-2 sm:mt-3">
+                <p className="font-sans text-[13px] sm:text-[14px] text-[#5C5B56] leading-[1.65] mt-2 sm:mt-3">
                   {activePhase.copy}
                 </p>
 

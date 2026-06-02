@@ -144,23 +144,24 @@ export default function Navbar() {
         transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
         className="fixed top-4 inset-x-0 flex justify-center z-50"
       >
-        <motion.div
-          style={{ maxWidth: navMaxWidth, paddingBlock: navPaddingV }}
-          className="w-[calc(100%-clamp(1rem,3.5vw,2.5rem))] rounded-full px-[clamp(0.75rem,2.5vw,1.25rem)] flex items-center justify-between border border-n-100/10 bg-n-700 shadow-[0_8px_32px_rgba(0,0,0,0.24)] backdrop-blur-xl backdrop-saturate-150 overflow-hidden"
-        >
-          <nav className="hidden md:flex items-center gap-fluid-gap-md pl-2 flex-1">
-            {navLinks.map((link) => (
-              <motion.a
-                key={link.href}
-                href={link.href}
-                onClick={(e) => handleScroll(e, link.href)}
-                whileTap={{ scale: 0.95 }}
-                className="font-mono text-[11px] font-bold tracking-[0.15em] text-n-500 hover:text-brand-orange transition-colors duration-300 select-none"
-              >
-                {link.label}
-              </motion.a>
-            ))}
-          </nav>
+          <motion.div
+            style={{ maxWidth: navMaxWidth, paddingBlock: navPaddingV }}
+            className="w-[calc(100%-clamp(1rem,3.5vw,2.5rem))] rounded-full px-[clamp(0.75rem,2.5vw,1.25rem)] flex items-center justify-between border border-n-100/10 bg-n-700 shadow-[0_8px_32px_rgba(0,0,0,0.24)] backdrop-blur-xl backdrop-saturate-150 overflow-hidden"
+          >
+            <nav className="hidden md:flex items-center gap-fluid-gap-md pl-2 flex-1" aria-label="Primary">
+              {navLinks.map((link) => (
+                <motion.a
+                  key={link.href}
+                  href={link.href}
+                  onClick={(e) => handleScroll(e, link.href)}
+                  whileTap={{ scale: 0.95 }}
+                  aria-label={`Jump to ${link.label.charAt(0) + link.label.slice(1).toLowerCase()} section`}
+                  className="font-mono text-[11px] font-bold tracking-[0.15em] text-n-500 hover:text-brand-orange transition-colors duration-300 select-none"
+                >
+                  {link.label}
+                </motion.a>
+              ))}
+            </nav>
 
           <motion.a
             href="#"
@@ -221,6 +222,8 @@ export default function Navbar() {
               whileTap={{ scale: 0.95 }}
               className="md:hidden bg-n-100 text-n-700 hover:bg-n-200 rounded-full w-11 h-11 flex items-center justify-center cursor-pointer transition-colors"
               aria-label="Toggle navigation menu"
+              aria-expanded={isOpen}
+              aria-controls="mobile-nav-menu"
             >
               {isOpen ? <X size={15} /> : <Menu size={15} />}
             </motion.button>
@@ -236,10 +239,11 @@ export default function Navbar() {
             exit={{ opacity: 0 }}
             transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
             className="fixed inset-0 z-40 bg-n-700 flex flex-col p-6 sm:p-8 md:hidden"
+            id="mobile-nav-menu"
           >
             <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,rgba(255,255,255,0.03),transparent_50%)] pointer-events-none" />
 
-            <nav className="flex-1 flex flex-col justify-center gap-8 mt-16 relative z-10">
+            <nav className="flex-1 flex flex-col justify-center gap-8 mt-16 relative z-10" aria-label="Mobile primary">
               {navLinks.map((link, idx) => (
                 <div key={link.href} className="overflow-hidden py-2">
                   <motion.a
