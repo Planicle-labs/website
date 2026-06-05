@@ -1,8 +1,17 @@
 import type { NextConfig } from "next";
 
+const isDev = process.env.NODE_ENV === 'development';
+
+const scriptSrc = [
+  "'self'",
+  "'unsafe-inline'",
+  "https://app.cal.com",
+  ...(isDev ? ["'unsafe-eval'"] : []),
+].join(" ");
+
 const csp = [
   "default-src 'self'",
-  "script-src 'self' 'unsafe-inline' https://app.cal.com",
+  `script-src ${scriptSrc}`,
   "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
   "font-src 'self' https://fonts.gstatic.com data:",
   "img-src 'self' data: blob: https:",

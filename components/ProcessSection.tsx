@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { animate, cubicBezier, eases } from 'animejs';
 import { useBooking } from './BookingProvider';
 
@@ -11,6 +11,14 @@ interface Phase {
   overline: string;
   copy: string;
 }
+
+interface LayerMotion {
+  depth: number;
+  offsetX: number;
+  offsetY: number;
+  opacity: number;
+}
+
 
 const PHASES: Phase[] = [
   {
@@ -50,6 +58,29 @@ const PHASES: Phase[] = [
   }
 ];
 
+const getLayerMotion = (layerIdx: number, activeIdx: number): LayerMotion => {
+  const baseDepth = 80 - layerIdx * 40;
+  const isActive = layerIdx === activeIdx;
+  const isPast = layerIdx < activeIdx;
+
+  let opacity = 0.35;
+  if (isActive) opacity = 1;
+  if (isPast) opacity = 0;
+
+  return {
+    depth: isActive ? baseDepth + 24 : baseDepth,
+    offsetX: isActive ? -8 : 0,
+    offsetY: isActive ? -12 : 0,
+    opacity,
+  };
+};
+
+const getLayerTransform = (
+  motion: LayerMotion,
+) => {
+  return `translateX(${motion.offsetX}px) translateY(${motion.offsetY}px) translateZ(${motion.depth}px)`;
+};
+
 export default function ProcessSection() {
   const { openBooking } = useBooking();
   const [activeIdx, setActiveIdx] = useState(0);
@@ -57,99 +88,119 @@ export default function ProcessSection() {
   const layersRef = useRef<(HTMLDivElement | null)[]>([]);
   const textRef = useRef<HTMLDivElement>(null);
   const activeIdxRef = useRef(0);
+  const animFrameRef = useRef<number | null>(null);
+  const isMountedRef = useRef(true);
+  const layerMotionRef = useRef<LayerMotion[]>(PHASES.map((_, idx) => getLayerMotion(idx, 0)));
+
+  useEffect(() => {
+    isMountedRef.current = true;
+
+    return () => {
+      isMountedRef.current = false;
+      if (animFrameRef.current !== null) cancelAnimationFrame(animFrameRef.current);
+    };
+  }, []);
+
+  const applyLayerMotion = useCallback((layerIdx: number, activeLayerIdx = activeIdxRef.current) => {
+    const layerEl = layersRef.current[layerIdx];
+    const motion = layerMotionRef.current[layerIdx];
+    if (!layerEl || !motion) return;
+
+    layerEl.style.transform = getLayerTransform(motion);
+    layerEl.style.opacity = String(motion.opacity);
+  }, []);
 
   // Trigger layer highlight and text morph animations when active index changes
-  const animateActiveLayer = (idx: number) => {
+  const animateActiveLayer = useCallback((idx: number) => {
     layersRef.current.forEach((layerEl, i) => {
       if (!layerEl) return;
 
-      // Reversed stack: i = 0 (PLAN) is at top (baseZ = 80), i = 4 (DEPLOY) is at bottom (baseZ = -80)
-      const baseZ = 80 - i * 40;
-      const isActive = i === idx;
-      const isPast = i < idx;
+      const motion = layerMotionRef.current[i] ?? getLayerMotion(i, activeIdxRef.current);
+      layerMotionRef.current[i] = motion;
+      const targetMotion = getLayerMotion(i, idx);
 
-      // Progressive reveal for reversed stack:
-      // active is fully visible (opacity 1)
-      // past layers are above active (so they must fade to 0 to prevent occlusion of active layers below them)
-      // future layers sit below active (so they stay visible at 0.35 opacity forming the foundation beneath the active card)
-      let targetOpacity = 0.35;
-      if (isActive) targetOpacity = 1;
-      if (isPast) targetOpacity = 0;
-
-      animate(layerEl, {
-        translateZ: isActive ? baseZ + 24 : baseZ,
-        translateY: isActive ? -12 : 0,
-        translateX: isActive ? -8 : 0,
-        opacity: targetOpacity,
-        filter: isActive ? 'blur(0px)' : 'blur(0.3px)',
+      animate(motion, {
+        depth: targetMotion.depth,
+        offsetY: targetMotion.offsetY,
+        offsetX: targetMotion.offsetX,
+        opacity: targetMotion.opacity,
         duration: 350,
-        ease: cubicBezier(0.23, 1, 0.32, 1)
+        ease: cubicBezier(0.23, 1, 0.32, 1),
+        onRender: () => applyLayerMotion(i, idx),
+        onComplete: () => applyLayerMotion(i, idx),
       });
     });
-  };
+  }, [applyLayerMotion]);
 
-  const animateTextTransition = () => {
+  const animateTextTransition = useCallback(() => {
     const el = textRef.current;
     if (!el) return;
 
     animate(el, {
       opacity: 0,
-      filter: 'blur(2px)',
       translateY: 8,
       duration: 150,
       ease: eases.inQuad,
       onComplete: () => {
-        animate(el, {
+        if (!isMountedRef.current || !textRef.current) return;
+        animate(textRef.current, {
           opacity: 1,
-          filter: 'blur(0px)',
           translateY: 0,
           duration: 300,
           ease: cubicBezier(0.23, 1, 0.32, 1)
         });
       }
     });
-  };
-
-  // Sync state with ref for scroll event listener
-  useEffect(() => {
-    activeIdxRef.current = activeIdx;
-  }, [activeIdx]);
+  }, []);
 
   // Set up Sticky Scroll logic (completely scroll-bound and bidirectional)
   useEffect(() => {
     const handleScroll = () => {
-      if (!containerRef.current) return;
+      if (animFrameRef.current !== null) cancelAnimationFrame(animFrameRef.current);
 
-      const rect = containerRef.current.getBoundingClientRect();
-      const viewHeight = window.innerHeight;
-      const totalHeight = rect.height;
+      animFrameRef.current = requestAnimationFrame(() => {
+        if (!containerRef.current) {
+          animFrameRef.current = null;
+          return;
+        }
 
-      // Scrollable distance within the sticky container
-      const scrollableRange = totalHeight - viewHeight;
+        const rect = containerRef.current.getBoundingClientRect();
+        const viewHeight = window.innerHeight;
+        const totalHeight = rect.height;
 
-      if (scrollableRange <= 0) return;
+        // Scrollable distance within the sticky container
+        const scrollableRange = totalHeight - viewHeight;
 
-      // Calculate scroll progress (0 when sticky starts, 1 when sticky ends)
-      const scrollStart = -rect.top;
-      let progress = scrollStart / scrollableRange;
-      progress = Math.max(0, Math.min(1, progress));
+        if (scrollableRange <= 0) {
+          animFrameRef.current = null;
+          return;
+        }
 
-      // Calculate active phase index based on scroll progress
-      const rawIndex = Math.floor(progress * PHASES.length);
-      const targetIdx = Math.min(PHASES.length - 1, Math.max(0, rawIndex));
+        // Calculate scroll progress (0 when sticky starts, 1 when sticky ends)
+        const scrollStart = -rect.top;
+        let progress = scrollStart / scrollableRange;
+        progress = Math.max(0, Math.min(1, progress));
 
-      // Only trigger updates and animations when the index actually changes
-      if (targetIdx !== activeIdxRef.current) {
-        setActiveIdx(targetIdx);
-      }
+        // Calculate active phase index based on scroll progress
+        const rawIndex = Math.floor(progress * PHASES.length);
+        const targetIdx = Math.min(PHASES.length - 1, Math.max(0, rawIndex));
+
+        // Only trigger updates and animations when the index actually changes
+        if (targetIdx !== activeIdxRef.current) {
+          activeIdxRef.current = targetIdx;
+          setActiveIdx(targetIdx);
+        }
+
+        animFrameRef.current = null;
+      });
     };
 
     window.addEventListener('scroll', handleScroll, { passive: true });
-    // Initial check on mount
-    handleScroll();
+    animFrameRef.current = requestAnimationFrame(handleScroll);
 
     return () => {
       window.removeEventListener('scroll', handleScroll);
+      if (animFrameRef.current !== null) cancelAnimationFrame(animFrameRef.current);
     };
   }, []);
 
@@ -157,7 +208,7 @@ export default function ProcessSection() {
   useEffect(() => {
     animateActiveLayer(activeIdx);
     animateTextTransition();
-  }, [activeIdx]);
+  }, [activeIdx, animateActiveLayer, animateTextTransition]);
 
   // Smooth scroll logic to navigate to specific phases on click
   const scrollToPhase = (idx: number) => {
@@ -170,7 +221,11 @@ export default function ProcessSection() {
     const viewHeight = window.innerHeight;
     const scrollableRange = totalHeight - viewHeight;
 
-    if (scrollableRange <= 0) return;
+    if (scrollableRange <= 0) {
+      activeIdxRef.current = idx;
+      setActiveIdx(idx);
+      return;
+    }
 
     // Place the scroll position at the mid-point of the phase's scroll range
     const targetProgress = (idx + 0.5) / PHASES.length;
@@ -192,7 +247,10 @@ export default function ProcessSection() {
       style={{ height: '350vh' }}
     >
       {/* STICKY CONTAINER LOCKS IN VIEWPORT DURING SCROLL RANGE */}
-      <div className="sticky top-0 h-screen w-full flex flex-col overflow-hidden bg-[#F7F7F7]">
+      <div
+        className="sticky top-0 w-full flex flex-col bg-[#F7F7F7]"
+        style={{ height: '100dvh', overflow: 'clip' }}
+      >
 
         {/* Subtle hairline grid — matching Inspiration 2.webp: barely perceptible cross-hatch */}
         <div
@@ -236,16 +294,25 @@ export default function ProcessSection() {
           <div className="hidden lg:grid lg:grid-cols-[130px_1fr_320px] gap-20 items-center justify-center w-full mt-10 mb-6 pb-0 my-auto overflow-visible flex-1">
 
             {/* ─── COLUMN 1: PHASE LABELS (Desktop) ─── */}
-            <div className="hidden lg:flex flex-col gap-2.5 justify-center items-start h-full">
+            <div
+              className="hidden lg:flex flex-col gap-2.5 justify-center items-start h-full"
+              role="tablist"
+              aria-label="Project phases"
+            >
               {PHASES.map((phase, idx) => {
                 const isActive = idx === activeIdx;
                 return (
                   <button
                     key={phase.id}
+                    type="button"
+                    role="tab"
+                    aria-selected={isActive}
+                    aria-controls="process-phase-content"
+                    aria-label={`Phase ${idx + 1}: ${phase.label}`}
                     onClick={() => scrollToPhase(idx)}
-                    className={`relative inline-flex items-center justify-center w-[110px] py-2 rounded-full border transition-all duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] font-mono text-[10px] font-bold tracking-[0.16em] cursor-pointer outline-none ${isActive
-                      ? 'bg-[#161618] border-[#161618] text-white shadow-sm translate-x-1 font-bold'
-                      : 'bg-transparent border-[#E4E3DD] text-[#A09F9A] hover:border-[#161618] hover:text-[#161618]'
+                    className={`relative inline-flex items-center justify-center w-[110px] py-2 rounded-full border transition-all duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] font-mono text-[10px] font-bold tracking-[0.16em] cursor-pointer outline-none focus-visible:ring-2 focus-visible:ring-[#EF4A2A] focus-visible:ring-offset-2 ${isActive
+                      ? 'bg-[#161618] border-[#161618] text-white shadow-sm translate-x-1'
+                      : 'bg-transparent border-[#E4E3DD] text-[#6B6A65] hover:border-[#161618] hover:text-[#161618]'
                       }`}
                   >
                     {/* Connector line from active label to card stack */}
@@ -264,17 +331,15 @@ export default function ProcessSection() {
             <div className="flex items-center justify-center py-1 lg:py-4 relative w-full h-[180px] sm:h-[240px] lg:h-full max-w-[280px] sm:max-w-[360px] lg:max-w-[420px] lg:-translate-x-8 lg:-translate-y-4 mx-auto overflow-visible shrink-0 max-sm:max-w-[85vw]">
               <div
                 className="w-full aspect-[4/3] relative overflow-visible"
-                style={{ perspective: '1200px' }}
               >
-                {/* 3D Slant Projection */}
+                {/* Isometric Slant Projection — perspective() in transform chain ensures cross-browser parity */}
                 <div
-                  className="w-full h-full relative [transform:rotateX(55deg)_rotateZ(-35deg)_skewX(-4deg)_scale(0.68)] sm:[transform:rotateX(55deg)_rotateZ(-35deg)_skewX(-4deg)_scale(0.8)] lg:[transform:rotateX(55deg)_rotateZ(-35deg)_skewX(-4deg)_scale(0.88)]"
-                  style={{
-                    transformStyle: 'preserve-3d',
-                  }}
+                  className='w-full h-full relative [transform:perspective(1200px)_rotateX(55deg)_rotateZ(-35deg)_skewX(-4deg)_scale(0.68)] sm:[transform:perspective(1200px)_rotateX(55deg)_rotateZ(-35deg)_skewX(-4deg)_scale(0.8)] lg:[transform:perspective(1200px)_rotateX(55deg)_rotateZ(-35deg)_skewX(-4deg)_scale(0.88)]'
+                  style={{ transformStyle: 'preserve-3d' }}
                 >
                   {PHASES.map((phase, idx) => {
                     const isActive = idx === activeIdx;
+                    const initialMotion = getLayerMotion(idx, activeIdx);
                     return (
                       <div
                         key={phase.id}
@@ -282,18 +347,30 @@ export default function ProcessSection() {
                           layersRef.current[idx] = el;
                         }}
                         style={{
-                          zIndex: 5 - idx
+                          zIndex: isActive ? 10 : 5 - idx,
+                          transform: getLayerTransform(initialMotion),
+                          opacity: initialMotion.opacity,
+                          willChange: 'transform, opacity',
+                          transformStyle: 'preserve-3d',
+                          backfaceVisibility: 'hidden',
                         }}
-                        className={`absolute inset-0 rounded-xl border shadow-[0_4px_16px_rgba(0,0,0,0.03)] flex flex-col justify-between select-none transition-all duration-300 ${
+                        className={`absolute inset-0 rounded-xl border flex flex-col justify-between ${
                           isActive
                             ? idx === 4
-                              ? 'border-[#EF4A2A] bg-[#FFF5F2] shadow-[0_12px_32px_rgba(239,74,42,0.12)]'
-                              : 'border-[#EF4A2A] bg-white shadow-[0_12px_32px_rgba(239,74,42,0.12)]'
+                              ? 'border-[#EF4A2A] bg-[#FFF5F2]'
+                              : 'border-[#EF4A2A] bg-white'
                             : idx === 0
                               ? 'border-[#E4E3DD] bg-[#FAF9F5]'
                               : 'border-[#E4E3DD] bg-white'
                         }`}
                       >
+                        <div
+                          className={`absolute inset-0 rounded-xl pointer-events-none transition-shadow duration-300 ${
+                            isActive
+                              ? 'shadow-[0_12px_32px_rgba(239,74,42,0.12)]'
+                              : 'shadow-[0_4px_16px_rgba(0,0,0,0.03)]'
+                          }`}
+                        />
                         {/* PHASE 01 — PLAN: Thick Baseboard / Hardware Slab */}
                         {idx === 0 && (
                           <div className="flex-1 w-full h-full relative p-4 flex flex-col justify-between select-none">
@@ -452,7 +529,7 @@ export default function ProcessSection() {
 
                             <div className="flex-1 py-3 flex gap-3 items-center justify-between overflow-hidden">
                               <div className={`w-[36%] h-[85%] rounded-lg border flex flex-col items-center justify-center p-1 relative shrink-0 ${isActive ? 'border-[#EF4A2A]/20 bg-white shadow-sm' : 'border-[#E4E3DD] bg-[#FAF9F6]'}`}>
-                                <svg className={`w-10 h-10 transform -rotate-90 ${isActive ? 'text-[#EF4A2A]' : 'text-[#A09F9A]'}`} viewBox="0 0 36 36">
+                                <svg className={`w-10 h-10 -rotate-90 ${isActive ? 'text-[#EF4A2A]' : 'text-[#A09F9A]'}`} viewBox="0 0 36 36" aria-hidden="true">
                                   <path
                                     className="text-gray-100"
                                     strokeWidth="3.5"
@@ -476,13 +553,13 @@ export default function ProcessSection() {
                               <div className="flex-1 h-[85%] flex flex-col gap-1.5 justify-center">
                                 <div className="flex items-center gap-1.5">
                                   <div className={`w-2.5 h-2.5 rounded-sm border flex items-center justify-center shrink-0 ${isActive ? 'border-[#EF4A2A] bg-[#EF4A2A]/10 text-[#EF4A2A]' : 'border-[#E4E3DD] bg-white'}`}>
-                                    <span className="text-[7px] leading-none font-bold">✓</span>
+                                    <span className="text-[7px] leading-none font-bold" aria-hidden="true">✓</span>
                                   </div>
                                   <div className={`h-1.5 w-[75%] rounded ${isActive ? 'bg-[#EF4A2A]/30' : 'bg-[#E4E3DD]'}`} />
                                 </div>
                                 <div className="flex items-center gap-1.5">
                                   <div className={`w-2.5 h-2.5 rounded-sm border flex items-center justify-center shrink-0 ${isActive ? 'border-[#EF4A2A] bg-[#EF4A2A]/10 text-[#EF4A2A]' : 'border-[#E4E3DD] bg-white'}`}>
-                                    <span className="text-[7px] leading-none font-bold">✓</span>
+                                    <span className="text-[7px] leading-none font-bold" aria-hidden="true">✓</span>
                                   </div>
                                   <div className={`h-1.5 w-[55%] rounded ${isActive ? 'bg-[#EF4A2A]/20' : 'bg-[#E4E3DD]'}`} />
                                 </div>
@@ -517,7 +594,7 @@ export default function ProcessSection() {
                             </div>
 
                             {/* Content Area */}
-                            <div className="flex-1 py-3 flex gap-4 items-center justify-between overflow-hidden relative">
+                            <div className="flex-1 py-3 flex gap-4 items-center justify-between overflow-hidden relative" aria-hidden="true">
 
                               {/* Left Column (UI controls) */}
                               <div className="flex flex-col gap-2 w-[48%] shrink-0 h-full justify-center">
@@ -538,8 +615,8 @@ export default function ProcessSection() {
                                 <div className="flex gap-2 items-center">
                                   <div className={`w-9 h-3.5 rounded-full ${isActive ? 'bg-[#EF4A2A] shadow-sm shadow-[#EF4A2A]/20' : 'bg-[#797872]/40'} shrink-0`} />
 
-                                  <div className={`w-10 h-3.5 rounded-full border shrink-0 flex items-center p-0.5 justify-start relative transition-all ${isActive ? 'border-[#EF4A2A] text-[#EF4A2A]' : 'border-[#E4E3DD] text-[#797872]'}`}>
-                                    <span className={`w-2.5 h-2.5 rounded-full bg-current absolute right-0.5 transition-transform`} />
+                                  <div className={`w-10 h-3.5 rounded-full border shrink-0 flex items-center p-0.5 relative ${isActive ? 'border-[#EF4A2A] text-[#EF4A2A]' : 'border-[#E4E3DD] text-[#797872]'}`}>
+                                    <span className="w-2.5 h-2.5 rounded-full bg-current absolute right-0.5" />
                                   </div>
                                 </div>
 
@@ -551,7 +628,7 @@ export default function ProcessSection() {
                               </div>
 
                               {/* Right Column: ELEGANT ELEVATED PRODUCT PREVIEW CARD */}
-                              <div className={`absolute bottom-2.5 right-0.5 w-[46%] h-[82%] rounded-lg bg-white border flex flex-col justify-center items-center p-1.5 transition-all duration-300 ${
+                              <div className={`absolute bottom-2.5 right-0.5 w-[46%] h-[82%] rounded-lg bg-white border flex flex-col justify-center items-center p-1.5 transition-[box-shadow,transform] duration-300 ${
                                 isActive
                                   ? 'border-[#EF4A2A]/20 shadow-[0_16px_28px_rgba(239,74,42,0.16)] -translate-y-1'
                                   : 'border-[#E4E3DD]/80 shadow-[0_4px_12px_rgba(0,0,0,0.03)]'
@@ -566,7 +643,7 @@ export default function ProcessSection() {
                               {/* Pointing/annotation line matching the diagram (exactly like the image!) */}
                               {isActive && (
                                 <div className="absolute left-[-22px] top-[48px] pointer-events-none z-30 flex items-center">
-                                  <svg width="45" height="15" viewBox="0 0 45 15" fill="none">
+                                  <svg width="45" height="15" viewBox="0 0 45 15" fill="none" aria-hidden="true">
                                     <path d="M1 7.5H35" stroke="#161618" strokeWidth="1" />
                                     <circle cx="35" cy="7.5" r="1.5" fill="#161618" />
                                   </svg>
@@ -589,7 +666,13 @@ export default function ProcessSection() {
             </div>
 
             {/* ─── COLUMN 3: TEXT DESCRIPTIONS (Right) ─── */}
-            <div className="flex flex-col justify-center w-full mx-auto px-2 lg:px-0 shrink-0 text-center lg:text-left">
+            <div
+              id="process-phase-content"
+              role="tabpanel"
+              aria-live="polite"
+              aria-atomic="true"
+              className="flex flex-col justify-center w-full mx-auto px-2 lg:px-0 shrink-0 text-center lg:text-left"
+            >
               <div ref={textRef} className="flex flex-col">
                 <span className="font-mono text-[9px] sm:text-[10px] font-bold tracking-[0.16em] text-[#EF4A2A] uppercase select-none">
                   {activePhase.overline}
@@ -606,11 +689,12 @@ export default function ProcessSection() {
                 {/* Dynamic arrow link */}
                 <div className="mt-3.5 sm:mt-6 flex items-center justify-center lg:justify-start">
                   <button
+                    type="button"
                     onClick={openBooking}
-                    className="group inline-flex items-center gap-1.5 text-[10px] font-mono font-bold tracking-[0.16em] text-[#161618] hover:text-[#EF4A2A] transition-colors duration-200 uppercase cursor-pointer border-none bg-transparent outline-none p-0"
+                    className="group inline-flex items-center gap-1.5 text-[10px] font-mono font-bold tracking-[0.16em] text-[#161618] hover:text-[#EF4A2A] transition-colors duration-200 uppercase cursor-pointer border-none bg-transparent outline-none p-0 focus-visible:ring-2 focus-visible:ring-[#EF4A2A] focus-visible:ring-offset-2"
                   >
                     LET&apos;S BUILD TOGETHER
-                    <span className="inline-block transform transition-transform duration-300 group-hover:translate-x-1">
+                    <span className="inline-block transform transition-transform duration-300 group-hover:translate-x-1" aria-hidden="true">
                       »
                     </span>
                   </button>
@@ -626,17 +710,26 @@ export default function ProcessSection() {
           <div className="flex lg:hidden flex-col flex-none items-center justify-start w-full pt-3 pb-2 gap-y-4 overflow-visible">
 
             {/* Mobile horizontal phase progress indicators */}
-            <div className="flex justify-center items-center gap-1.5 flex-wrap shrink-0">
+            <div
+              className="flex justify-center items-center gap-1.5 flex-wrap shrink-0"
+              role="tablist"
+              aria-label="Project phases"
+            >
               {PHASES.map((phase, idx) => {
                 const isActive = idx === activeIdx;
                 return (
                   <button
                     key={phase.id + '-mob-tab'}
+                    type="button"
+                    role="tab"
+                    aria-selected={isActive}
+                    aria-controls="process-phase-content-mobile"
+                    aria-label={`Phase ${idx + 1}: ${phase.label}`}
                     onClick={() => scrollToPhase(idx)}
-                    className={`px-3 py-1.5 rounded-full border text-[9px] sm:text-[10px] font-bold font-mono tracking-wider cursor-pointer outline-none transition-all duration-300 ${
+                    className={`px-3 py-1.5 rounded-full border text-[9px] sm:text-[10px] font-bold font-mono tracking-wider cursor-pointer outline-none transition-all duration-300 focus-visible:ring-2 focus-visible:ring-[#EF4A2A] focus-visible:ring-offset-2 ${
                       isActive
-                        ? 'bg-[#161618] border-[#161618] text-white shadow-sm font-bold'
-                        : 'bg-transparent border-[#E4E3DD] text-[#A09F9A] hover:border-[#161618] hover:text-[#161618]'
+                        ? 'bg-[#161618] border-[#161618] text-white shadow-sm'
+                        : 'bg-transparent border-[#E4E3DD] text-[#6B6A65] hover:border-[#161618] hover:text-[#161618]'
                     }`}
                   >
                     {phase.label}
@@ -655,7 +748,7 @@ export default function ProcessSection() {
                 return (
                   <div
                     key={phase.id + '-mobile-card'}
-                    className={`absolute inset-0 rounded-xl border shadow-[0_6px_20px_rgba(0,0,0,0.03)] flex flex-col justify-between select-none transition-all duration-500 ease-[cubic-bezier(0.23,1,0.32,1)] ${
+                    className={`absolute inset-0 rounded-xl border shadow-[0_6px_20px_rgba(0,0,0,0.03)] flex flex-col justify-between transition-[opacity,transform] duration-500 ease-[cubic-bezier(0.23,1,0.32,1)] ${
                       isActive
                         ? 'opacity-100 translate-y-0 scale-100 z-10 pointer-events-auto'
                         : 'opacity-0 translate-y-4 scale-95 z-0 pointer-events-none'
@@ -824,7 +917,7 @@ export default function ProcessSection() {
 
                         <div className="flex-1 py-2 flex gap-2 items-center justify-between overflow-hidden">
                           <div className={`w-[36%] h-[90%] rounded border flex flex-col items-center justify-center p-0.5 relative shrink-0 ${isActive ? 'border-[#EF4A2A]/20 bg-white shadow-sm' : 'border-[#E4E3DD] bg-[#FAF9F6]'}`}>
-                            <svg className={`w-7 h-7 transform -rotate-90 ${isActive ? 'text-[#EF4A2A]' : 'text-[#A09F9A]'}`} viewBox="0 0 36 36">
+                            <svg className={`w-7 h-7 -rotate-90 ${isActive ? 'text-[#EF4A2A]' : 'text-[#A09F9A]'}`} viewBox="0 0 36 36" aria-hidden="true">
                               <path
                                 className="text-gray-100"
                                 strokeWidth="3.5"
@@ -848,13 +941,13 @@ export default function ProcessSection() {
                           <div className="flex-1 h-[90%] flex flex-col gap-1 justify-center">
                             <div className="flex items-center gap-1">
                               <div className={`w-2 h-2 rounded-sm border flex items-center justify-center shrink-0 ${isActive ? 'border-[#EF4A2A] bg-[#EF4A2A]/10 text-[#EF4A2A]' : 'border-[#E4E3DD] bg-white'}`}>
-                                <span className="text-[5px] leading-none font-bold">✓</span>
+                                <span className="text-[5px] leading-none font-bold" aria-hidden="true">✓</span>
                               </div>
                               <div className={`h-1 w-[75%] rounded ${isActive ? 'bg-[#EF4A2A]/30' : 'bg-[#E4E3DD]'}`} />
                             </div>
                             <div className="flex items-center gap-1">
                               <div className={`w-2 h-2 rounded-sm border flex items-center justify-center shrink-0 ${isActive ? 'border-[#EF4A2A] bg-[#EF4A2A]/10 text-[#EF4A2A]' : 'border-[#E4E3DD] bg-white'}`}>
-                                <span className="text-[5px] leading-none font-bold">✓</span>
+                                <span className="text-[5px] leading-none font-bold" aria-hidden="true">✓</span>
                               </div>
                               <div className={`h-1 w-[55%] rounded ${isActive ? 'bg-[#EF4A2A]/20' : 'bg-[#E4E3DD]'}`} />
                             </div>
@@ -889,7 +982,7 @@ export default function ProcessSection() {
                         </div>
 
                         {/* Content Area */}
-                        <div className="flex-1 py-2 flex gap-2 items-center justify-between overflow-hidden relative">
+                        <div className="flex-1 py-2 flex gap-2 items-center justify-between overflow-hidden relative" aria-hidden="true">
                           {/* Left Column (UI controls) */}
                           <div className="flex flex-col gap-1 w-[48%] shrink-0 h-full justify-center">
                             {/* $179.99 tag */}
@@ -909,8 +1002,8 @@ export default function ProcessSection() {
                             <div className="flex gap-1 items-center">
                               <div className={`w-6 h-2.5 rounded-full ${isActive ? 'bg-[#EF4A2A] shadow-sm shadow-[#EF4A2A]/20' : 'bg-[#797872]/40'} shrink-0`} />
 
-                              <div className={`w-7 h-2.5 rounded-full border shrink-0 flex items-center p-0.5 justify-start relative transition-all ${isActive ? 'border-[#EF4A2A] text-[#EF4A2A]' : 'border-[#E4E3DD] text-[#797872]'}`}>
-                                <span className={`w-1.5 h-1.5 rounded-full bg-current absolute right-0.5 transition-transform`} />
+                              <div className={`w-7 h-2.5 rounded-full border shrink-0 flex items-center p-0.5 relative ${isActive ? 'border-[#EF4A2A] text-[#EF4A2A]' : 'border-[#E4E3DD] text-[#797872]'}`}>
+                                <span className="w-1.5 h-1.5 rounded-full bg-current absolute right-0.5" />
                               </div>
                             </div>
 
@@ -922,7 +1015,7 @@ export default function ProcessSection() {
                           </div>
 
                           {/* Right Column: ELEVATED PRODUCT PREVIEW CARD */}
-                          <div className={`absolute bottom-1 right-0.5 w-[46%] h-[82%] rounded bg-white border flex flex-col justify-center items-center p-1 transition-all duration-300 ${
+                          <div className={`absolute bottom-1 right-0.5 w-[46%] h-[82%] rounded bg-white border flex flex-col justify-center items-center p-1 transition-[box-shadow,transform] duration-300 ${
                             isActive
                               ? 'border-[#EF4A2A]/20 shadow-[0_12px_20px_rgba(239,74,42,0.12)] -translate-y-0.5'
                               : 'border-[#E4E3DD]/80 shadow-[0_3px_8px_rgba(0,0,0,0.03)]'
@@ -948,7 +1041,13 @@ export default function ProcessSection() {
             </div>
 
             {/* Mobile Text Descriptions */}
-            <div className="flex flex-col items-center text-center w-full px-fluid-x shrink-0 mt-fluid-gap-lg">
+            <div
+              id="process-phase-content-mobile"
+              role="tabpanel"
+              aria-live="polite"
+              aria-atomic="true"
+              className="flex flex-col items-center text-center w-full px-fluid-x shrink-0 mt-fluid-gap-lg"
+            >
               <span className="font-mono text-[10px] font-bold tracking-[0.14em] text-[#EF4A2A] uppercase">
                 {activePhase.overline}
               </span>
@@ -964,11 +1063,12 @@ export default function ProcessSection() {
               {/* Dynamic arrow link */}
               <div className="mt-3">
                 <button
+                  type="button"
                   onClick={openBooking}
-                  className="group inline-flex items-center gap-1.5 text-[10px] font-mono font-bold tracking-[0.14em] text-[#161618] hover:text-[#EF4A2A] transition-colors duration-200 uppercase cursor-pointer border-none bg-transparent outline-none p-0"
+                  className="group inline-flex items-center gap-1.5 text-[10px] font-mono font-bold tracking-[0.14em] text-[#161618] hover:text-[#EF4A2A] transition-colors duration-200 uppercase cursor-pointer border-none bg-transparent outline-none p-0 focus-visible:ring-2 focus-visible:ring-[#EF4A2A] focus-visible:ring-offset-2"
                 >
                   LET&apos;S BUILD TOGETHER
-                  <span className="inline-block transform transition-transform duration-300 group-hover:translate-x-1">
+                  <span className="inline-block transform transition-transform duration-300 group-hover:translate-x-1" aria-hidden="true">
                     »
                   </span>
                 </button>
