@@ -200,7 +200,7 @@ export default function ManifestoSection() {
 
               {/* The Concrete Image */}
               <Image
-                src="/brutalist_concrete.png"
+                src="/brutalist_concrete.webp"
                 alt="Brutalist concrete architectural fragment with sharp angles and shadows"
                 fill
                 sizes="(max-width: 1024px) 100vw, 180px"

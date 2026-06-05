@@ -41,7 +41,7 @@ export default function LiveClock({
     };
 
     updateClock();
-    const interval = setInterval(updateClock, 1000);
+    const interval = setInterval(updateClock, 30000);
     return () => clearInterval(interval);
   }, [timeZone]);
 
