@@ -185,12 +185,6 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${dmSerifDisplay.variable} ${plusJakartaSans.variable} ${jetbrainsMono.variable} ${antonio.variable} ${cormorantGaramond.variable} ${spaceGrotesk.variable} h-full antialiased scroll-smooth`}>
       <body className="min-h-full flex flex-col font-sans text-[#0C0C0E] bg-[#F4F3EF]">
-        <a
-          href="#main-content"
-          className="sr-only focus:not-sr-only focus:fixed focus:top-2 focus:left-2 focus:z-[100] focus:bg-brand-orange focus:text-white focus:px-4 focus:py-2 focus:rounded-full focus:font-mono focus:text-xs focus:font-bold focus:tracking-widest focus:outline-none focus:shadow-lg focus:shadow-brand-orange/30"
-        >
-          SKIP TO MAIN CONTENT
-        </a>
         <BookingProvider>
           {children}
         </BookingProvider>
