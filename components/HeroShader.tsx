@@ -1,9 +1,17 @@
 'use client';
 
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Shader, Swirl, ChromaFlow, FlutedGlass, FilmGrain, Stripes, LinearGradient } from 'shaders/react';
 
 export default function HeroShader() {
+  const [isMounted, setIsMounted] = useState(false);
+
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
+
+  if (!isMounted) return null;
+
   return (
     <div className="absolute inset-0 w-full h-full pointer-events-none z-10 overflow-hidden select-none">
       <Shader className="w-full h-full">
