@@ -11,12 +11,12 @@ export default function HeroCTA() {
       onClick={openBooking}
       className="group inline-flex items-center justify-center md:justify-start bg-brand-orange hover:bg-brand-orange/95 hover:scale-[1.02] text-white rounded-full pl-6 pr-2 py-3 sm:py-2.5 transition-all duration-200 ease-[cubic-bezier(0.16,1,0.3,1)] active:scale-[0.98] shadow-lg shadow-brand-orange/10 hover:shadow-brand-orange/20 cursor-pointer border-none outline-none"
     >
-      <span className="font-mono text-[11px] sm:text-[12px] font-bold tracking-widest mr-4 relative overflow-hidden h-[18px]">
+      <span className="font-mono text-[11px] sm:text-[12px] font-bold tracking-widest mr-4 relative overflow-hidden h-4.5">
         <span className="flex flex-col transition-transform duration-200 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:-translate-y-1/2">
-          <span className="h-[18px] flex items-center">
+          <span className="h-4.5 flex items-center">
             BOOK A CALL
           </span>
-          <span className="h-[18px] flex items-center">
+          <span className="h-4.5 flex items-center">
             BOOK A CALL
           </span>
         </span>

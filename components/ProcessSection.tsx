@@ -267,7 +267,7 @@ export default function ProcessSection() {
         {/* Top border separator */}
         <div className="absolute top-0 left-0 right-0 h-px bg-[#E4E3DD]" />
 
-        <div className="w-full max-w-[1280px] mx-auto px-fluid-x flex flex-col gap-y-fluid-gap-md justify-start lg:justify-between h-full pt-28 pb-3 sm:pt-16 sm:pb-6 lg:pt-16 lg:pb-6 z-10 relative">
+        <div className="w-full max-w-7xl mx-auto px-fluid-x flex flex-col gap-y-fluid-gap-md justify-start lg:justify-between h-full pt-28 pb-3 sm:pt-16 sm:pb-6 lg:pt-16 lg:pb-6 z-10 relative">
 
           {/* ═══════════════════════════════════════════════════════ */}
           {/* HEADER BLOCK — Matches Inspiration 2.webp exactly     */}
@@ -310,14 +310,14 @@ export default function ProcessSection() {
                     aria-controls="process-phase-content"
                     aria-label={`Phase ${idx + 1}: ${phase.label}`}
                     onClick={() => scrollToPhase(idx)}
-                    className={`relative inline-flex items-center justify-center w-[110px] py-2 rounded-full border transition-all duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] font-mono text-[10px] font-bold tracking-[0.16em] cursor-pointer outline-none focus-visible:ring-2 focus-visible:ring-[#EF4A2A] focus-visible:ring-offset-2 ${isActive
+                    className={`relative inline-flex items-center justify-center w-27.5 py-2 rounded-full border transition-all duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] font-mono text-[10px] font-bold tracking-[0.16em] cursor-pointer outline-none focus-visible:ring-2 focus-visible:ring-[#EF4A2A] focus-visible:ring-offset-2 ${isActive
                       ? 'bg-[#161618] border-[#161618] text-white shadow-sm translate-x-1'
                       : 'bg-transparent border-[#E4E3DD] text-[#6B6A65] hover:border-[#161618] hover:text-[#161618]'
                       }`}
                   >
                     {/* Connector line from active label to card stack */}
                     {isActive && (
-                      <div className="absolute left-full top-1/2 -translate-y-1/2 w-[60px] lg:w-[80px] h-px bg-[#E4E3DD]">
+                      <div className="absolute left-full top-1/2 -translate-y-1/2 w-15 lg:w-20 h-px bg-[#E4E3DD]">
                         <div className="absolute right-0 top-1/2 -translate-y-1/2 w-1.5 h-1.5 rounded-full bg-[#EF4A2A]" />
                       </div>
                     )}
@@ -328,13 +328,13 @@ export default function ProcessSection() {
             </div>
 
             {/* ─── COLUMN 2: 3D ISOMETRIC CARD STACK (Center) ─── */}
-            <div className="flex items-center justify-center py-1 lg:py-4 relative w-full h-[180px] sm:h-[240px] lg:h-full max-w-[280px] sm:max-w-[360px] lg:max-w-[420px] lg:-translate-x-8 lg:-translate-y-4 mx-auto overflow-visible shrink-0 max-sm:max-w-[85vw]">
+            <div className="flex items-center justify-center py-1 lg:py-4 relative w-full h-45 sm:h-60 lg:h-full max-w-70 sm:max-w-90 lg:max-w-105 lg:-translate-x-8 lg:-translate-y-4 mx-auto overflow-visible shrink-0 max-sm:max-w-[85vw]">
               <div
-                className="w-full aspect-[4/3] relative overflow-visible"
+                className="w-full aspect-4/3 relative overflow-visible"
               >
                 {/* Isometric Slant Projection — perspective() in transform chain ensures cross-browser parity */}
                 <div
-                  className='w-full h-full relative [transform:perspective(1200px)_rotateX(55deg)_rotateZ(-35deg)_skewX(-4deg)_scale(0.68)] sm:[transform:perspective(1200px)_rotateX(55deg)_rotateZ(-35deg)_skewX(-4deg)_scale(0.8)] lg:[transform:perspective(1200px)_rotateX(55deg)_rotateZ(-35deg)_skewX(-4deg)_scale(0.88)]'
+                  className='w-full h-full relative transform-[perspective(1200px)_rotateX(55deg)_rotateZ(-35deg)_skewX(-4deg)_scale(0.68)] sm:transform-[perspective(1200px)_rotateX(55deg)_rotateZ(-35deg)_skewX(-4deg)_scale(0.8)] lg:transform-[perspective(1200px)_rotateX(55deg)_rotateZ(-35deg)_skewX(-4deg)_scale(0.88)]'
                   style={{ transformStyle: 'preserve-3d' }}
                 >
                   {PHASES.map((phase, idx) => {
@@ -406,7 +406,7 @@ export default function ProcessSection() {
                                 <span className={`font-mono text-[8px] tracking-[0.15em] font-medium ${isActive ? 'text-[#EF4A2A]/70' : 'text-[#797872]'}`}>BASEPLATE SYSTEM</span>
                               </div>
 
-                              <div className="w-full max-w-[180px] flex justify-between items-center relative mt-1 shrink-0">
+                              <div className="w-full max-w-45 flex justify-between items-center relative mt-1 shrink-0">
                                 <div className={`absolute left-0 right-0 h-px ${isActive ? 'bg-[#EF4A2A]/20' : 'bg-[#E4E3DD]'}`} />
                                 <div className={`relative w-4 h-4 rounded-full border bg-white flex items-center justify-center z-10 ${isActive ? 'border-[#EF4A2A]' : 'border-[#E4E3DD]'}`}>
                                   <div className={`w-1.5 h-1.5 rounded-full ${isActive ? 'bg-[#EF4A2A]' : 'bg-[#E4E3DD]'}`} />
@@ -642,7 +642,7 @@ export default function ProcessSection() {
 
                               {/* Pointing/annotation line matching the diagram (exactly like the image!) */}
                               {isActive && (
-                                <div className="absolute left-[-22px] top-[48px] pointer-events-none z-30 flex items-center">
+                                <div className="absolute -left-5.5 top-12 pointer-events-none z-30 flex items-center">
                                   <svg width="45" height="15" viewBox="0 0 45 15" fill="none" aria-hidden="true">
                                     <path d="M1 7.5H35" stroke="#161618" strokeWidth="1" />
                                     <circle cx="35" cy="7.5" r="1.5" fill="#161618" />
@@ -739,7 +739,7 @@ export default function ProcessSection() {
             </div>
 
             {/* 2D Flat Layered Card Deck for Mobile */}
-            <div className="w-full max-w-[250px] xs:max-w-[270px] aspect-[1.38] relative mx-auto shrink-0 my-4 overflow-visible">
+            <div className="w-full max-w-62.5 xs:max-w-[270px] aspect-[1.38] relative mx-auto shrink-0 my-4 overflow-visible">
               {/* Decorative Background Card for layered stack effect */}
               <div className="absolute inset-0 rounded-xl border border-[#E4E3DD] bg-[#FAF9F5]/80 translate-x-2 translate-y-2 opacity-60 -z-10" />
               
@@ -794,7 +794,7 @@ export default function ProcessSection() {
                             <span className={`font-mono text-[7px] tracking-[0.15em] font-medium ${isActive ? 'text-[#EF4A2A]/70' : 'text-[#797872]'}`}>BASEPLATE SYSTEM</span>
                           </div>
 
-                          <div className="w-full max-w-[150px] flex justify-between items-center relative mt-0.5 shrink-0">
+                          <div className="w-full max-w-37.5 flex justify-between items-center relative mt-0.5 shrink-0">
                             <div className={`absolute left-0 right-0 h-px ${isActive ? 'bg-[#EF4A2A]/20' : 'bg-[#E4E3DD]'}`} />
                             <div className={`relative w-3.5 h-3.5 rounded-full border bg-white flex items-center justify-center z-10 ${isActive ? 'border-[#EF4A2A]' : 'border-[#E4E3DD]'}`}>
                               <div className={`w-1 h-1 rounded-full ${isActive ? 'bg-[#EF4A2A]' : 'bg-[#E4E3DD]'}`} />

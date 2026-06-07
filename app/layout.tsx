@@ -46,7 +46,7 @@ const spaceGrotesk = Space_Grotesk({
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://planicle.com"),
-  title: "Planicle — Software Studio for Startups",
+  title: "Planicle Labs — Software Studio for Startups",
   description: "We build premium websites, apps, and AI workflows for high-growth Seed to Series B startups. Precision engineering, absolute execution, no hand-holding.",
   keywords: [
     "software studio",
@@ -62,10 +62,10 @@ export const metadata: Metadata = {
     canonical: "/",
   },
   openGraph: {
-    title: "Planicle — Software Studio for Startups",
+    title: "Planicle Labs — Software Studio for Startups",
     description: "We build premium websites, apps, and AI workflows for high-growth Seed to Series B startups. Precision engineering, absolute execution, no hand-holding.",
     url: "https://planicle.com",
-    siteName: "Planicle",
+    siteName: "Planicle Labs",
     locale: "en_IN",
     type: "website",
     images: [
@@ -73,13 +73,13 @@ export const metadata: Metadata = {
         url: "/og-image.png",
         width: 1200,
         height: 630,
-        alt: "Planicle — Software Studio for Startups",
+        alt: "Planicle Labs — Software Studio for Startups",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Planicle — Software Studio for Startups",
+    title: "Planicle Labs — Software Studio for Startups",
     description: "We build premium websites, apps, and AI workflows for high-growth Seed to Series B startups. Precision engineering, absolute execution, no hand-holding.",
     images: ["/og-image.png"],
   },
@@ -95,7 +95,7 @@ const jsonLd = {
     {
       "@type": "Organization",
       "@id": "https://planicle.com/#organization",
-      name: "Planicle",
+      name: "Planicle Labs",
       url: "https://planicle.com",
       logo: {
         "@type": "ImageObject",
@@ -137,7 +137,7 @@ const jsonLd = {
       "@type": "WebSite",
       "@id": "https://planicle.com/#website",
       url: "https://planicle.com",
-      name: "Planicle",
+      name: "Planicle Labs",
       inLanguage: "en-IN",
       publisher: { "@id": "https://planicle.com/#organization" },
     },

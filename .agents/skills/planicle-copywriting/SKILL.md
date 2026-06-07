@@ -1,13 +1,13 @@
 ---
 name: planicle-copywriting
-description: Generate on-brand copywriting for Planicle — a premium software agency that builds websites, apps, and AI workflows for startups. Use this skill whenever writing website copy, CTAs, headlines, taglines, hero text, section copy, landing page content, investor-facing language, or any brand-voice content for Planicle. Trigger on any request involving Planicle copy, brand voice, landing page sections, or marketing language. Even if the user just says "write a headline" or "write copy for the services section", use this skill to ensure output matches Planicle's exact voice.
+description: Generate on-brand copywriting for Planicle Labs — a premium software agency that builds websites, apps, and AI workflows for startups. Use this skill whenever writing website copy, CTAs, headlines, taglines, hero text, section copy, landing page content, investor-facing language, or any brand-voice content for Planicle Labs. Trigger on any request involving Planicle Labs copy, brand voice, landing page sections, or marketing language. Even if the user just says "write a headline" or "write copy for the services section", use this skill to ensure output matches Planicle Labs' exact voice.
 ---
 
-# Planicle Copywriting Skill
+# Planicle Labs Copywriting Skill
 
 ## Product Context
 
-**Planicle** is a premium software agency. They build:
+**Planicle Labs** is a premium software agency. They build:
 - Websites
 - Apps
 - AI workflows
@@ -33,7 +33,7 @@ description: Generate on-brand copywriting for Planicle — a premium software a
 
 **Three words: Premium. Confident. Precise.**
 
-Not warm-first, not playful, not informal. Planicle is:
+Not warm-first, not playful, not informal. Planicle Labs is:
 - A partner that executes, not one that collaborates endlessly
 - Technically excellent and willing to show it, not just say it
 - Selective — they work with founders who are serious
@@ -115,7 +115,7 @@ Body copy is the **confidence-builder** behind the headline. It doesn't repeat t
 
 **Body copy formula:**
 1. **Name the pain or gap** (1 sentence — what founders actually experience)
-2. **State the Planicle difference** (1–2 sentences — what we do, not what we believe)
+2. **State the Planicle Labs difference** (1–2 sentences — what we do, not what we believe)
 3. **Outcome close** (1 sentence — what changes after working with us)
 
 **Approved examples:**
@@ -172,7 +172,7 @@ Short phrases that stand alone as brand statements — used in hero sections, so
 
 ### 6. Process / Service Section Copy
 
-When describing Planicle's workflow or service areas:
+When describing Planicle Labs' workflow or service areas:
 
 **Phase labels (pill/tag, ALL CAPS):**
 `PLAN` → `DESIGN` → `DEVELOP` → `TEST` → `DEPLOY` → `OPTIMIZE`
@@ -181,7 +181,7 @@ When describing Planicle's workflow or service areas:
 - "Build your idea" / "Ship with precision" / "Scale without limits"
 
 **Section body (2–3 sentences):**
-- Open with what Planicle actively does (not what the client wants)
+- Open with what Planicle Labs actively does (not what the client wants)
 - Use specific nouns: "market research", "technical specs", "functional requirements", "architecture"
 - Close with a founder-relevant outcome: "ready to raise", "ready to acquire users", "zero tech debt"
 
@@ -215,7 +215,7 @@ Since the primary goal is **booking a deal**, every section should move founders
 
 ---
 
-## Anti-patterns: What Planicle Copy Is Never
+## Anti-patterns: What Planicle Labs Copy Is Never
 
 | ❌ Never | ✅ Instead |
 |----------|-----------|
@@ -298,7 +298,7 @@ Use: `precise`, `sharp`, `unwavering`, `fearless`, `ambitious`, `game-changing`,
 
 ## Motion & Design Copy Alignment
 
-Planicle's design uses buttery-smooth microinteractions and premium restraint. Copy must match this energy:
+Planicle Labs' design uses buttery-smooth microinteractions and premium restraint. Copy must match this energy:
 - **Never oversell in copy what the interface underplays in motion**
 - Short, confident statements — they let the UI do the heavy lifting
 - One strong claim per section, not five competing ideas

@@ -20,7 +20,7 @@ export default function Home() {
         <Navbar />
 
         {/* Hero Content (z-20) */}
-        <div className="flex-1 flex flex-col justify-center w-full max-w-[1280px] mx-auto px-6 sm:px-8 lg:px-12 z-20 relative pointer-events-auto">
+        <div className="flex-1 flex flex-col justify-center w-full max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 z-20 relative pointer-events-auto">
           {/* Headline H1 */}
           <h1 className="font-serif text-[clamp(2.25rem,6.5vw,5rem)] font-normal leading-[1.05] tracking-[-0.03em] text-n-700 max-w-5xl">
             Accelerate your time <br className="hidden sm:block" />
@@ -44,12 +44,12 @@ export default function Home() {
               href="#services"
               className="group inline-flex items-center border border-n-500/30 hover:border-n-700 hover:scale-[1.02] text-n-700 rounded-full pl-6 pr-2 py-3 sm:py-2.5 transition-all duration-200 ease-[cubic-bezier(0.16,1,0.3,1)] active:scale-[0.98]"
             >
-              <span className="font-mono text-[11px] sm:text-[12px] font-bold tracking-widest mr-4 relative overflow-hidden h-[18px]">
+              <span className="font-mono text-[11px] sm:text-[12px] font-bold tracking-widest mr-4 relative overflow-hidden h-4.5">
                 <span className="flex flex-col transition-transform duration-200 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:-translate-y-1/2">
-                  <span className="h-[18px] flex items-center">
+                  <span className="h-4.5 flex items-center">
                     OUR SERVICES
                   </span>
-                  <span className="h-[18px] flex items-center">
+                  <span className="h-4.5 flex items-center">
                     OUR SERVICES
                   </span>
                 </span>

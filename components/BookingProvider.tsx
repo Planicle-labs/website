@@ -81,7 +81,7 @@ export default function BookingProvider({ children }: { children: React.ReactNod
         calLink: "planicle-labs/30min",
         config: {
           theme: "dark",
-          notes: "Scheduled via Planicle website CTA",
+          notes: "Scheduled via Planicle Labs website CTA",
         }
       });
     } else {

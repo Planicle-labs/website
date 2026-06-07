@@ -100,7 +100,7 @@ function ServiceCard({
       variants={cardVariants}
       initial="hidden"
       animate={isInView ? 'visible' : 'hidden'}
-      className="service-card group relative rounded-[16px] lg:rounded-[24px] border border-n-500/10 bg-[#161618] p-[clamp(1.5rem,2.5vw,2.25rem)] flex flex-col gap-fluid-gap-md lg:grid lg:grid-cols-[140px_1fr_250px_40px] xl:grid-cols-[170px_1fr_290px_50px] lg:items-center transition-all duration-[400ms] ease-[cubic-bezier(0.16,1,0.3,1)] hover:scale-[1.004] hover:shadow-[0_12px_40px_rgba(0,0,0,0.5)] overflow-hidden focus-within:ring-1 focus-within:ring-brand-orange/40"
+      className="service-card group relative rounded-2xl lg:rounded-3xl border border-n-500/10 bg-[#161618] p-[clamp(1.5rem,2.5vw,2.25rem)] flex flex-col gap-fluid-gap-md lg:grid lg:grid-cols-[140px_1fr_250px_40px] xl:grid-cols-[170px_1fr_290px_50px] lg:items-center transition-all duration-400 ease-[cubic-bezier(0.16,1,0.3,1)] hover:scale-[1.004] hover:shadow-[0_12px_40px_rgba(0,0,0,0.5)] overflow-hidden focus-within:ring-1 focus-within:ring-brand-orange/40"
     >
       {/* Dynamic Glow Border Layer */}
       <div 
@@ -114,7 +114,7 @@ function ServiceCard({
 
       {/* Ambient Glow that follows cursor inside card */}
       <div
-        className="absolute pointer-events-none rounded-full blur-[80px] bg-brand-orange/[0.03] transition-opacity duration-300 z-0"
+        className="absolute pointer-events-none rounded-full blur-[80px] bg-brand-orange/3 transition-opacity duration-300 z-0"
         style={{
           width: '250px',
           height: '250px',
@@ -126,7 +126,7 @@ function ServiceCard({
 
       {/* Glow Sphere Accent specifically for Card 01 for brand anchor */}
       {service.num === '01' && (
-        <div className="absolute -top-16 -left-16 w-32 h-32 rounded-full bg-brand-orange/[0.06] blur-2xl pointer-events-none z-0" />
+        <div className="absolute -top-16 -left-16 w-32 h-32 rounded-full bg-brand-orange/6 blur-2xl pointer-events-none z-0" />
       )}
 
       {/* Column 1: ID and Technical Labels */}
@@ -156,7 +156,7 @@ function ServiceCard({
 
       {/* Column 3: Tech Pills */}
       <div className="flex items-center lg:justify-end lg:px-2 relative z-10">
-        <div className="flex flex-wrap gap-1.5 lg:gap-2 max-w-[250px] xl:max-w-[290px] lg:justify-end">
+        <div className="flex flex-wrap gap-1.5 lg:gap-2 max-w-62.5 xl:max-w-72.5 lg:justify-end">
           {service.pills.map((pill) => (
             <span
               key={pill}
@@ -241,7 +241,7 @@ export default function ServicesSection() {
     >
       {/* ─── 1. Header Wrapper ─── */}
       <div className="w-full pt-fluid-section-y pb-fluid-gap-md z-10 shrink-0 bg-transparent">
-        <div className="w-full max-w-[1440px] mx-auto px-fluid-x flex flex-col">
+        <div className="w-full max-w-360 mx-auto px-fluid-x flex flex-col">
           {/* Header Grid */}
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-fluid-gap-lg items-end">
             <div className="lg:col-span-7">
@@ -279,7 +279,7 @@ export default function ServicesSection() {
           }}
         />
 
-        <div className="w-full max-w-[1440px] mx-auto px-fluid-x z-10 relative flex flex-col">
+        <div className="w-full max-w-360 mx-auto px-fluid-x z-10 relative flex flex-col">
           {/* Card Stack Area */}
           <div 
             className="relative w-full py-fluid-gap-md" 
@@ -302,7 +302,7 @@ export default function ServicesSection() {
           </div>
 
           {/* Bottom CTA Block */}
-          <div className="mt-fluid-gap-lg relative rounded-[16px] lg:rounded-[20px] bg-n-600/40 border border-n-500/10 p-fluid-card-p flex flex-col md:flex-row items-center justify-between gap-fluid-gap-md overflow-hidden group/cta-section">
+          <div className="mt-fluid-gap-lg relative rounded-2xl lg:rounded-[20px] bg-n-600/40 border border-n-500/10 p-fluid-card-p flex flex-col md:flex-row items-center justify-between gap-fluid-gap-md overflow-hidden group/cta-section">
             {/* Corner tick marks */}
             <div className="absolute top-2.5 left-2.5 w-2.5 h-2.5 border-t border-l border-brand-orange/60 pointer-events-none" />
             <div className="absolute top-2.5 right-2.5 w-2.5 h-2.5 border-t border-r border-brand-orange/60 pointer-events-none" />

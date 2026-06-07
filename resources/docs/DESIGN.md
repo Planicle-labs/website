@@ -1,11 +1,11 @@
-# Planicle Brand & UI/UX Design System Specification
+# Planicle Labs Brand & UI/UX Design System Specification
 **Target Atmosphere:** Premium, High-Conviction, Precise, Technologically Superior
 
 ---
 
 ## 1. Brand Identity & Creative Direction
 
-Planicle is an elite software studio engineering high-end websites, applications, and advanced digital product ecosystems for rapid-growth startups (Seed to Series B). The identity is rooted in absolute execution, technical mastery, and elite execution. 
+Planicle Labs is an elite software studio engineering high-end websites, applications, and advanced digital product ecosystems for rapid-growth startups (Seed to Series B). The identity is rooted in absolute execution, technical mastery, and elite execution. 
 
 ### Core Philosophy & Positioning
 * **Expert Confidence:** The copywriting and structural layouts do not beg for attention; they command it. We let the work breathe, using razor-sharp layouts to communicate that we build premium software without needing hand-holding.
@@ -20,7 +20,7 @@ The layout shifts dynamically through a high-contrast dark aesthetic designed to
 
 | Token Name | Hex Code | Visual Role / Usage |
 | :--- | :--- | :--- |
-| **Planicle Orange** | `#EF4A2A` | Primary Brand Mark, Active Interaction Rings, Interactive Focus Highlights |
+| **Planicle Labs Orange** | `#EF4A2A` | Primary Brand Mark, Active Interaction Rings, Interactive Focus Highlights |
 | **Gris** | `#F7F7F7` | Technical Feature Sheets, Contrast Text Invasions |
 | **N-700 (Rich Black)** | `#0C0C0E` | Core Canvas Background, Hero Panels, High-Impact Content Blocks (never pitch #000000) |
 | **N-600 (Charcoal)** | `#161618` | Secondary Layer Containers, Deep Card Backdrops, Element Wrapper Fills |
@@ -69,7 +69,7 @@ Our typographic hierarchy uses **expressive serif + sans-serif interplay** with 
 
 ## 4. Motion Mechanics & Interaction Design
 
-Planicle communicates engineering dominance through **exceptional motion restraint**. We eliminate aggressive bounces, cartoonish spring physics, or frantic triggers. All animations use buttery-smooth exponential ease-out curves that make the interface feel perfectly oiled.
+Planicle Labs communicates engineering dominance through **exceptional motion restraint**. We eliminate aggressive bounces, cartoonish spring physics, or frantic triggers. All animations use buttery-smooth exponential ease-out curves that make the interface feel perfectly oiled.
 
 ### Core Animation Specs
 * **Standard Transition Curve:** `cubic-bezier(0.16, 1, 0.3, 1)` (Ultra-premium ease-out).
@@ -80,7 +80,7 @@ Planicle communicates engineering dominance through **exceptional motion restrai
 
 ## 5. Accessibility, Inclusivity & Compliance
 
-Planicle interfaces are built to a strict **WCAG 2.1 AA** baseline standard. 
+Planicle Labs interfaces are built to a strict **WCAG 2.1 AA** baseline standard. 
 * **Contrast Compliance:** All typography must hit or exceed a `4.5:1` contrast ratio against backdrops. Text in muted classes (`#A09F9A`) must automatically scale up or switch to a higher-contrast token when applied over lighter section canvas sheets.
 * **Motion Accessibility:** Implement structural respect for system preferences:
   ```css

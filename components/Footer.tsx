@@ -13,14 +13,14 @@ export default function Footer() {
     >
       {/* Seamless dissolve transition from solid black Manifesto Section above */}
       <div
-        className="absolute top-0 left-0 right-0 h-[100px] sm:h-[140px] pointer-events-none z-0"
+        className="absolute top-0 left-0 right-0 h-25 sm:h-35 pointer-events-none z-0"
         style={{
           background:
             "linear-gradient(to bottom, #0C0C0E 0%, transparent 100%)",
         }}
       />
 
-      <div className="w-full max-w-[1280px] mx-auto px-fluid-x relative z-10">
+      <div className="w-full max-w-7xl mx-auto px-fluid-x relative z-10">
         {/* ──────────────────────────────────────────────────────── */}
         {/* ASYMMETRICAL 70-30 HIGH-CONVICTION CTA GRID             */}
         {/* ──────────────────────────────────────────────────────── */}
@@ -52,12 +52,12 @@ export default function Footer() {
               onClick={openBooking}
               className="group flex md:inline-flex w-full md:w-auto items-center justify-between md:justify-start bg-brand-orange hover:bg-brand-orange/95 hover:scale-[1.02] text-white rounded-full pl-6 pr-2 py-3 sm:py-2.5 transition-all duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] active:scale-[0.98] shadow-lg shadow-brand-orange/10 hover:shadow-brand-orange/20 cursor-pointer border-none outline-none"
             >
-              <span className="font-mono text-[11px] sm:text-[12px] font-bold tracking-widest mr-4 relative overflow-hidden h-[18px]">
+              <span className="font-mono text-[11px] sm:text-[12px] font-bold tracking-widest mr-4 relative overflow-hidden h-4.5">
                 <span className="flex flex-col transition-transform duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] group-hover:-translate-y-1/2">
-                  <span className="h-[18px] flex items-center">
+                  <span className="h-4.5 flex items-center">
                     LET&apos;S BUILD TOGETHER
                   </span>
-                  <span className="h-[18px] flex items-center">
+                  <span className="h-4.5 flex items-center">
                     LET&apos;S BUILD TOGETHER
                   </span>
                 </span>
@@ -73,7 +73,7 @@ export default function Footer() {
         {/* PREMIUM TERMINAL BRAND TAGLINE STATEMENT                 */}
         {/* ──────────────────────────────────────────────────────── */}
         <div className="w-full border-t border-white/10 mt-fluid-gap-lg pt-10 text-center overflow-hidden">
-          <span className="font-sans font-black text-[clamp(1.2rem,7vw,3.6rem)] tracking-[0.04em] sm:tracking-[0.09em] md:tracking-[0.12em] lg:tracking-[0.15em] text-white/[0.05] uppercase select-none block w-full leading-none pl-[0.04em] sm:pl-[0.09em] md:pl-[0.12em] lg:pl-[0.15em] whitespace-nowrap">
+          <span className="font-sans font-black text-[clamp(1.2rem,7vw,3.6rem)] tracking-[0.04em] sm:tracking-[0.09em] md:tracking-[0.12em] lg:tracking-[0.15em] text-white/5 uppercase select-none block w-full leading-none pl-[0.04em] sm:pl-[0.09em] md:pl-[0.12em] lg:pl-[0.15em] whitespace-nowrap">
             GOOD ISN&apos;T ENOUGH
           </span>
         </div>
