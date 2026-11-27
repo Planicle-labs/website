@@ -1,0 +1,180 @@
+---
+import { Image } from "astro:assets";
+import CrosshairIcon from "./CrosshairIcon.astro";
+import concrete from "../assets/brutalist_concrete.webp";
+
+const AXIOMS = [
+  "Speed without direction compounds mistakes.",
+  "Direction compounds results.",
+  "We architect clarity. You move with purpose.",
+];
+// Reveal order: the five heading lines, then the three axioms (80ms apart).
+const HEADING_LINES = 5;
+---
+
+<section
+  id="manifesto"
+  class="relative isolate w-full bg-[#0C0C0E] text-[#EEEDE9] py-fluid-section-y px-fluid-x"
+  aria-labelledby="manifesto-heading"
+  data-manifesto
+>
+  {/* Delicate Technical Grid Pattern Overlay */}
+  <div
+    class="absolute inset-0 -z-10 pointer-events-none opacity-20"
+    style="background-image: linear-gradient(to right, rgba(244, 243, 239, 0.04) 1px, transparent 1px), linear-gradient(to bottom, rgba(244, 243, 239, 0.04) 1px, transparent 1px); background-size: 48px 48px; mask-image: radial-gradient(circle at 50% 50%, black 0%, transparent 80%); -webkit-mask-image: radial-gradient(circle at 50% 50%, black 0%, transparent 80%)"
+  >
+  </div>
+
+  {/* Outer Technical Frame */}
+  <div class="w-full max-w-360 mx-auto border-y border-white/10 flex flex-col relative overflow-hidden">
+    {/* Top Header Row */}
+    <div class="w-full flex items-center justify-between px-6 py-5 border-b border-white/10 font-mono text-[9px] sm:text-[10px] tracking-[0.25em] text-[#EEEDE9]/60 select-none">
+      <div class="flex items-center gap-2">
+        <span class="w-1.5 h-1.5 bg-[#FF4500]"></span>
+        <span class="font-bold">PLANICLE LABS</span>
+      </div>
+      <div class="flex items-center gap-4">
+        <span class="hidden sm:inline">28.6139° N, 77.2090° E</span>
+        <span class="text-[#FF4500] font-bold text-xs">+</span>
+      </div>
+    </div>
+
+    {/* Main Grid Area */}
+    <div class="grid grid-cols-1 lg:grid-cols-[80px_1fr_300px_180px] w-full relative">
+      {/* Column 1: Left Vertical Philosophy Bar (Rotated on Desktop, Stacked on Mobile) */}
+      <div class="border-b lg:border-b-0 border-white/10 flex lg:flex-col items-center justify-between p-4 lg:py-10 lg:px-0 relative select-none">
+        <div class="hidden lg:block lg:rotate-90 lg:whitespace-nowrap font-mono text-[9px] tracking-[0.35em] text-[#EEEDE9]/40 uppercase origin-center my-auto">PHILOSOPHY</div>
+        <span class="lg:hidden font-mono text-[9px] tracking-[0.3em] text-[#EEEDE9]/50 uppercase">PHILOSOPHY</span>
+        <span class="font-mono text-[9px] tracking-[0.2em] text-[#FF4500] font-bold mt-auto">001</span>
+      </div>
+
+      {/* Column 2: Main Hero Text (Left-Center Column) */}
+      <div class="p-fluid-card-p border-b lg:border-b-0 lg:border-r border-white/10 flex flex-col justify-center min-w-0">
+        {/* HUD Callout marker */}
+        <div class="flex items-center gap-2 mb-6 sm:mb-8 text-[#EEEDE9]/30 font-mono text-[8px] tracking-[0.2em] select-none">
+          <CrosshairIcon class="w-3 h-3 text-[#FF4500]/70" ring={false} />
+          <span>TYPOGRAPHIC ORIENTATION MODEL V1.0</span>
+        </div>
+
+        {/* Interlocking Typography */}
+        <h2 id="manifesto-heading" class="text-[#EEEDE9] font-normal leading-[0.84] tracking-tight select-none" style="font-size: clamp(2.25rem, 5.6vw, 6.25rem)">
+          <div class="reveal-item block sm:whitespace-nowrap" style="--i:0">
+            <span class="font-cormorant lowercase italic font-light text-[1.05em] pr-3 tracking-normal">your</span><span class="font-antonio uppercase font-bold tracking-tighter text-[1.12em]">DIRECTION</span>
+          </div>
+          <div class="reveal-item mt-[-0.02em] ml-[0.35em] block sm:whitespace-nowrap" style="--i:1">
+            <span class="font-antonio uppercase font-bold tracking-tighter text-[1.12em] pr-3">IS</span><span class="font-cormorant lowercase italic font-light text-[1.05em] tracking-normal">more</span>
+          </div>
+          <div class="reveal-item mt-[-0.04em] block sm:whitespace-nowrap" style="--i:2">
+            <span class="font-antonio uppercase font-bold tracking-tighter text-[1.12em]">IMPORTANT</span>
+          </div>
+          <div class="reveal-item mt-[-0.04em] block sm:whitespace-nowrap" style="--i:3">
+            <span class="font-cormorant lowercase italic font-light text-[1.05em] pr-3 tracking-normal">than</span><span class="font-antonio uppercase font-bold tracking-tighter text-[1.12em]">YOUR</span>
+          </div>
+          <div class="reveal-item mt-[-0.04em] block sm:whitespace-nowrap" style="--i:4">
+            <span class="font-cormorant lowercase italic font-light text-[1.28em] tracking-normal animate-pulse-slow">
+              speed
+              <span class="inline-block w-[0.1em] h-[0.1em] rounded-full bg-[#FF4500] ml-1.5 align-baseline"></span>
+            </span>
+          </div>
+        </h2>
+
+        {/* Technical reference annotation */}
+        <div class="mt-fluid-gap-md flex items-center gap-fluid-gap-sm select-none opacity-30">
+          <span class="font-mono text-[9px] tracking-[0.2em] text-[#EEEDE9]/60">REF: P.01</span>
+        </div>
+      </div>
+
+      {/* Column 3: Right Sidebar Axioms (Center Column on Desktop) */}
+      <aside class="p-fluid-card-p border-b lg:border-b-0 lg:border-r border-white/10 flex flex-col justify-between gap-fluid-gap-lg">
+        <div class="flex flex-col gap-1 select-none">
+          <span class="font-mono text-[9px] tracking-[0.25em] text-[#FF4500] font-bold">SYS / 01</span>
+          <span class="font-mono text-[9px] tracking-[0.2em] text-[#EEEDE9] font-bold uppercase">ORIENTATION LAYER</span>
+        </div>
+
+        <div class="flex flex-col gap-6 font-sans text-[13px] leading-relaxed text-[#EEEDE9]/80 my-auto">
+          {
+            AXIOMS.map((axiom, idx) => (
+              <Fragment>
+                {idx > 0 && (
+                  <div class="flex items-center gap-2 select-none opacity-30 py-1">
+                    <span class="h-px w-6 bg-white/30" />
+                    <span class="text-[8px] font-mono tracking-widest">—</span>
+                    <span class="h-px w-6 bg-white/30" />
+                  </div>
+                )}
+                <p class="reveal-item max-w-70 font-light hover:text-[#EEEDE9] transition-colors duration-200" style={`--i:${HEADING_LINES + idx}`}>
+                  &ldquo;{axiom}&rdquo;
+                </p>
+              </Fragment>
+            ))
+          }
+        </div>
+
+        {/* Bottom accent for column */}
+        <div class="hidden lg:flex items-center gap-2 select-none opacity-30 font-mono text-[8px] tracking-widest mt-auto">
+          <span>STATUS: STABLE</span>
+        </div>
+      </aside>
+
+      {/* Column 4: Far Right Abstract Graphic Column */}
+      <div class="p-fluid-gap-md flex flex-col items-center justify-center relative overflow-hidden group min-h-55 sm:min-h-75 lg:min-h-0">
+        {/* Subtle wireframe overlay on the image container */}
+        <div class="relative w-full h-full min-h-62.5 border border-white/15 p-1.5 flex items-center justify-center bg-black/40 overflow-hidden">
+          {/* Corner crosshairs for technical HUD style */}
+          <div class="absolute top-1.5 left-1.5 text-white/30 pointer-events-none select-none font-bold text-[8px]">+</div>
+          <div class="absolute top-1.5 right-1.5 text-white/30 pointer-events-none select-none font-bold text-[8px]">+</div>
+          <div class="absolute bottom-1.5 left-1.5 text-white/30 pointer-events-none select-none font-bold text-[8px]">+</div>
+          <div class="absolute bottom-1.5 right-1.5 text-white/30 pointer-events-none select-none font-bold text-[8px]">+</div>
+
+          {/* The Concrete Image (responsive WebP, lazy) */}
+          <Image
+            src={concrete}
+            alt="Brutalist concrete architectural fragment with sharp angles and shadows"
+            widths={[256, 384, 640, 828, 1024]}
+            sizes="(max-width: 1024px) 100vw, 180px"
+            format="webp"
+            quality={75}
+            loading="lazy"
+            decoding="async"
+            class="absolute inset-0 h-full w-full text-transparent object-cover grayscale opacity-50 group-hover:opacity-75 group-hover:scale-105 transition-all duration-500 ease-[cubic-bezier(0.23,1,0.32,1)]"
+          />
+
+          {/* Technical label overlay */}
+          <div class="absolute bottom-3 left-3 bg-black/75 backdrop-blur-[2px] border border-white/10 px-2 py-1 font-mono text-[8px] sm:text-[7px] tracking-widest text-[#EEEDE9]/60 select-none">IMG_REF // BRUTALIST_01</div>
+        </div>
+      </div>
+    </div>
+
+    {/* Bottom Footer Row */}
+    <div class="w-full border-t border-white/10 grid grid-cols-1 md:grid-cols-2 p-fluid-gap-md gap-fluid-gap-md font-mono text-[9px] tracking-[0.2em] text-[#EEEDE9]/50 select-none">
+      <div class="flex items-center gap-2">
+        <span class="w-1.5 h-1.5 bg-[#FF4500] animate-pulse"></span>
+        <span>WE BUILD SYSTEMS THAT CREATE LEVERAGE.</span>
+      </div>
+
+      <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 md:gap-8 md:text-right">
+        <div>
+          <span>PLANICLE LABS</span>
+          <span class="mx-2 text-white/20">|</span>
+          <span>© 2026</span>
+        </div>
+
+        {/* Bottom Right Status Block */}
+        <div class="flex flex-col gap-0.5 text-left md:text-right border-l md:border-l-0 md:border-r-0 md:pl-0 border-white/10 pl-3">
+          <div class="flex items-center gap-1.5 md:justify-end">
+            <span class="text-[#EEEDE9]/30">LAYER:</span>
+            <span class="text-[#EEEDE9]/80 font-bold">01 - ORIENTATION</span>
+          </div>
+          <div class="flex items-center gap-1.5 md:justify-end">
+            <span class="text-[#EEEDE9]/30">STATUS:</span>
+            <span class="text-[#FF4500] font-bold">ACTIVE</span>
+          </div>
+          <div class="flex items-center gap-1.5 md:justify-end">
+            <span class="text-[#EEEDE9]/30">FOCUS:</span>
+            <span class="text-[#EEEDE9]/80 font-bold">CLARITY</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

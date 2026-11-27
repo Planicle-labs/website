@@ -1,36 +1,47 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Planicle website
 
-## Getting Started
+Marketing site for Planicle Labs, built with [Astro](https://astro.build) as a fully static site.
 
-First, run the development server:
+## Stack
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+- Astro 7, static output, one page plus 404, sitemap and robots.
+- Tailwind CSS 4 through `@tailwindcss/vite`; the CSS is inlined into the HTML.
+- No UI framework on the client. Interactions are small TypeScript modules in `src/scripts/`, loaded as one module.
+- Hero background: the `shaders` library (three.js WebGPU with a WebGL fallback), loaded as a separate chunk after the page is interactive.
+- Self-hosted fonts (latin subset) with metric-matched fallbacks; above-the-fold fonts are preloaded.
+- Images processed at build time with `astro:assets` (sharp).
+
+## Commands
+
+Uses pnpm (see `packageManager` in `package.json`) and Node 22.23.4 or newer.
+
+| Command | What it does |
+| --- | --- |
+| `pnpm install` | Install dependencies |
+| `pnpm dev` | Dev server at `localhost:4321` |
+| `pnpm build` | Production build into `dist/` |
+| `pnpm preview` | Serve `dist/` locally (runs in the background; stop with `pnpm astro preview stop`) |
+| `pnpm check` | Type-check `.astro` and `.ts` files |
+| `pnpm lint` | ESLint |
+
+## Layout
+
+```
+src/
+  pages/        index.astro, 404.astro, sitemap.xml.ts
+  layouts/      BaseLayout.astro (head, metadata, JSON-LD, font preloads)
+  components/   page sections (markup only)
+  scripts/      client behaviour; main.ts is the single entry
+  data/         site metadata and process phases
+  styles/       global.css (fonts, theme tokens, utilities)
+  assets/       fonts and images processed by the build
+public/         favicons, web manifest, social image, robots.txt
+vercel.json     security headers, cache headers, build settings
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Notes
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
-
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- The process section renders the first phase on the server. Elements whose classes depend on the active phase carry both variants in `data-on` and `data-off`; `scripts/process.ts` swaps them.
+- `scripts/hero-shader.ts` registers the shader layers with the same calls, in the same order, as the library's React component, so the output matches the earlier Next.js build. Layer ids must not contain `__`.
+- The Cal.com embed script loads on the visitor's first interaction; any element with `data-booking` opens the booking modal.
+- Security headers live in `vercel.json`. On Cloudflare, the same headers go in `public/_headers`.
