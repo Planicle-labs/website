@@ -1,0 +1,67 @@
+---
+import "../styles/global.css";
+import antonio from "../assets/fonts/antonio-latin.woff2?url";
+import dmSerif from "../assets/fonts/dm-serif-display-latin.woff2?url";
+import dmSerifItalic from "../assets/fonts/dm-serif-display-italic-latin.woff2?url";
+import jetbrainsMono from "../assets/fonts/jetbrains-mono-latin.woff2?url";
+import jakarta from "../assets/fonts/plus-jakarta-sans-latin.woff2?url";
+import { DESCRIPTION, KEYWORDS, OG_IMAGE, SITE_NAME, SITE_URL, TITLE, jsonLd } from "../data/site";
+
+interface Props {
+  title?: string;
+  description?: string;
+  /** Pages such as 404 should not be indexed or canonicalised. */
+  index?: boolean;
+}
+const { title = TITLE, description = DESCRIPTION, index = true } = Astro.props;
+// Fonts used above the fold on every viewport. Cormorant (manifesto, desktop only) loads on demand.
+const preloadFonts = [dmSerif, dmSerifItalic, jakarta, jetbrainsMono, antonio];
+const ogImage = `${SITE_URL}${OG_IMAGE.path}`;
+---
+
+<!doctype html>
+<html lang="en" class="h-full antialiased scroll-smooth">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    {index && preloadFonts.map((href) => <link rel="preload" href={href} as="font" type="font/woff2" crossorigin />)}
+    <meta name="description" content={description} />
+    {index ? (
+      <Fragment>
+        <meta name="keywords" content={KEYWORDS.join(",")} />
+        <meta name="robots" content="index, follow" />
+        <link rel="canonical" href={SITE_URL} />
+        <meta property="og:title" content={title} />
+        <meta property="og:description" content={description} />
+        <meta property="og:url" content={SITE_URL} />
+        <meta property="og:site_name" content={SITE_NAME} />
+        <meta property="og:locale" content="en_IN" />
+        <meta property="og:image" content={ogImage} />
+        <meta property="og:image:type" content={OG_IMAGE.type} />
+        <meta property="og:image:width" content={String(OG_IMAGE.width)} />
+        <meta property="og:image:height" content={String(OG_IMAGE.height)} />
+        <meta property="og:image:alt" content={OG_IMAGE.alt} />
+        <meta property="og:type" content="website" />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content={title} />
+        <meta name="twitter:description" content={description} />
+        <meta name="twitter:image" content={ogImage} />
+        <meta name="twitter:image:alt" content={OG_IMAGE.alt} />
+      </Fragment>
+    ) : (
+      <meta name="robots" content="noindex" />
+    )}
+    <link rel="icon" href="/favicon.ico" sizes="32x32" />
+    <link rel="icon" href="/icon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="manifest" href="/manifest.webmanifest" />
+  </head>
+  <body class="min-h-full flex flex-col font-sans text-[#0C0C0E] bg-[#F4F3EF]">
+    <slot />
+    {index && <script type="application/ld+json" is:inline set:html={JSON.stringify(jsonLd)} />}
+    <script>
+      import "../scripts/main";
+    </script>
+  </body>
+</html>

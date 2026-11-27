@@ -1,0 +1,14 @@
+---
+interface Props {
+  class?: string;
+  /** The services variant has a small ring at the centre; the manifesto one does not. */
+  ring?: boolean;
+}
+const { class: className = "w-5 h-5", ring = true } = Astro.props;
+---
+
+<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class={className} aria-hidden="true">
+  <line x1="12" y1="4" x2="12" y2="20"></line>
+  <line x1="4" y1="12" x2="20" y2="12"></line>
+  {ring && <circle cx="12" cy="12" r="3" stroke-width="0.8"></circle>}
+</svg>

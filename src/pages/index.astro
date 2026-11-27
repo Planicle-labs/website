@@ -1,0 +1,68 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import Footer from "../components/Footer.astro";
+import HeroShader from "../components/HeroShader.astro";
+import Navbar from "../components/Navbar.astro";
+import ProcessSection from "../components/ProcessSection.astro";
+import ServicesSection from "../components/ServicesSection.astro";
+---
+
+<BaseLayout>
+  <main class="w-full flex-col min-h-screen relative overflow-x-clip selection:bg-[#EF4A2A] selection:text-white">
+    {/* SECTION 1: HERO (Full viewport height) */}
+    <section class="relative w-full min-h-screen h-screen flex flex-col justify-between bg-n-100 overflow-hidden">
+      {/* Animated Shader Overlay */}
+      <HeroShader />
+
+      {/* Floating Custom Navigation Header */}
+      <Navbar />
+
+      {/* Hero Content (z-20) */}
+      <div class="flex-1 flex flex-col justify-center w-full max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 z-20 relative pointer-events-auto">
+        <h1 class="font-serif text-[clamp(2.25rem,6.5vw,5rem)] font-normal leading-[1.05] tracking-[-0.03em] text-n-700 max-w-5xl">Accelerate your time <br class="hidden sm:block" /><span class="italic font-light text-brand-orange">to market.</span></h1>
+
+        <p class="font-sans text-[15px] sm:text-[17px] text-n-500 max-w-[65ch] leading-[1.65] mt-6 sm:mt-8">
+          We build premium websites, apps, and advanced digital systems for
+          startups who value absolute execution. No hand-holding, no
+          templates. Just clean code and rapid market dominance.
+        </p>
+
+        {/* CTA Row */}
+        <div class="mt-8 sm:mt-10 flex flex-wrap gap-4 items-center">
+          {/* Primary CTA (BOOK A CALL ») */}
+          <button
+            type="button"
+            data-booking
+            class="group inline-flex items-center justify-center md:justify-start bg-brand-orange hover:bg-brand-orange/95 hover:scale-[1.02] text-white rounded-full pl-6 pr-2 py-3 sm:py-2.5 transition-all duration-200 ease-[cubic-bezier(0.16,1,0.3,1)] active:scale-[0.98] shadow-lg shadow-brand-orange/10 hover:shadow-brand-orange/20 cursor-pointer border-none outline-none"
+          >
+            <span class="font-mono text-[11px] sm:text-[12px] font-bold tracking-widest mr-4 relative overflow-hidden h-4.5">
+              <span class="flex flex-col transition-transform duration-200 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:-translate-y-1/2">
+                <span class="h-4.5 flex items-center">BOOK A CALL</span>
+                <span class="h-4.5 flex items-center">BOOK A CALL</span>
+              </span>
+            </span>
+            <span class="w-9 h-9 sm:w-9 sm:h-9 bg-white text-brand-orange rounded-full flex items-center justify-center text-[13px] sm:text-[12px] font-bold transition-transform duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:rotate-45">»</span>
+          </button>
+
+          {/* Secondary CTA (OUR SERVICES) */}
+          <a
+            href="#services"
+            class="group inline-flex items-center border border-n-500/30 hover:border-n-700 hover:scale-[1.02] text-n-700 rounded-full pl-6 pr-2 py-3 sm:py-2.5 transition-all duration-200 ease-[cubic-bezier(0.16,1,0.3,1)] active:scale-[0.98]"
+          >
+            <span class="font-mono text-[11px] sm:text-[12px] font-bold tracking-widest mr-4 relative overflow-hidden h-4.5">
+              <span class="flex flex-col transition-transform duration-200 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:-translate-y-1/2">
+                <span class="h-4.5 flex items-center">OUR SERVICES</span>
+                <span class="h-4.5 flex items-center">OUR SERVICES</span>
+              </span>
+            </span>
+            <span class="w-9 h-9 sm:w-9 sm:h-9 bg-n-700 text-white rounded-full flex items-center justify-center text-[13px] sm:text-[12px] font-bold transition-transform duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:rotate-45">›</span>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <ProcessSection />
+    <ServicesSection />
+    <Footer />
+  </main>
+</BaseLayout>
