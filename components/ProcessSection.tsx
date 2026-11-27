@@ -101,7 +101,7 @@ export default function ProcessSection() {
     };
   }, []);
 
-  const applyLayerMotion = useCallback((layerIdx: number, activeLayerIdx = activeIdxRef.current) => {
+  const applyLayerMotion = useCallback((layerIdx: number) => {
     const layerEl = layersRef.current[layerIdx];
     const motion = layerMotionRef.current[layerIdx];
     if (!layerEl || !motion) return;
@@ -126,8 +126,8 @@ export default function ProcessSection() {
         opacity: targetMotion.opacity,
         duration: 350,
         ease: cubicBezier(0.23, 1, 0.32, 1),
-        onRender: () => applyLayerMotion(i, idx),
-        onComplete: () => applyLayerMotion(i, idx),
+        onRender: () => applyLayerMotion(i),
+        onComplete: () => applyLayerMotion(i),
       });
     });
   }, [applyLayerMotion]);

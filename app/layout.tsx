@@ -45,7 +45,7 @@ const spaceGrotesk = Space_Grotesk({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://planicle.com"),
+  metadataBase: new URL("https://www.planicle.com"),
   title: "Planicle Labs — Software Studio for Startups",
   description: "We build premium websites, apps, and AI workflows for high-growth Seed to Series B startups. Precision engineering, absolute execution, no hand-holding.",
   keywords: [
@@ -64,7 +64,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Planicle Labs — Software Studio for Startups",
     description: "We build premium websites, apps, and AI workflows for high-growth Seed to Series B startups. Precision engineering, absolute execution, no hand-holding.",
-    url: "https://planicle.com",
+    url: "https://www.planicle.com",
     siteName: "Planicle Labs",
     locale: "en_IN",
     type: "website",
@@ -94,12 +94,12 @@ const jsonLd = {
   "@graph": [
     {
       "@type": "Organization",
-      "@id": "https://planicle.com/#organization",
+      "@id": "https://www.planicle.com/#organization",
       name: "Planicle Labs",
-      url: "https://planicle.com",
+      url: "https://www.planicle.com",
       logo: {
         "@type": "ImageObject",
-        url: "https://planicle.com/logo.svg",
+        url: "https://www.planicle.com/logo.svg",
         width: 512,
         height: 512,
       },
@@ -135,42 +135,42 @@ const jsonLd = {
     },
     {
       "@type": "WebSite",
-      "@id": "https://planicle.com/#website",
-      url: "https://planicle.com",
+      "@id": "https://www.planicle.com/#website",
+      url: "https://www.planicle.com",
       name: "Planicle Labs",
       inLanguage: "en-IN",
-      publisher: { "@id": "https://planicle.com/#organization" },
+      publisher: { "@id": "https://www.planicle.com/#organization" },
     },
     {
       "@type": "Service",
-      "@id": "https://planicle.com/#service-product-systems",
+      "@id": "https://www.planicle.com/#service-product-systems",
       serviceType: "Product Systems",
       name: "Product Systems",
       description:
         "Bespoke web applications, high-performance APIs, and custom database architecture built with zero tech debt.",
-      provider: { "@id": "https://planicle.com/#organization" },
+      provider: { "@id": "https://www.planicle.com/#organization" },
       areaServed: { "@type": "Country", name: "India" },
       category: "Software Development",
     },
     {
       "@type": "Service",
-      "@id": "https://planicle.com/#service-ai-workflows",
+      "@id": "https://www.planicle.com/#service-ai-workflows",
       serviceType: "AI Workflow Engineering",
       name: "AI Workflow Engineering",
       description:
         "Custom LLM integrations, semantic search pipelines, and autonomous agent systems that automate operational drag.",
-      provider: { "@id": "https://planicle.com/#organization" },
+      provider: { "@id": "https://www.planicle.com/#organization" },
       areaServed: { "@type": "Country", name: "India" },
       category: "AI & Automation",
     },
     {
       "@type": "Service",
-      "@id": "https://planicle.com/#service-growth-infrastructure",
+      "@id": "https://www.planicle.com/#service-growth-infrastructure",
       serviceType: "Growth Infrastructure",
       name: "Growth Infrastructure",
       description:
         "High-conversion landing pages, custom analytics pipelines, and speed-optimized onboarding flows engineered to convert.",
-      provider: { "@id": "https://planicle.com/#organization" },
+      provider: { "@id": "https://www.planicle.com/#organization" },
       areaServed: { "@type": "Country", name: "India" },
       category: "Growth Engineering",
     },

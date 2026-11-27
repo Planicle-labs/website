@@ -6,6 +6,6 @@ export default function robots(): MetadataRoute.Robots {
       userAgent: "*",
       allow: "/",
     },
-    sitemap: "https://planicle.com/sitemap.xml",
+    sitemap: "https://www.planicle.com/sitemap.xml",
   };
 }

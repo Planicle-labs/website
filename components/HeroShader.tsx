@@ -1,16 +1,15 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useSyncExternalStore } from 'react';
 import { Shader, Swirl, ChromaFlow, FlutedGlass, FilmGrain, Stripes, LinearGradient } from 'shaders/react';
 
+const subscribeNoop = () => () => {};
+
 export default function HeroShader() {
-  const [isMounted, setIsMounted] = useState(false);
+  // False on the server and during hydration, true once running in the browser.
+  const isClient = useSyncExternalStore(subscribeNoop, () => true, () => false);
 
-  useEffect(() => {
-    setIsMounted(true);
-  }, []);
-
-  if (!isMounted) return null;
+  if (!isClient) return null;
 
   return (
     <div className="absolute inset-0 w-full h-full pointer-events-none z-10 overflow-hidden select-none">

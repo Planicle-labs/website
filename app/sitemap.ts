@@ -3,7 +3,7 @@ import { MetadataRoute } from "next";
 export default function sitemap(): MetadataRoute.Sitemap {
   return [
     {
-      url: "https://planicle.com",
+      url: "https://www.planicle.com",
       lastModified: new Date(),
       changeFrequency: "weekly",
       priority: 1,

@@ -10,22 +10,26 @@ import {
   useReducedMotion,
 } from "framer-motion";
 import Image from "next/image";
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, useSyncExternalStore } from "react";
 import { Menu, X } from "lucide-react";
 import LiveClock from "./LiveClock";
 import { useBooking } from "./BookingProvider";
 
-/** Returns true when viewport is ≥ 768px (md breakpoint) */
+const DESKTOP_QUERY = "(min-width: 768px)";
+
+function subscribeToDesktopQuery(onChange: () => void) {
+  const mql = window.matchMedia(DESKTOP_QUERY);
+  mql.addEventListener("change", onChange);
+  return () => mql.removeEventListener("change", onChange);
+}
+
+/** Returns true when viewport is ≥ 768px (md breakpoint); true on the server */
 function useIsDesktop() {
-  const [isDesktop, setIsDesktop] = useState(true);
-  useEffect(() => {
-    const mql = window.matchMedia("(min-width: 768px)");
-    setIsDesktop(mql.matches);
-    const handler = (e: MediaQueryListEvent) => setIsDesktop(e.matches);
-    mql.addEventListener("change", handler);
-    return () => mql.removeEventListener("change", handler);
-  }, []);
-  return isDesktop;
+  return useSyncExternalStore(
+    subscribeToDesktopQuery,
+    () => window.matchMedia(DESKTOP_QUERY).matches,
+    () => true,
+  );
 }
 
 const COMPACT_RANGE = 250;
