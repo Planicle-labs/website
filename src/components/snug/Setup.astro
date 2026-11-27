@@ -1,0 +1,59 @@
+---
+import { REFERENCE_BRANDS } from "../../data/snug";
+
+const setup = [
+  { t: "Pick reference brands", b: "Choose which brands your shoppers can compare against." },
+  { t: "Map your products", b: "Tell Snug each product’s garment, fit and gender." },
+  { t: "Add your size charts", b: "Chest in centimetres, typed in or from the CSV template." },
+  { t: "Switch the widget on", b: "Style the button and dialog to match your theme." },
+];
+const facts = [
+  { k: "Made for", v: "Shopify. T-shirts. Polos." },
+  { k: "Widget script", v: "About 9.5 KB. The dialog loads on tap." },
+  { k: "Shopper data", v: "Brand, garment and size. Nothing about their body." },
+  { k: "Analytics", v: "Requests, confidence, top brands and sizes." },
+];
+---
+
+<section class="setup" aria-labelledby="setup-title">
+  <div class="wrap ruled setup__grid">
+    <div class="setup__intro">
+      <p class="eyebrow">For your team</p>
+      <h2 id="setup-title" class="h2">Set up once, inside Shopify.</h2>
+      <p class="body-l">No code to write. For the Founding Five, we do the setup with you.</p>
+    </div>
+    <ol class="setup__list" role="list">
+      {
+        setup.map((s, i) => (
+          <li>
+            <span class="setup__n mono-s">{String(i + 1).padStart(2, "0")}</span>
+            <div>
+              <h3 class="setup__t">{s.t}</h3>
+              <p class="setup__b">{s.b}</p>
+            </div>
+          </li>
+        ))
+      }
+    </ol>
+  </div>
+  <div class="wrap">
+    <dl class="facts">
+      {
+        facts.map((f) => (
+          <div class="fact">
+            <dt class="mono-s">{f.k}</dt>
+            <dd>{f.v}</dd>
+          </div>
+        ))
+      }
+    </dl>
+    <div class="brands">
+      <p class="mono-s">Shoppers can compare against, today</p>
+      <ul role="list" class="brands__list">
+        {REFERENCE_BRANDS.map((b) => <li>{b}</li>)}
+        <li class="brands__more">+ the brands your shoppers wear</li>
+      </ul>
+      <p class="note brands__legal">Brand names belong to their owners. Snug is not affiliated with them; figures come from their public size charts.</p>
+    </div>
+  </div>
+</section>

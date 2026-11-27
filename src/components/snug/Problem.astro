@@ -1,0 +1,94 @@
+---
+import { DATA_SOURCE } from "../../data/snug";
+
+// Bars are drawn on a tape that starts at 90 cm (labelled), so a few centimetres show.
+const FROM = 90;
+const TO = 112;
+const rows = [
+  { brand: "Bewakoof", size: "M", cm: 101.6, inch: "40" },
+  { brand: "Bewakoof", size: "L", cm: 106.7, inch: "42" },
+  { brand: "The Bear House", size: "M", cm: 108.0, inch: "42.5", hot: true },
+];
+const w = (cm: number) => ((cm - FROM) / (TO - FROM)) * 100;
+const bewakoofL = 106.7;
+---
+
+<section class="problem" id="problem" aria-labelledby="problem-title">
+  <div class="wrap">
+    <p class="eyebrow">Size fact</p>
+    <h2 id="problem-title" class="neq">
+      <span class="sr-only">M is not M.</span>
+      <span class="neq__glyphs" aria-hidden="true">
+        <span class="neq__m">M</span>
+        <span class="neq__sign">
+          <span class="neq__eq">=</span>
+          <svg class="neq__slash" viewBox="0 0 100 100" preserveAspectRatio="none"><polygon points="62,0 82,0 38,100 18,100"></polygon></svg>
+        </span>
+        <span class="neq__m">M</span>
+      </span>
+    </h2>
+    <div class="problem__grid">
+      <div class="problem__copy">
+        <p class="statement">Same label.<br /><span class="hl">Different tee.</span></p>
+        <p class="body-l">
+          Every brand cuts its medium differently. Your shopper knows the M they already own, not yours. So they guess, or they message you
+          “bro M or L??”, or they order and send it back.
+        </p>
+      </div>
+      <figure class="bars" aria-labelledby="bars-cap">
+        <ol class="bars__list" role="list">
+          {
+            rows.map((r) => (
+              <li class:list={["bar", { "bar--hot": r.hot }]} style={`--w:${w(r.cm)};--extra:${r.hot ? ((r.cm - bewakoofL) / (r.cm - FROM)) * 100 : 0}`}>
+                <div class="bar__head">
+                  <span class="bar__name">
+                    {r.brand} <span class="size-chip">{r.size}</span>
+                  </span>
+                  <span class="bar__val">
+                    <b>
+                      <span data-count={r.inch}>{r.inch}</span>″
+                    </b>
+                    <i>{r.cm.toFixed(1)} cm</i>
+                  </span>
+                </div>
+                <div class="bar__track" aria-hidden="true">
+                  <span class="bar__fill">{r.hot && <span class="bar__extra" />}</span>
+                  {r.hot && <span class="bar__delta mono-s">+{(r.cm - bewakoofL).toFixed(1)} cm past a Bewakoof L</span>}
+                </div>
+              </li>
+            ))
+          }
+        </ol>
+        <div class="bars__axis mono-s" aria-hidden="true"><span>{FROM} cm</span><span>{TO} cm</span></div>
+        <figcaption id="bars-cap">
+          <p class="bars__punch">A Bear House <b>M</b> is wider than a Bewakoof <b>L</b>.</p>
+          <p class="note">{DATA_SOURCE} The scale starts at {FROM} cm.</p>
+        </figcaption>
+      </figure>
+    </div>
+
+    <div class="ship" aria-labelledby="ship-title">
+      <div class="ship__copy">
+        <h3 id="ship-title" class="h3">A wrong size ships twice.</h3>
+        <p class="body-l">Ordered M. Fits like an L. Back it goes: a refund, a second courier trip, and a shopper who trusts your size chart a little less.</p>
+      </div>
+      <figure class="route" aria-label="A parcel goes out to the shopper in size M, then comes back because it is too big.">
+        <svg viewBox="0 0 560 220" aria-hidden="true">
+          <defs>
+            <!-- Reveals the dashed return line behind the parcel, so the dashes themselves stay intact. -->
+            <mask id="route-back-mask" maskUnits="userSpaceOnUse" x="0" y="0" width="560" height="220">
+              <path class="route__back-reveal" d="M440 150 C 350 214, 210 214, 120 150" pathLength="1"></path>
+            </mask>
+          </defs>
+          <path class="route__out" d="M120 150 C 210 40, 350 40, 440 150" pathLength="1"></path>
+          <path class="route__back" d="M440 150 C 350 214, 210 214, 120 150" mask="url(#route-back-mask)"></path>
+        </svg>
+        <span class="route__pt route__pt--a" aria-hidden="true"><span class="mono-s">Your store</span></span>
+        <span class="route__pt route__pt--b" aria-hidden="true"><span class="mono-s">Shopper</span></span>
+        <span class="route__parcel" aria-hidden="true"><b>M</b></span>
+        <span class="route__tag route__tag--out mono-s" aria-hidden="true">Out · size M</span>
+        <span class="route__tag route__tag--back mono-s" aria-hidden="true">Back · too big</span>
+      </figure>
+    </div>
+  </div>
+</section>

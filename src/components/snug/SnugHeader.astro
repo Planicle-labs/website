@@ -1,0 +1,19 @@
+---
+import mark from "../../assets/snug/snug-mark.png?url";
+import BookButton from "./BookButton.astro";
+---
+
+<header class="hdr" data-header>
+  <div class="hdr__bar">
+    <a class="logo" href="/snug" aria-label="Snug, home">
+      <span class="logo__tile"><img src={mark} alt="" width="40" height="40" /></span>
+      <span class="logo__word" aria-hidden="true">snug</span>
+    </a>
+    <nav class="hdr__nav" aria-label="Snug">
+      <a href="#how">How it works</a>
+      <a href="#pricing">Pricing</a>
+      <a href="#founding">Founding Five</a>
+    </nav>
+    <BookButton size="sm" />
+  </div>
+</header>

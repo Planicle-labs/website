@@ -1,0 +1,119 @@
+---
+import { PLANS, FOUNDING, FAQ } from "../../data/snug";
+import BookButton from "./BookButton.astro";
+
+const maxAllowance = 50000;
+const taglineWords = "Measure twice. Ship once.".split(" ");
+---
+
+<section class="pricing" id="pricing" aria-labelledby="pricing-title">
+  <div class="wrap ruled">
+    <div class="pricing__head">
+      <p class="eyebrow">Pricing</p>
+      <h2 id="pricing-title" class="h2">Priced by answers given.</h2>
+      <p class="body-l">A recommendation is one size answer for one shopper. Billed through Shopify every 30 days.</p>
+    </div>
+    <ul class="plans" role="list">
+      {
+        PLANS.map((p) => (
+          <li class:list={["plan", { "plan--feature": p.name === "Growth" }]}>
+            <h3 class="plan__name mono-s">{p.name}</h3>
+            <p class="plan__price">
+              <b>{p.price}</b>
+              <span>{p.period}</span>
+            </p>
+            <div class="plan__meter" aria-hidden="true" style={`--w:${p.allowance ? p.allowance / maxAllowance : 1}`}>
+              <span class:list={["plan__fill", { "plan__fill--open": !p.allowance }]} />
+            </div>
+            <p class="plan__allow">
+              <b>{p.allowanceLabel}</b> {p.note}
+              {p.allowance ? " every 30 days" : ""}
+            </p>
+            <div class="plan__cta">
+              <BookButton size="md" tone={p.name === "Growth" ? "ink" : "outline"} label={p.allowance ? "Book a call" : "Talk to us"} />
+            </div>
+          </li>
+        ))
+      }
+    </ul>
+    <p class="pricing__note"><span class="tagpill mono-s">Founding Five</span>First month free. There’s no free trial otherwise.</p>
+  </div>
+</section>
+
+<section class="founding" id="founding" aria-labelledby="founding-title">
+  <div class="wrap">
+    <div class="founding__head">
+      <p class="eyebrow eyebrow--y">Founding Five</p>
+      <h2 id="founding-title" class="h2">Five brands. <span class="hl">First month free.</span></h2>
+      <p class="body-l">
+        We’re launching Snug with five Indian t-shirt brands on Shopify. You get a direct line to the two of us. We get honest feedback from
+        people who sell tees every day.
+      </p>
+    </div>
+    <div class="spots">
+      <p class="spots__count"><b>{FOUNDING.open}</b> of {FOUNDING.total} spots open</p>
+      <ol class="spots__bar" role="list" aria-hidden="true">
+        {
+          Array.from({ length: FOUNDING.total }, (_, i) => (
+            <li class:list={["spot", { "is-taken": i < FOUNDING.total - FOUNDING.open }]}>
+              <span class="spot__n mono-s">{String(i + 1).padStart(2, "0")}</span>
+              <span class="spot__seg" />
+            </li>
+          ))
+        }
+      </ol>
+    </div>
+    <div class="founding__terms">
+      <div>
+        <h3 class="mono-s founding__k">What you get</h3>
+        <ul class="ticks" role="list">{FOUNDING.gets.map((g) => <li>{g}</li>)}</ul>
+      </div>
+      <div>
+        <h3 class="mono-s founding__k">What we ask</h3>
+        <ul class="ticks ticks--ask" role="list">{FOUNDING.asks.map((g) => <li>{g}</li>)}</ul>
+      </div>
+      <div class="founding__cta">
+        <p>After the month it’s standard pricing, and you stay only if it’s working.</p>
+        <BookButton size="lg" tone="yellow" label="Book a call" />
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="faq" aria-labelledby="faq-title">
+  <div class="wrap faq__grid">
+    <div>
+      <p class="eyebrow">Questions</p>
+      <h2 id="faq-title" class="h2">Asked before you ask.</h2>
+    </div>
+    <div class="faq__list">
+      {
+        FAQ.map((f, i) => (
+          <details class="qa" open={i === 0}>
+            <summary>
+              <span>{f.q}</span>
+              <span class="qa__icon" aria-hidden="true" />
+            </summary>
+            <div class="qa__a">
+              <p>{f.a}</p>
+            </div>
+          </details>
+        ))
+      }
+    </div>
+  </div>
+</section>
+
+<section class="final" aria-labelledby="final-title">
+  <div class="wrap final__inner">
+    <p class="eyebrow">Sell tees on Shopify?</p>
+    <h2 id="final-title" class="final__title">
+      {taglineWords.map((w, i) => (<><span class="tw">{w}</span>{i === 1 ? <br /> : " "}</>))}
+    </h2>
+    <p class="final__sub">Get the size right before the order, and every parcel makes one trip. Let’s set Snug up on your store.</p>
+    <div class="final__cta">
+      <BookButton size="lg" />
+      <p class="mono-s">30 minutes with the founders · {FOUNDING.open} of {FOUNDING.total} founding spots open</p>
+    </div>
+  </div>
+</section>

@@ -1,0 +1,15 @@
+---
+interface Props {
+  size?: "sm" | "md" | "lg";
+  tone?: "ink" | "yellow" | "outline";
+  label?: string;
+}
+const { size = "md", tone = "ink", label = "Book a call" } = Astro.props;
+---
+
+<a class:list={["btn", `btn--${size}`, `btn--${tone}`]} href="https://cal.com/planicle-labs/30min" data-booking>
+  <span class="btn__label">{label}</span>
+  <span class="btn__icon" aria-hidden="true">
+    <svg viewBox="0 0 16 16" width="16" height="16"><path d="M3 8h9M8.5 4.5 12 8l-3.5 3.5" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="square"></path></svg>
+  </span>
+</a>

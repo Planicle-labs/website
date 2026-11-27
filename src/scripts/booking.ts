@@ -14,6 +14,27 @@ declare global {
 const EMBED_SRC = "https://app.cal.com/embed/embed.js";
 const CAL_LINK = "planicle-labs/30min";
 
+/** How the modal looks and what note it carries. The defaults are the homepage's. */
+export interface BookingConfig {
+  theme: "dark" | "light";
+  brand: string;
+  brandEmphasis: string;
+  brandText: string;
+  notes: string;
+  /** Let modified clicks open the link, and follow it if the embed never opens. Off for the homepage. */
+  fallbackToLink?: boolean;
+}
+
+const PLANICLE: BookingConfig = {
+  theme: "dark",
+  brand: "#EF4A2A",
+  brandEmphasis: "#d63b1c",
+  brandText: "#FFFFFF",
+  notes: "Scheduled via Planicle Labs website CTA",
+};
+
+let config: BookingConfig = PLANICLE;
+
 function ensureCal(): CalFn {
   if (window.Cal) return window.Cal;
   // Official Cal.com embed v2 stub: queues calls and injects the script once.
@@ -52,12 +73,12 @@ function ensureCal(): CalFn {
   const Cal = window.Cal!;
   Cal("init", { origin: "https://app.cal.com" });
   Cal("ui", {
-    theme: "dark",
+    theme: config.theme,
     cssVarsPerTheme: {
-      dark: {
-        "cal-brand": "#EF4A2A",
-        "cal-brand-emphasis": "#d63b1c",
-        "cal-brand-text": "#FFFFFF",
+      [config.theme]: {
+        "cal-brand": config.brand,
+        "cal-brand-emphasis": config.brandEmphasis,
+        "cal-brand-text": config.brandText,
       },
     },
     hideEventTypeDetails: false,
@@ -70,7 +91,7 @@ export function openBooking() {
   try {
     ensureCal()("modal", {
       calLink: CAL_LINK,
-      config: { theme: "dark", notes: "Scheduled via Planicle Labs website CTA" },
+      config: { theme: config.theme, notes: config.notes },
     });
   } catch {
     window.open(`https://cal.com/${CAL_LINK}`, "_blank", "noopener,noreferrer");
@@ -78,7 +99,8 @@ export function openBooking() {
 }
 
 /** Load the embed on first intent, and open the modal from any [data-booking] control. */
-export function initBooking() {
+export function initBooking(options: BookingConfig = PLANICLE) {
+  config = options;
   const events = ["pointerdown", "pointermove", "keydown", "touchstart", "scroll", "focusin"] as const;
   const warm = () => {
     events.forEach((e) => window.removeEventListener(e, warm));
@@ -89,7 +111,20 @@ export function initBooking() {
   document.addEventListener("click", (e) => {
     const trigger = (e.target as Element | null)?.closest?.("[data-booking]");
     if (!trigger) return;
+    if (config.fallbackToLink && (e.metaKey || e.ctrlKey || e.shiftKey || e.button !== 0)) return;
     e.preventDefault();
     openBooking();
+    if (config.fallbackToLink && trigger instanceof HTMLAnchorElement) {
+      const href = trigger.href;
+      // If the embed is blocked or offline, the modal never mounts: open the booking page instead.
+      // Once it has mounted (even if already closed again), never redirect.
+      let tries = 0;
+      const check = () => {
+        if (document.querySelector("cal-modal-box")) return;
+        if (++tries >= 16) window.location.assign(href);
+        else setTimeout(check, 250);
+      };
+      setTimeout(check, 250);
+    }
   });
 }

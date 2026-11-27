@@ -1,0 +1,74 @@
+---
+/**
+ * A sample product page with the Snug widget, at one of three steps. Widget labels
+ * follow the shipped copy (shopify-app/extensions/snug-widget/locales/en.default.json).
+ */
+import Tee from "./Tee.astro";
+interface Props {
+  step: 1 | 2 | 3;
+}
+const { step } = Astro.props;
+---
+
+<div class="pdp" data-frame={step}>
+  <div class="pdp__img">
+    <Tee />
+    <span class="pdp__badge mono-s">Sample store</span>
+  </div>
+  <div class="pdp__info">
+    <p class="pdp__store">SAHAJ</p>
+    <p class="pdp__name">The Everyday Tee</p>
+    <p class="pdp__price">₹999.00</p>
+    <p class="pdp__lbl">Size</p>
+    <div class="pdp__sizes">
+      {["S", "M", "L", "XL", "XXL"].map((s) => <span class:list={{ on: step === 3 && s === "XL" }}>{s}</span>)}
+    </div>
+    <span class="pdp__cart">Add to cart</span>
+    <span class:list={["pdp__find", { pulse: step === 1 }]}>
+      <svg viewBox="0 0 20 12" width="20" height="12" aria-hidden="true"><rect x="1" y="1" width="18" height="10" rx="2" fill="none" stroke="currentColor" stroke-width="1.5"></rect><path d="M5 1v4M8 1v3M11 1v4M14 1v3" stroke="currentColor" stroke-width="1.5"></path></svg>
+      Find Your Recommended Size
+    </span>
+  </div>
+
+  {
+    step > 1 && (
+      <div class="dlg">
+        {step === 2 ? (
+          <>
+            <p class="dlg__title">Find Your Perfect Fit</p>
+            <p class="dlg__sub">Tell us what fits you best in other brands</p>
+            <div class="dlg__field">
+              <span>Brand You Own</span>
+              <b>The Bear House</b>
+            </div>
+            <div class="dlg__field">
+              <span>Garment Type</span>
+              <b>T-shirt</b>
+            </div>
+            <div class="dlg__field">
+              <span>Your Size</span>
+              <b>L</b>
+            </div>
+            <div class="dlg__act"><span class="dlg__btn">Calculate My Size</span></div>
+          </>
+        ) : (
+          <>
+            <p class="dlg__title">Your size recommendation</p>
+            <div class="dlg__result">
+              <div>
+                <span class="dlg__k">Recommended Size for You</span>
+                <span class="dlg__size">XL</span>
+              </div>
+              <span class="dlg__conf">
+                Match confidence <b>High</b>
+              </span>
+            </div>
+            <p class="dlg__why">
+              Your regular fit L from The Bear House gives an estimated body chest of 106.3 cm. XL is the closest match on this chart.
+            </p>
+          </>
+        )}
+      </div>
+    )
+  }
+</div>
