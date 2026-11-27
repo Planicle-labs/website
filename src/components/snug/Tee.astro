@@ -1,0 +1,16 @@
+---
+/** Flat t-shirt line diagram. */
+interface Props {
+  class?: string;
+}
+const { class: cls } = Astro.props;
+---
+
+<svg class:list={["tee", cls]} viewBox="0 0 200 190" aria-hidden="true" fill="none">
+  <path
+    class="tee__body"
+    d="M72 14 C 80 26, 120 26, 128 14 L 168 30 L 192 72 L 160 88 L 152 74 L 152 178 L 48 178 L 48 74 L 40 88 L 8 72 L 32 30 Z"
+  ></path>
+  <path class="tee__neck" d="M72 14 C 78 34, 122 34, 128 14"></path>
+  <path class="tee__seam" d="M48 74 L 48 78 M152 74 L 152 78"></path>
+</svg>

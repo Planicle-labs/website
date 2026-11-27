@@ -1,18 +1,27 @@
 import type { APIRoute } from "astro";
 import { SITE_URL } from "../data/site";
 
-// Same URL and fields as the previous /sitemap.xml; lastmod is the build time.
-export const GET: APIRoute = () =>
-  new Response(
+// lastmod is the build time.
+const PAGES = [
+  { loc: SITE_URL, changefreq: "weekly", priority: "1" },
+  { loc: `${SITE_URL}/snug`, changefreq: "weekly", priority: "0.8" },
+];
+
+export const GET: APIRoute = () => {
+  const lastmod = new Date().toISOString();
+  return new Response(
     `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-<url>
-<loc>${SITE_URL}</loc>
-<lastmod>${new Date().toISOString()}</lastmod>
-<changefreq>weekly</changefreq>
-<priority>1</priority>
-</url>
+${PAGES.map(
+  (p) => `<url>
+<loc>${p.loc}</loc>
+<lastmod>${lastmod}</lastmod>
+<changefreq>${p.changefreq}</changefreq>
+<priority>${p.priority}</priority>
+</url>`,
+).join("\n")}
 </urlset>
 `,
     { headers: { "Content-Type": "application/xml" } },
   );
+};

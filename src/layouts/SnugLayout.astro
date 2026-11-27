@@ -1,0 +1,65 @@
+---
+/**
+ * Layout for /snug only. It has its own fonts, styles and script entry, and shares
+ * nothing with BaseLayout or global.css, so the Planicle homepage and Snug cannot
+ * affect each other.
+ */
+import "../styles/snug.css";
+import grotesk from "../assets/fonts/snug/space-grotesk-var.woff2?url";
+import mono from "../assets/fonts/snug/space-mono-regular.woff2?url";
+import { SITE_URL } from "../data/site";
+import { SNUG_DESCRIPTION, SNUG_OG, SNUG_TITLE, SNUG_URL, snugJsonLd } from "../data/snug";
+
+const ogImage = `${SITE_URL}${SNUG_OG.path}`;
+---
+
+<!doctype html>
+<html lang="en-IN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{SNUG_TITLE}</title>
+    <link rel="preload" href={grotesk} as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href={mono} as="font" type="font/woff2" crossorigin />
+    <meta name="description" content={SNUG_DESCRIPTION} />
+    <meta name="robots" content="index, follow" />
+    <link rel="canonical" href={SNUG_URL} />
+    <meta name="theme-color" content="#F4F4F0" />
+    <meta property="og:title" content={SNUG_TITLE} />
+    <meta property="og:description" content={SNUG_DESCRIPTION} />
+    <meta property="og:url" content={SNUG_URL} />
+    <meta property="og:site_name" content="Snug by Planicle Labs" />
+    <meta property="og:locale" content="en_IN" />
+    <meta property="og:type" content="website" />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:image:type" content={SNUG_OG.type} />
+    <meta property="og:image:width" content={String(SNUG_OG.width)} />
+    <meta property="og:image:height" content={String(SNUG_OG.height)} />
+    <meta property="og:image:alt" content={SNUG_OG.alt} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={SNUG_TITLE} />
+    <meta name="twitter:description" content={SNUG_DESCRIPTION} />
+    <meta name="twitter:image" content={ogImage} />
+    <meta name="twitter:image:alt" content={SNUG_OG.alt} />
+    <link rel="icon" href="/snug/favicon-32.png" sizes="32x32" type="image/png" />
+    <link rel="apple-touch-icon" href="/snug/apple-touch-icon.png" />
+    <script is:inline>
+      // Scroll-linked reveals start hidden only when motion is allowed and scripts run.
+      if (!matchMedia("(prefers-reduced-motion: reduce)").matches) {
+        document.documentElement.classList.add("motion");
+        // Failsafe: never leave content hidden if the page or the motion bundle never finishes loading.
+        window.__snugMotionFailsafe = setTimeout(function () {
+          if (!document.documentElement.classList.contains("motion-ready")) document.documentElement.classList.remove("motion");
+        }, 8000);
+      }
+    </script>
+  </head>
+  <body>
+    <a class="skip" href="#main">Skip to content</a>
+    <slot />
+    <script type="application/ld+json" is:inline set:html={JSON.stringify(snugJsonLd)} />
+    <script>
+      import "../scripts/snug/main";
+    </script>
+  </body>
+</html>

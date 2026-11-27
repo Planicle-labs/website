@@ -1,0 +1,150 @@
+---
+import { BRANDS, SAMPLE_STORE, translate, DATA_SOURCE, FOUNDING } from "../../data/snug";
+import BookButton from "./BookButton.astro";
+
+// The tape runs from 90 to 124 cm. Positions are percentages along it.
+const MIN = 90;
+const MAX = 124;
+const pct = (cm: number) => ((cm - MIN) / (MAX - MIN)) * 100;
+const inch = (cm: number) => cm / 2.54;
+const fmt = (n: number) => n.toFixed(1);
+
+const START = { brand: "bear-house", size: "M" };
+const brand = BRANDS.find((b) => b.id === START.brand)!;
+const ref = brand.sizes.find((s) => s.size === START.size)!;
+const match = translate(ref.chest, SAMPLE_STORE);
+
+// Ticks are CSS gradients sized in tape-relative percentages. Inch ticks start at the
+// first quarter inch on the tape; --off is that offset as a percentage of the tape.
+const inchOffset = ((Math.ceil(inch(MIN) * 4) / 4) * 2.54 - MIN) / (MAX - MIN) * 100;
+const cmLabels = Array.from({ length: MAX - MIN - 3 }, (_, i) => MIN + 1 + i);
+const inLabels: number[] = [];
+for (let i = Math.ceil(inch(MIN)); i < Math.floor(inch(MAX)); i++) inLabels.push(i);
+
+const payload = JSON.stringify({ min: MIN, max: MAX, brands: BRANDS, store: SAMPLE_STORE });
+---
+
+<section class="hero" aria-labelledby="hero-title">
+  <div class="wrap hero__intro">
+    <p class="eyebrow hero__eyebrow"><span class="dot" aria-hidden="true"></span>Snug, for Shopify t-shirt brands</p>
+    <h1 id="hero-title" class="hero__title">
+      <span class="hero__line"><span>Your size,</span></span>
+      <span class="hero__line"><span class="tapehl">translated.</span></span>
+    </h1>
+    <div class="hero__side">
+      <p class="lede">
+        Shoppers know their size in the brand they already wear. Snug turns it into the right size in your tees, on your product page.
+        Built to cut size returns.
+      </p>
+      <div class="hero__ctas">
+        <BookButton size="lg" />
+        <a class="textlink" href="#how">See how it works</a>
+      </div>
+      <p class="hero__status mono-s">In beta · Founding Five: {FOUNDING.open} of {FOUNDING.total} spots open</p>
+    </div>
+  </div>
+
+  <div class="tx" data-translator data-payload={payload}>
+    <div class="wrap tx__top">
+      <form class="tx__form" aria-describedby="tx-note">
+        <p class="tx__try mono-s" aria-hidden="true">Try it</p>
+        <div class="tx__sentence">
+          <fieldset class="seg-group">
+            <legend class="tx__word">I wear size</legend>
+            <div class="seg" data-seg="size">
+              {
+                ["S", "M", "L", "XL"].map((s) => (
+                  <label class="seg__opt">
+                    <input type="radio" name="tx-size" value={s} checked={s === START.size} />
+                    <span>{s}</span>
+                  </label>
+                ))
+              }
+            </div>
+          </fieldset>
+          <fieldset class="seg-group">
+            <legend class="tx__word">in tees from</legend>
+            <div class="seg seg--brand" data-seg="brand">
+              {
+                BRANDS.map((b) => (
+                  <label class="seg__opt">
+                    <input type="radio" name="tx-brand" value={b.id} checked={b.id === START.brand} />
+                    <span>{b.name}</span>
+                  </label>
+                ))
+              }
+            </div>
+          </fieldset>
+        </div>
+      </form>
+
+      <div class="tx__out">
+        <p class="tx__at">At <strong>SAHAJ</strong>, take</p>
+        <div class="tx__result">
+          <span class="tx__letter" data-letter>{match.size}</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="tape-wrap" aria-hidden="true">
+      <div class="lane lane--ref" data-lane="ref">
+        {
+          brand.sizes.map((s, i) => (
+            <span class:list={["mk", { "is-on": s.size === START.size }]} data-size={s.size} style={`--p:${pct(s.chest)};--d:${i}`}>
+              <span class="mk__in">
+                <i>{fmt(s.chest)}</i>
+                <b>{s.size}</b>
+              </span>
+            </span>
+          ))
+        }
+        <span class="lane__name mono-s" data-ref-name>{brand.name}</span>
+      </div>
+
+      <div class="tape" data-tape>
+        <div class="tape__ticks tape__ticks--cm"></div>
+        <div class="tape__ticks tape__ticks--in" style={`--off:${inchOffset}`}></div>
+        <div class="tape__nums tape__nums--in">
+          {inLabels.map((n) => <span style={`--p:${pct(n * 2.54)}`}>{n}</span>)}
+          <span class="tape__unit">in</span>
+        </div>
+        <div class="tape__nums tape__nums--cm">
+          {cmLabels.map((n) => <span class:list={{ l5: n % 5 === 0 }} style={`--p:${pct(n)}`}>{n}</span>)}
+          <span class="tape__unit">cm</span>
+        </div>
+      </div>
+
+      <div class="lane lane--store" data-lane="store">
+        {
+          SAMPLE_STORE.sizes.map((s, i) => (
+            <span class:list={["mk", { "is-on": s.size === match.size }]} data-size={s.size} style={`--p:${pct(s.chest)};--d:${i + 4}`}>
+              <span class="mk__in">
+                <i>{s.chest.toFixed(1)}</i>
+                <b>{s.size}</b>
+              </span>
+            </span>
+          ))
+        }
+        <span class="lane__name mono-s">SAHAJ · sample</span>
+      </div>
+      <span class="gap" data-gap style={`--a:${pct(Math.min(ref.chest, match.chest))};--b:${pct(Math.max(ref.chest, match.chest))}`}></span>
+      <span class="needle" data-needle style={`--p:${pct(ref.chest)}`}>
+        <span class="needle__line"></span>
+        <span class="needle__tag"><b data-read-cm>{fmt(ref.chest)}</b> cm <em>·</em> <b data-read-in>{fmt(inch(ref.chest))}</b> in</span>
+      </span>
+    </div>
+
+    <div class="wrap tx__bottom">
+      <p class="tx__why" data-why>
+        A size <b data-w-size>{ref.size}</b> from <b data-w-brand>{brand.name}</b> measures <b data-w-ref>{fmt(ref.chest)} cm</b> across the
+        chest. SAHAJ’s <b data-w-match>{match.size}</b> is <b data-w-mchest>{match.chest.toFixed(1)} cm</b>, the closest match, <span
+          data-w-delta>{fmt(match.delta)} cm</span
+        > away.<span class="tx__close" data-close hidden></span>
+      </p>
+      <p class="tx__note note" id="tx-note">
+        SAHAJ is a made-up sample store. Brand figures are real: {DATA_SOURCE}
+      </p>
+      <p class="sr-only" aria-live="polite" data-live></p>
+    </div>
+  </div>
+</section>

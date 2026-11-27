@@ -1,0 +1,28 @@
+---
+import SnugLayout from "../layouts/SnugLayout.astro";
+import SnugHeader from "../components/snug/SnugHeader.astro";
+import Hero from "../components/snug/Hero.astro";
+import Problem from "../components/snug/Problem.astro";
+import HowItWorks from "../components/snug/HowItWorks.astro";
+import Answers from "../components/snug/Answers.astro";
+import Setup from "../components/snug/Setup.astro";
+import Closing from "../components/snug/Closing.astro";
+import SnugFooter from "../components/snug/SnugFooter.astro";
+---
+
+<SnugLayout>
+  <div class="ruler" aria-hidden="true" data-ruler>
+    <div class="ruler__tape"></div>
+    <span class="ruler__read mono-s"><b data-ruler-read>0</b> cm</span>
+  </div>
+  <SnugHeader />
+  <main id="main" tabindex="-1">
+    <Hero />
+    <Problem />
+    <HowItWorks />
+    <Answers />
+    <Setup />
+    <Closing />
+  </main>
+  <SnugFooter />
+</SnugLayout>

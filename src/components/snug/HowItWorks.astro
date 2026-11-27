@@ -1,0 +1,87 @@
+---
+import WidgetFrame from "./WidgetFrame.astro";
+
+const asked = ["Height", "Weight", "Age", "Body shape", "A photo"];
+const steps = [
+  {
+    n: "01",
+    title: "Your shopper taps “Find Your Recommended Size”.",
+    body: "The button sits on your product page, under Add to cart or wherever you place it. The dialog only loads when someone opens it.",
+  },
+  {
+    n: "02",
+    title: "They pick a brand, garment and size they already own.",
+    body: "Three dropdowns, built only from brands and sizes Snug has real charts for. No typing, no tape, no account.",
+  },
+  {
+    n: "03",
+    title: "They get a size for your tee, and how sure Snug is.",
+    body: "A recommended size, how sure Snug is, and a one-line reason they can read. Then they add to cart.",
+  },
+];
+---
+
+<section class="ask" id="how" aria-labelledby="ask-title">
+  <div class="wrap">
+    <p class="eyebrow">How Snug works</p>
+    <h2 id="ask-title" class="h2">One question. <span class="hl">Not a quiz.</span></h2>
+    <div class="ask__grid">
+      <div class="ask__col">
+        <p class="mono-s ask__lbl">What many size tools ask your shopper</p>
+        <ul class="strike" role="list">
+          {
+            asked.map((a) => (
+              <li>
+                <span class="strike__w">{a}</span>
+                <span class="strike__line" aria-hidden="true" />
+              </li>
+            ))
+          }
+        </ul>
+        <p class="ask__aside">A lot to ask before “Add to cart”.</p>
+      </div>
+      <div class="ask__col ask__col--snug">
+        <p class="mono-s ask__lbl">What Snug asks</p>
+        <p class="ask__q">“What do you already wear?”</p>
+        <dl class="tokens">
+          <div class="token"><dt class="mono-s">Brand</dt><dd>Bewakoof</dd></div>
+          <div class="token"><dt class="mono-s">Garment</dt><dd>T-shirt</dd></div>
+          <div class="token"><dt class="mono-s">Size</dt><dd>M</dd></div>
+        </dl>
+        <p class="ask__aside"><b>We compare tees, not bodies.</b> No tape measure, no body measurements: Snug starts from a tee they already own.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="walk" aria-labelledby="walk-title">
+  <div class="wrap ruled walk__grid">
+    <div class="walk__steps">
+      <h2 id="walk-title" class="h3">On your product page</h2>
+      <ol class="steps" role="list">
+        {
+          steps.map((s, i) => (
+            <li class="step" data-step={i + 1}>
+              <span class="step__n mono-s">{s.n}</span>
+              <h3 class="step__t">{s.title}</h3>
+              <p class="step__b">{s.body}</p>
+              <div class="step__frame" aria-hidden="true">
+                <WidgetFrame step={(i + 1) as 1 | 2 | 3} />
+              </div>
+            </li>
+          ))
+        }
+      </ol>
+    </div>
+    <div class="walk__stage" aria-hidden="true">
+      <div class="walk__sticky">
+        <div class="walk__frames" data-walk="1">
+          <WidgetFrame step={1} />
+          <WidgetFrame step={2} />
+          <WidgetFrame step={3} />
+        </div>
+        <p class="mono-s walk__note">SAHAJ is a sample store. Merchants restyle the widget to match their theme.</p>
+      </div>
+    </div>
+  </div>
+</section>
